@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/BboyStatix/FYP#readme",
   "dependencies": {
+    "concurrently": "^3.5.0",
     "express": "^4.15.4"
   }
 }
