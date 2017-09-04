@@ -5,16 +5,15 @@ const app = express()
 //const path = require('path')
 //app.use(express.static(path.join(__dirname, 'client/build')))
 
-const MongoClient = require('mongodb').MongoClient
+const mongoose = require('mongoose')
 
-MongoClient.connect('mongodb://localhost:27017/animals', function (err, db) {
-  if (err) throw err
+mongoose.connect('mongodb://localhost/test')
 
-  db.collection('mammals').find().toArray(function (err, result) {
-    if (err) throw err
-
-    console.log(result)
-  })
+var db = mongoose.connection
+db.on('error', console.error.bind(console, 'connection error:'))
+db.once('open', function() {
+  // we're connected!
+  console.log("We're connected")
 })
 
 app.listen(3001, () => {
