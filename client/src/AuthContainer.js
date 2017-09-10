@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class AuthContainer extends Component {
 
   submitCredentials() {
-    fetch('/auth', {
+    fetch('/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

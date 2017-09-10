@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
 const app = express()
+const User = require('./models/user')
 //for use in production. serve the build folder for files optimized
 //for production created by npm run build in client directory
 //const path = require('path')
@@ -21,8 +22,10 @@ app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
-app.post('/auth', (req, res) => {
-  res.json({success: true })
+app.post('/auth/login', (req, res) => {
+  User.findOne(({ username: req.body.username, password: req.body.password }), (err, user) => {
+    if (user) res.json({success: true})
+  })
 })
 
 app.listen(3001, () => {
