@@ -17,7 +17,7 @@ class MainContainer extends Component {
           <Route exact path='/' render={() => <Link to='/temp'>Click Here</Link>}/>
           <Route exact path='/temp' render={() => <Link to='/'>Go Back</Link>}/>
         </Switch>
-        <DiaryContainer />
+        <DiaryContainer /> 
         <PhotoContainer />
         <AudioContainer />
         <VideoContainer />

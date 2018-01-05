@@ -7,15 +7,38 @@ import MainContainer from './MainContainer'
 import './App.css'
 
 class App extends Component {
-  isAuthenticated() {
-    return false
+  constructor(props) {
+    super(props)
+    this.state = {authenticated: false}
+  }
+
+  componentWillMount() {
+    this.setAuthenticationState()
+  }
+
+  setAuthenticationState() {
+    if (localStorage.jwt){
+      fetch('/auth/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          jwt: localStorage.jwt
+        })
+      }).then((res) => {
+        return res.json()
+      }).then((json) => {
+        this.setState({authenticated: json.success})
+      })
+    }
   }
 
   render() {
     return (
       <div className='App'>
         {
-          this.isAuthenticated() ?
+          this.state.authenticated ?
           <MainContainer />
           :
           <AuthContainer />
