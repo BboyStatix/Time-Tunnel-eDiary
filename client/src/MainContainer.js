@@ -12,15 +12,26 @@ class MainContainer extends Component {
     return (
       <div>
         <Header />
-        <p className="App-intro">To get started, edit <code>src/App.js</code> and save to reload.</p>
-        <Switch>
-          <Route exact path='/' render={() => <Link to='/temp'>Click Here</Link>}/>
-          <Route exact path='/temp' render={() => <Link to='/'>Go Back</Link>}/>
-        </Switch>
-        <DiaryContainer /> 
-        <PhotoContainer />
-        <AudioContainer />
-        <VideoContainer />
+        <br />
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <DiaryContainer />
+            </div>
+            <div className="col">
+              <PhotoContainer />
+            </div>
+          </div>
+          <br />
+          <div className="row">
+            <div className="col">
+              <AudioContainer />
+            </div>
+            <div className="col">
+              <VideoContainer />
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
