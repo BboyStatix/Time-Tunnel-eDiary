@@ -7,7 +7,7 @@ class DiaryContainer extends Component {
         <div className="card-header bg-primary text-light">
           Diary
         </div>
-        <div className="card-body">
+        <div className="card-body" style={{padding: 0}}>
           <table className="table">
             <thead>
               <tr>

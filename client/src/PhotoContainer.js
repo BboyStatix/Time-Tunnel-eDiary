@@ -7,7 +7,7 @@ class PhotoContainer extends Component {
         <div className="card-header bg-success text-light">
           Photo
         </div>
-        <div className="card-body">
+        <div className="card-body" style={{padding: 0}}>
           <table className="table">
             <thead>
               <tr>

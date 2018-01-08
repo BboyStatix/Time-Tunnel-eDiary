@@ -7,7 +7,7 @@ class VideoContainer extends Component {
         <div className="card-header bg-dark text-light">
           Video
         </div>
-        <div className="card-body">
+        <div className="card-body" style={{padding: 0}}>
           <table className="table">
             <thead>
               <tr>

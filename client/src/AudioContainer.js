@@ -7,7 +7,7 @@ class AudioContainer extends Component {
         <div className="card-header bg-danger text-light">
           Audio
         </div>
-        <div className="card-body">
+        <div className="card-body" style={{padding: 0}}>
           <table className="table">
             <thead>
               <tr>
