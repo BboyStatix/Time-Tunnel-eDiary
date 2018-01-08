@@ -3,8 +3,11 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
+const multer  = require('multer')
+const upload = multer({ dest: 'uploads/' })
 const app = express()
 const User = require('./models/user')
+const Diary = require('./models/diary')
 //for use in production. serve the build folder for files optimized
 //for production created by npm run build in client directory
 //const path = require('path')
@@ -66,7 +69,15 @@ app.post('/auth/verify', (req, res) => {
         success: true
       })
     }
-  });
+  })
+})
+
+app.post('/upload/diary', upload.single('file'), (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+  console.log(userID)
+  console.log(req.file)
+  console.log(req.body)
 })
 
 app.listen(3001, () => {
