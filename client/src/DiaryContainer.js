@@ -1,6 +1,31 @@
 import React, { Component } from 'react'
 
 class DiaryContainer extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      entries: this.setEntryState()
+    }
+  }
+
+  setEntryState() {
+    fetch('/diary/entries', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        jwt: localStorage.jwt
+      })
+    }).then((res) => {
+      return res.json()
+    })
+    .then((json) => {
+      console.log(json.entries[0])
+      this.setState({entries: json.entries})
+    })
+  }
+
   render() {
     return (
       <div className="card">
@@ -12,30 +37,23 @@ class DiaryContainer extends Component {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">created_at</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              {
+                this.state.entries === undefined ?
+                <tr>
+                  <th scope="row">1</th>
+                </tr>
+                :
+                this.state.entries.map((entry,idx) =>
+                  <tr key={idx}>
+                    <th scope="row">{idx}</th>
+                    <td>{entry.created_at}</td>
+                  </tr>
+                )
+              }
             </tbody>
           </table>
         </div>

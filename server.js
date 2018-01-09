@@ -100,8 +100,8 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
         console.log(err);
       } else {
         console.log('Diary successfully saved');
-    }
-});
+      }
+    })
   }
   else if(filename.match(/\.(wtv|flv|mp4)$/)){
     console.log("VIDEO!!!")
@@ -113,6 +113,26 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     console.log("AUDIO!!!")
   }
   console.log(req.file)
+})
+
+app.post('/diary/entries', (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+
+  Diary.find({userID: userID}, (err, entries) => {
+    if(err) {
+      res.json({
+        status: 500,
+        error: err
+      })
+    }
+    else{
+      res.json({
+        status:200,
+        entries: entries
+      })
+    }
+  })
 })
 
 app.listen(3001, () => {
