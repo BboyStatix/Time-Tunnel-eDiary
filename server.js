@@ -4,7 +4,13 @@ const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
 const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const fileFilter = function (req, file, cb) {
+    if (!file.originalname.match(/\.(flv|mp4|txt|mp3|jpg|jpeg|png|gif)$/)) {
+        return cb(new Error('Unsupported file format!'), false)
+    }
+    cb(null, true)
+}
+const upload = multer({ dest: 'uploads/', fileFilter: fileFilter})
 const app = express()
 const User = require('./models/user')
 const Diary = require('./models/diary')
@@ -72,7 +78,7 @@ app.post('/auth/verify', (req, res) => {
   })
 })
 
-app.post('/upload/diary', upload.single('file'), (req, res) => {
+app.post('/upload/file', upload.single('file'), (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
   console.log(userID)

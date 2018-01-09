@@ -8,11 +8,11 @@ import AudioContainer from './AudioContainer'
 import VideoContainer from './VideoContainer'
 
 class MainContainer extends Component {
-  uploadDiary (e){
+  uploadFile (e){
     var formData = new FormData()
     formData.append('jwt', localStorage.jwt)
-    formData.append('file', document.getElementById('diary').files[0])
-    fetch('/upload/diary', {
+    formData.append('file', document.getElementById('file').files[0])
+    fetch('/upload/file', {
       method: 'POST',
       body: formData
     })
@@ -24,9 +24,9 @@ class MainContainer extends Component {
       <div>
         <Header />
         <br />
-        <form onSubmit={this.uploadDiary}>
+        <form onSubmit={this.uploadFile}>
           <div className="form-group">
-            <input id="diary" type="file" />
+            <input id="file" type="file" />
           </div>
           <button type="submit">Submit</button>
         </form>
