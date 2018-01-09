@@ -3,15 +3,25 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
-const multer  = require('multer')
+const app = express()
+const multer = require('multer')
+const path = require('path')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+  }
+})
 const fileFilter = function (req, file, cb) {
-    if (!file.originalname.match(/\.(flv|mp4|txt|mp3|jpg|jpeg|png|gif)$/)) {
+    if (!file.originalname.match(/\.(wtv|flv|mp4|txt|mp3|jpg|jpeg|png|gif)$/)) {
         return cb(new Error('Unsupported file format!'), false)
     }
     cb(null, true)
 }
-const upload = multer({ dest: 'uploads/', fileFilter: fileFilter})
-const app = express()
+const upload = multer({ fileFilter: fileFilter, storage: storage})
+
 const User = require('./models/user')
 const Diary = require('./models/diary')
 //for use in production. serve the build folder for files optimized
@@ -81,9 +91,28 @@ app.post('/auth/verify', (req, res) => {
 app.post('/upload/file', upload.single('file'), (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
-  console.log(userID)
+
+  var filename = req.file.originalname
+  if(filename.match(/\.(txt)$/)){
+    var diary = new Diary({userID: userID, path: req.file.path})
+    diary.save(function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Diary successfully saved');
+    }
+});
+  }
+  else if(filename.match(/\.(wtv|flv|mp4)$/)){
+    console.log("VIDEO!!!")
+  }
+  else if(filename.match(/\.(jpg|jpeg|png|gif)$/)){
+    console.log("PHOTO!!!")
+  }
+  else if(filename.match(/\.(mp3)$/)){
+    console.log("AUDIO!!!")
+  }
   console.log(req.file)
-  console.log(req.body)
 })
 
 app.listen(3001, () => {
