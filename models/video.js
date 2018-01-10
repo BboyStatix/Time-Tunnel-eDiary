@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const videoSchema = new Schema({
   userID: { type: String, required: true },
-  path: { type: String, required: true },
+  filename: { type: String, required: true },
   name: { type: String, required: true }
 },
 {

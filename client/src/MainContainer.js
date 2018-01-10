@@ -31,7 +31,7 @@ class MainContainer extends Component {
           <button type="submit">Submit</button>
         </form>
         <br />
-        <div className="container">
+        <div className="container-fluid">
           <div className="row">
             <div className="col">
               <DiaryContainer />

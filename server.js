@@ -99,11 +99,12 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
 
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
-  const filename = req.file.originalname
+  const name = req.file.originalname
+  const filename = req.file.filename
   const path = req.file.path
 
-  if(filename.match(/\.(txt)$/)){
-    const diary = new Diary({userID: userID, path: path, name: filename})
+  if(name.match(/\.(txt)$/)){
+    const diary = new Diary({userID: userID, filename: filename, name: name})
     diary.save(function (err) {
       if (err) {
         console.log(err);
@@ -112,8 +113,8 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
       }
     })
   }
-  else if(filename.match(/\.(wtv|flv|mp4)$/)){
-    const video = new Video({userID: userID, path: path, name: filename})
+  else if(name.match(/\.(wtv|flv|mp4)$/)){
+    const video = new Video({userID: userID, filename: filename, name: name})
     video.save(function (err) {
       if (err) {
         console.log(err);
@@ -122,8 +123,8 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
       }
     })
   }
-  else if(filename.match(/\.(jpg|jpeg|png|gif)$/)){
-    const photo = new Photo({userID: userID, path: path, name: filename})
+  else if(name.match(/\.(jpg|jpeg|png|gif)$/)){
+    const photo = new Photo({userID: userID, filename: filename, name: name})
     photo.save(function (err) {
       if (err) {
         console.log(err);
@@ -132,9 +133,9 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
       }
     })
   }
-  else if(filename.match(/\.(mp3)$/)){
+  else if(name.match(/\.(mp3)$/)){
     const parser = mm(fs.createReadStream(path), (err, metadata) => {
-      const audio = new Audio({userID: userID, path: path, name: filename, artist: metadata.artist[0]})
+      const audio = new Audio({userID: userID, filename: filename, name: name, artist: metadata.artist[0]})
       audio.save((err) => {
         if (err) {
           console.log(err);
@@ -150,7 +151,7 @@ app.post('/diary/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
 
-  Diary.find({userID: userID}, (err, entries) => {
+  Diary.find({userID: userID}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -170,7 +171,7 @@ app.post('/photo/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
 
-  Photo.find({userID: userID}, (err, entries) => {
+  Photo.find({userID: userID}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -190,7 +191,7 @@ app.post('/audio/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
 
-  Audio.find({userID: userID}, (err, entries) => {
+  Audio.find({userID: userID}, {name: true, filename: true, artist: true, created_at: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -210,7 +211,7 @@ app.post('/video/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
 
-  Video.find({userID: userID}, (err, entries) => {
+  Video.find({userID: userID}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
