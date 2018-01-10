@@ -16,6 +16,7 @@ class MainContainer extends Component {
       method: 'POST',
       body: formData
     })
+    e.preventDefault()
   }
 
   render() {

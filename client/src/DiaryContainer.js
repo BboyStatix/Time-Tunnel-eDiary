@@ -21,7 +21,6 @@ class DiaryContainer extends Component {
       return res.json()
     })
     .then((json) => {
-      console.log(json.entries[0])
       this.setState({entries: json.entries})
     })
   }

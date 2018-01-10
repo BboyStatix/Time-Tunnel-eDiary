@@ -1,6 +1,30 @@
 import React, { Component } from 'react'
 
 class PhotoContainer extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      entries: this.setEntryState()
+    }
+  }
+
+  setEntryState() {
+    fetch('/photo/entries', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        jwt: localStorage.jwt
+      })
+    }).then((res) => {
+      return res.json()
+    })
+    .then((json) => {
+      this.setState({entries: json.entries})
+    })
+  }
+
   render() {
     return (
       <div className="card">
@@ -8,34 +32,29 @@ class PhotoContainer extends Component {
           Photo
         </div>
         <div className="card-body" style={{padding: 0}}>
-          <table className="table">
+          <table className="table table-hover">
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">First</th>
-                <th scope="col">Last</th>
-                <th scope="col">Handle</th>
+                <th scope="col">name</th>
+                <th scope="col">created_at</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
+              {
+                this.state.entries === undefined ?
+                <tr>
+                  <th scope="row">1</th>
+                </tr>
+                :
+                this.state.entries.map((entry,idx) =>
+                  <tr key={idx}>
+                    <th scope="row">{idx+1}</th>
+                    <td>{entry.name}</td>
+                    <td>{entry.created_at}</td>
+                  </tr>
+                )
+              }
             </tbody>
           </table>
         </div>

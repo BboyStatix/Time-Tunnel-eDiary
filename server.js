@@ -15,15 +15,19 @@ const storage = multer.diskStorage({
   }
 })
 const fileFilter = function (req, file, cb) {
-    if (!file.originalname.match(/\.(wtv|flv|mp4|txt|mp3|jpg|jpeg|png|gif)$/)) {
-        return cb(new Error('Unsupported file format!'), false)
-    }
-    cb(null, true)
+  if (!file.originalname.match(/\.(wtv|flv|mp4|txt|mp3|jpg|jpeg|png|gif)$/)) {
+      return cb(new Error('Unsupported file format!'), false)
+  }
+  cb(null, true)
 }
 const upload = multer({ fileFilter: fileFilter, storage: storage})
 
 const User = require('./models/user')
 const Diary = require('./models/diary')
+const Video = require('./models/video')
+const Photo = require('./models/photo')
+const Audio = require('./models/audio')
+
 //for use in production. serve the build folder for files optimized
 //for production created by npm run build in client directory
 //const path = require('path')
@@ -89,12 +93,14 @@ app.post('/auth/verify', (req, res) => {
 })
 
 app.post('/upload/file', upload.single('file'), (req, res) => {
+
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
+  const filename = req.file.originalname
+  const path = req.file.path
 
-  var filename = req.file.originalname
   if(filename.match(/\.(txt)$/)){
-    var diary = new Diary({userID: userID, path: req.file.path, name: filename})
+    const diary = new Diary({userID: userID, path: path, name: filename})
     diary.save(function (err) {
       if (err) {
         console.log(err);
@@ -104,15 +110,35 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     })
   }
   else if(filename.match(/\.(wtv|flv|mp4)$/)){
-    console.log("VIDEO!!!")
+    const video = new Video({userID: userID, path: path, name: filename})
+    video.save(function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Video successfully saved');
+      }
+    })
   }
   else if(filename.match(/\.(jpg|jpeg|png|gif)$/)){
-    console.log("PHOTO!!!")
+    const photo = new Photo({userID: userID, path: path, name: filename})
+    photo.save(function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Photo successfully saved');
+      }
+    })
   }
   else if(filename.match(/\.(mp3)$/)){
-    console.log("AUDIO!!!")
+    const audio = new Audio({userID: userID, path: path, name: filename})
+    audio.save(function (err) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log('Audio successfully saved');
+      }
+    })
   }
-  console.log(req.file)
 })
 
 app.post('/diary/entries', (req, res) => {
@@ -120,6 +146,66 @@ app.post('/diary/entries', (req, res) => {
   const userID = jwt.decode(token, 'secret').user._id
 
   Diary.find({userID: userID}, (err, entries) => {
+    if(err) {
+      res.json({
+        status: 500,
+        error: err
+      })
+    }
+    else{
+      res.json({
+        status:200,
+        entries: entries
+      })
+    }
+  })
+})
+
+app.post('/photo/entries', (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+
+  Photo.find({userID: userID}, (err, entries) => {
+    if(err) {
+      res.json({
+        status: 500,
+        error: err
+      })
+    }
+    else{
+      res.json({
+        status:200,
+        entries: entries
+      })
+    }
+  })
+})
+
+app.post('/audio/entries', (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+
+  Audio.find({userID: userID}, (err, entries) => {
+    if(err) {
+      res.json({
+        status: 500,
+        error: err
+      })
+    }
+    else{
+      res.json({
+        status:200,
+        entries: entries
+      })
+    }
+  })
+})
+
+app.post('/video/entries', (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+
+  Video.find({userID: userID}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
