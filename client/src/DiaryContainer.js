@@ -33,10 +33,11 @@ class DiaryContainer extends Component {
           Diary
         </div>
         <div className="card-body" style={{padding: 0}}>
-          <table className="table">
+          <table className="table table-hover">
             <thead>
               <tr>
                 <th scope="col">#</th>
+                <th scope="col">name</th>
                 <th scope="col">created_at</th>
               </tr>
             </thead>
@@ -49,7 +50,8 @@ class DiaryContainer extends Component {
                 :
                 this.state.entries.map((entry,idx) =>
                   <tr key={idx}>
-                    <th scope="row">{idx}</th>
+                    <th scope="row">{idx+1}</th>
+                    <td>{entry.name}</td>
                     <td>{entry.created_at}</td>
                   </tr>
                 )

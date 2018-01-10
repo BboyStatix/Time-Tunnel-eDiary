@@ -94,7 +94,7 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
 
   var filename = req.file.originalname
   if(filename.match(/\.(txt)$/)){
-    var diary = new Diary({userID: userID, path: req.file.path})
+    var diary = new Diary({userID: userID, path: req.file.path, name: filename})
     diary.save(function (err) {
       if (err) {
         console.log(err);
