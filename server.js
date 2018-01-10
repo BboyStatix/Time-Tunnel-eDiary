@@ -3,15 +3,18 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
+const mm = require('musicmetadata')
 const app = express()
+
 const multer = require('multer')
 const path = require('path')
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
+  destination: (req, file, cb) => {
     cb(null, 'uploads/')
   },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname))
   }
 })
 const fileFilter = function (req, file, cb) {
@@ -130,13 +133,15 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     })
   }
   else if(filename.match(/\.(mp3)$/)){
-    const audio = new Audio({userID: userID, path: path, name: filename})
-    audio.save(function (err) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log('Audio successfully saved');
-      }
+    const parser = mm(fs.createReadStream(path), (err, metadata) => {
+      const audio = new Audio({userID: userID, path: path, name: filename, artist: metadata.artist[0]})
+      audio.save((err) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log('Audio successfully saved');
+        }
+      })
     })
   }
 })
