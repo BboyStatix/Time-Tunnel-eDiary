@@ -51,17 +51,39 @@ app.use(bodyParser.urlencoded({
 }))
 
 app.post('/auth/login', (req, res) => {
+  const username = req.body.username
+  const password = req.body.password
   User.findOne(({
-    username: req.body.username
+    username: username
   }), (err, user) => {
     if (err) throw err
     if (!user) {
-      res.json({
-        success: false,
-        message: 'Authentication failed. User not found'
-      })
+      if(password.length !== 0){
+        const user = new User({username: username, password: password})
+        user.save((err) => {
+          if (err) {
+            console.log(err)
+          } else {
+            jwt.sign({
+              user: user
+            }, 'secret', (err, token) => {
+              res.json({
+                success: true,
+                message: 'Successful Registration!',
+                token: token
+              })
+            })
+          }
+        })
+      }
+      else{
+        res.json({
+          success: false,
+          message: 'Authentication failed. User not found'
+        })
+      }
     } else if (user) {
-      if (user.password != req.body.password) {
+      if (user.password != password) {
         res.json({
           success: false,
           message: 'Authentication failed. Wrong password'
@@ -107,9 +129,9 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     const diary = new Diary({userID: userID, filename: filename, name: name})
     diary.save(function (err) {
       if (err) {
-        console.log(err);
+        console.log(err)
       } else {
-        console.log('Diary successfully saved');
+        console.log('Diary successfully saved')
       }
     })
   }
@@ -117,9 +139,9 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     const video = new Video({userID: userID, filename: filename, name: name})
     video.save(function (err) {
       if (err) {
-        console.log(err);
+        console.log(err)
       } else {
-        console.log('Video successfully saved');
+        console.log('Video successfully saved')
       }
     })
   }
@@ -127,9 +149,9 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     const photo = new Photo({userID: userID, filename: filename, name: name})
     photo.save(function (err) {
       if (err) {
-        console.log(err);
+        console.log(err)
       } else {
-        console.log('Photo successfully saved');
+        console.log('Photo successfully saved')
       }
     })
   }
@@ -138,9 +160,9 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
       const audio = new Audio({userID: userID, filename: filename, name: name, artist: metadata.artist[0]})
       audio.save((err) => {
         if (err) {
-          console.log(err);
+          console.log(err)
         } else {
-          console.log('Audio successfully saved');
+          console.log('Audio successfully saved')
         }
       })
     })

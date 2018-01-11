@@ -22,7 +22,6 @@ class AuthContainer extends Component {
       }
       else {
         console.log(json.message)
-        // TODO: need an else condition here when authentication fails should show red error msg
       }
     })
     e.preventDefault()
@@ -50,7 +49,7 @@ class AuthContainer extends Component {
             </div>
             <div className="col-sm-4"></div>
           </div>
-          <button type="submit" className="btn btn-primary">Submit</button>
+          <button type="submit" className="btn btn-primary">Log In / Register</button>
         </form>
       </div>
     )
