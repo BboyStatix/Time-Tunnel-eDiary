@@ -3,6 +3,7 @@ import { Link, Switch, Route } from 'react-router-dom'
 
 import AuthContainer from './AuthContainer'
 import MainContainer from './MainContainer'
+import Header from './Header'
 
 import './App.css'
 
@@ -37,6 +38,7 @@ class App extends Component {
   render() {
     return (
       <div className='App'>
+        <Header />
         {
           this.state.authenticated ?
           <MainContainer />
