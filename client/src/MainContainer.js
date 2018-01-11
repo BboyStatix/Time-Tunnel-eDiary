@@ -19,17 +19,21 @@ class MainContainer extends Component {
     e.preventDefault()
   }
 
+  logout (){
+    localStorage.jwt = null
+  }
+
   render() {
     return (
       <div>
         <Header />
-        <br />
-        <form onSubmit={this.uploadFile}>
-          <div className="form-group">
-            <input id="file" type="file" />
-          </div>
-          <button type="submit">Submit</button>
-        </form>
+        <nav className="navbar">
+          <form className="form-inline my-2 my-lg-0" onSubmit={this.uploadFile}>
+              <input className="form-control mr-sm-2" id="file" type="file" />
+              <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
+          </form>
+          <a className="nav-link" onClick={this.logout} href="/">Log out</a>
+        </nav>
         <br />
         <div className="container-fluid">
           <div className="row">
