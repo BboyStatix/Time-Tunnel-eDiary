@@ -35,7 +35,7 @@ class AuthContainer extends Component {
         <form onSubmit={this.submitCredentials}>
           <div className="form-group row">
             <div className="col-sm-2"></div>
-            <label for="username" className="col-sm-2 col-form-label">Username</label>
+            <label className="col-sm-2 col-form-label">Username</label>
             <div className="col-sm-4">
               <input type="text" className="form-control" id="username" placeholder="Enter username" />
             </div>
@@ -43,7 +43,7 @@ class AuthContainer extends Component {
           </div>
           <div className="form-group row">
             <div className="col-sm-2"></div>
-            <label for="password" className="col-sm-2 col-form-label">Password</label>
+            <label className="col-sm-2 col-form-label">Password</label>
             <div className="col-sm-4">
               <input type="password" className="form-control" id="password" placeholder="Password" />
             </div>
