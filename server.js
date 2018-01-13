@@ -189,6 +189,29 @@ app.post('/diary/entries', (req, res) => {
   })
 })
 
+app.post('/diary/view', (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+  const filename = req.body.filename
+
+  Diary.find({userID: userID, filename: filename}, (err, diary) => {
+    if(err) {
+      res.json({
+        status: 500,
+        error: err
+      })
+    }
+    else{
+      const filePath = path.join(__dirname, '/uploads/' + filename)
+      const data = fs.readFileSync(filePath,'utf8')
+      res.json({
+        status: 200,
+        data: data
+      })
+    }
+  })
+})
+
 app.post('/photo/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
