@@ -32,7 +32,7 @@ class DiaryContainer extends Component {
     })
   }
 
-  showModal(filename) {
+  showModal(name, filename) {
     fetch('/diary/view', {
       method: 'POST',
       headers: {
@@ -46,7 +46,7 @@ class DiaryContainer extends Component {
       return res.json()
     })
     .then((json) => {
-      this.setState({modalVisible: true, modalBody: json.data})
+      this.setState({modalVisible: true, modalTitle: name, modalBody: json.data})
     })
   }
 
@@ -77,7 +77,7 @@ class DiaryContainer extends Component {
                   <p>{this.state.modalBody}</p>
                 </div>
                 <div className="modal-footer">
-                  <button type="button" className="btn btn-primary">Save changes</button>
+
                   <button id="closeButton" type="button" className="btn btn-secondary">Close</button>
                 </div>
               </div>
@@ -112,7 +112,7 @@ class DiaryContainer extends Component {
                       <th scope="row">{idx+1}</th>
                       <td>{entry.name}</td>
                       <td>{entry.created_at}</td>
-                      <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.filename)}>View</button></td>
+                      <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry.filename)}>View</button></td>
                     </tr>
                   )
                 }
