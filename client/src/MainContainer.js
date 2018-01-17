@@ -6,6 +6,8 @@ import PhotoContainer from './PhotoContainer'
 import AudioContainer from './AudioContainer'
 import VideoContainer from './VideoContainer'
 
+import './Modal.css'
+
 class MainContainer extends Component {
   uploadFile (e){
     var formData = new FormData()

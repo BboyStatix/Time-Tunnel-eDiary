@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-import './Modal.css'
-
 class DiaryContainer extends Component {
   constructor(props){
     super(props)
@@ -73,11 +71,10 @@ class DiaryContainer extends Component {
                     <span id="cross" aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div className="modal-body">
+                <div className="modal-body diary-body">
                   <p>{this.state.modalBody}</p>
                 </div>
                 <div className="modal-footer">
-
                   <button id="closeButton" type="button" className="btn btn-secondary">Close</button>
                 </div>
               </div>
