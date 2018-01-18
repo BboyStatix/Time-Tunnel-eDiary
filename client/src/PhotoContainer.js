@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 class PhotoContainer extends Component {
   constructor(props){
     super(props)
-    this.showModal = this.showModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.state = {
       entries: this.setEntryState(),
@@ -28,10 +27,6 @@ class PhotoContainer extends Component {
     .then((json) => {
       this.setState({entries: json.entries})
     })
-  }
-
-  showModal(name, filename) {
-    this.setState({modalVisible: true, filename: filename})
   }
 
   closeModal(e) {
@@ -95,7 +90,7 @@ class PhotoContainer extends Component {
                     <th scope="row">{idx+1}</th>
                     <td>{entry.name}</td>
                     <td>{entry.created_at}</td>
-                    <td><button className="btn btn-outline-success" onClick={() => this.showModal(entry.name, entry.filename)}>View</button></td>
+                    <td><button className="btn btn-outline-success" onClick={() => this.setState({modalVisible: true, modalTitle: entry.name, filename: entry.filename})}>View</button></td>
                   </tr>
                 )
               }
