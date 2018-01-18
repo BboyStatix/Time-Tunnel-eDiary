@@ -58,7 +58,7 @@ class PhotoContainer extends Component {
                   </button>
                 </div>
                 <div className="modal-body">
-                <img style={{'text-align': 'center'}} src={"/photo/view?jwt=" + localStorage.jwt + "&filename=" + this.state.filename}></img>
+                <img src={"/photo/view?jwt=" + localStorage.jwt + "&filename=" + this.state.filename}></img>
                 </div>
                 <div className="modal-footer">
                   <button id="closeButton" type="button" className="btn btn-secondary">Close</button>
