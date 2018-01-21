@@ -23,6 +23,7 @@ Main Components
   -webkit-transition: opacity 0.2s;
   -moz-transition: opacity 0.2s;
   transition: opacity 0.2s;
+
 }
 .cd-horizontal-timeline::before {
   /* never visible - this is used in jQuery to check the current MQ */
@@ -106,7 +107,7 @@ Main Components
   bottom: 0;
   z-index: 2;
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1rem;
   padding-bottom: 15px;
   color: #383838;
   /* fix bug on Safari - text flickering while timeline translates */
