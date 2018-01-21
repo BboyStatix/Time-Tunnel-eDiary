@@ -5,7 +5,7 @@ import AuthContainer from './AuthContainer'
 import MainContainer from './MainContainer'
 import Header from './Header'
 
-import './App.css'
+import './css/App.css'
 
 class App extends Component {
   constructor(props) {
