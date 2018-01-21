@@ -18,7 +18,6 @@ $(document).ready(function($){
       timelineComponents['timelineDates'] = parseDate(timelineComponents['timelineEvents']);
       timelineComponents['eventsMinLapse'] = minLapse(timelineComponents['timelineDates']);
       timelineComponents['timelineNavigation'] = timeline.find('.cd-timeline-navigation');
-      timelineComponents['eventsContent'] = timeline.children('.events-content');
 
       //assign a left postion to the single events along the timeline
       setDatePosition(timelineComponents, eventsMinDistance);
@@ -44,26 +43,7 @@ $(document).ready(function($){
         $(this).addClass('selected');
         updateOlderEvents($(this));
         updateFilling($(this), timelineComponents['fillingLine'], timelineTotWidth);
-        updateVisibleContent($(this), timelineComponents['eventsContent']);
-      });
-
-      //on swipe, show next/prev event content
-      timelineComponents['eventsContent'].on('swipeleft', function(){
-        var mq = checkMQ();
-        ( mq === 'mobile' ) && showNewContent(timelineComponents, timelineTotWidth, 'next');
-      });
-      timelineComponents['eventsContent'].on('swiperight', function(){
-        var mq = checkMQ();
-        ( mq === 'mobile' ) && showNewContent(timelineComponents, timelineTotWidth, 'prev');
-      });
-
-      //keyboard navigation
-      $(document).keyup(function(event){
-        if(event.which ==='37' && elementInViewport(timeline.get(0)) ) {
-          showNewContent(timelineComponents, timelineTotWidth, 'prev');
-        } else if( event.which ==='39' && elementInViewport(timeline.get(0))) {
-          showNewContent(timelineComponents, timelineTotWidth, 'next');
-        }
+        // updateVisibleContent($(this), timelineComponents['eventsContent']);
       });
     });
   }
@@ -76,24 +56,6 @@ $(document).ready(function($){
     (string === 'next')
       ? translateTimeline(timelineComponents, translateValue - wrapperWidth + eventsMinDistance, wrapperWidth - timelineTotWidth)
       : translateTimeline(timelineComponents, translateValue + wrapperWidth - eventsMinDistance);
-  }
-
-  function showNewContent(timelineComponents, timelineTotWidth, string) {
-    //go from one event to the next/previous one
-    var visibleContent =  timelineComponents['eventsContent'].find('.selected'),
-      newContent = ( string === 'next' ) ? visibleContent.next() : visibleContent.prev();
-
-    if ( newContent.length > 0 ) { //if there's a next/prev event - show it
-      var selectedDate = timelineComponents['eventsWrapper'].find('.selected'),
-        newEvent = ( string === 'next' ) ? selectedDate.parent('li').next('li').children('a') : selectedDate.parent('li').prev('li').children('a');
-
-      updateFilling(newEvent, timelineComponents['fillingLine'], timelineTotWidth);
-      updateVisibleContent(newEvent, timelineComponents['eventsContent']);
-      newEvent.addClass('selected');
-      selectedDate.removeClass('selected');
-      updateOlderEvents(newEvent);
-      updateTimelinePosition(string, newEvent, timelineComponents);
-    }
   }
 
   function updateTimelinePosition(string, event, timelineComponents) {
@@ -147,28 +109,6 @@ $(document).ready(function($){
     updateTimelinePosition('next', timelineComponents['eventsWrapper'].find('a.selected'), timelineComponents);
 
     return totalWidth;
-  }
-
-  function updateVisibleContent(event, eventsContent) {
-    var eventDate = event.data('date'),
-      visibleContent = eventsContent.find('.selected'),
-      selectedContent = eventsContent.find('[data-date="'+ eventDate +'"]'),
-      selectedContentHeight = selectedContent.height();
-
-    if (selectedContent.index() > visibleContent.index()) {
-      var classEnetering = 'selected enter-right',
-        classLeaving = 'leave-left';
-    } else {
-      var classEnetering = 'selected enter-left',
-        classLeaving = 'leave-right';
-    }
-
-    selectedContent.attr('class', classEnetering);
-    visibleContent.attr('class', classLeaving).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function(){
-      visibleContent.removeClass('leave-right leave-left');
-      selectedContent.removeClass('enter-left enter-right');
-    });
-    eventsContent.css('height', selectedContentHeight+'px');
   }
 
   function updateOlderEvents(event) {
@@ -237,34 +177,5 @@ $(document).ready(function($){
         dateDistances.push(distance);
     }
     return Math.min.apply(null, dateDistances);
-  }
-
-  /*
-    How to tell if a DOM element is visible in the current viewport?
-    http://stackoverflow.com/questions/123999/how-to-tell-if-a-dom-element-is-visible-in-the-current-viewport
-  */
-  function elementInViewport(el) {
-    var top = el.offsetTop;
-    var left = el.offsetLeft;
-    var width = el.offsetWidth;
-    var height = el.offsetHeight;
-
-    while(el.offsetParent) {
-        el = el.offsetParent;
-        top += el.offsetTop;
-        left += el.offsetLeft;
-    }
-
-    return (
-        top < (window.pageYOffset + window.innerHeight) &&
-        left < (window.pageXOffset + window.innerWidth) &&
-        (top + height) > window.pageYOffset &&
-        (left + width) > window.pageXOffset
-    );
-  }
-
-  function checkMQ() {
-    //check if mobile or desktop device
-    return window.getComputedStyle(document.querySelector('.cd-horizontal-timeline'), '::before').getPropertyValue('content').replace(/'/g, "").replace(/"/g, "");
   }
 })

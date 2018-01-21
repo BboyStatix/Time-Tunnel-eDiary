@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link, Switch, Route } from 'react-router-dom'
 
 import AuthContainer from './AuthContainer'
 import MainContainer from './MainContainer'
