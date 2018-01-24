@@ -78,17 +78,13 @@ class MainContainer extends Component {
 
         				<span className="filling-line" aria-hidden="true"></span>
         			</div>
-              {/* <!-- .events --> */}
         		</div>
-             {/* <!-- .events-wrapper --> */}
 
         		<ul className="cd-timeline-navigation">
         			<li><a href="#0" className="prev inactive">Prev</a></li>
         			<li><a href="#0" className="next">Next</a></li>
         		</ul>
-             {/* <!-- .cd-timeline-navigation --> */}
         	</div>
-          {/* <!-- .timeline --> */}
         </section>
       </div>
     )
