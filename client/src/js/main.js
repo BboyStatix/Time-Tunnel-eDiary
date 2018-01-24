@@ -11,6 +11,7 @@ $(document).ready(function($){
       var timeline = $(this),
         timelineComponents = {};
       //cache timeline components
+      timelineComponents['timeline'] = timeline.find('.timeline');
       timelineComponents['timelineWrapper'] = timeline.find('.events-wrapper');
       timelineComponents['eventsWrapper'] = timelineComponents['timelineWrapper'].children('.events');
       timelineComponents['fillingLine'] = timelineComponents['eventsWrapper'].children('.filling-line');
@@ -43,7 +44,6 @@ $(document).ready(function($){
         $(this).addClass('selected');
         updateOlderEvents($(this));
         updateFilling($(this), timelineComponents['fillingLine'], timelineTotWidth);
-        // updateVisibleContent($(this), timelineComponents['eventsContent']);
       });
     });
   }
@@ -104,6 +104,10 @@ $(document).ready(function($){
       timeSpanNorm = timeSpan/timelineComponents['eventsMinLapse'],
       timeSpanNorm = Math.round(timeSpanNorm) + 4,
       totalWidth = timeSpanNorm*width;
+    var eventsWrapperWidth = timelineComponents['timeline'].width() - 2 * timelineComponents['eventsWrapper'].width();
+    if(totalWidth < eventsWrapperWidth){
+      totalWidth = eventsWrapperWidth
+    };
     timelineComponents['eventsWrapper'].css('width', totalWidth+'px');
     updateFilling(timelineComponents['eventsWrapper'].find('a.selected'), timelineComponents['fillingLine'], totalWidth);
     updateTimelinePosition('next', timelineComponents['eventsWrapper'].find('a.selected'), timelineComponents);
