@@ -19,7 +19,8 @@ class PhotoContainer extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        jwt: localStorage.jwt
+        jwt: localStorage.jwt,
+        date: this.props.date
       })
     }).then((res) => {
       return res.json()
