@@ -9,11 +9,9 @@ import './css/App.css'
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {authenticated: false}
-  }
-
-  componentWillMount() {
-    this.setAuthenticationState()
+    this.state = {
+      authenticated: this.setAuthenticationState()
+    }
   }
 
   setAuthenticationState() {

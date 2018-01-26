@@ -1,14 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const Entry = require('./entry')
 
-const photoSchema = new Schema({
-  userID: { type: String, required: true },
-  filename: { type: String, required: true },
-  name: { type: String, required: true }
-},
+const photoSchema = new Schema({},
 {
-  timestamps: { createdAt: 'created_at' }
+  discriminatorKey: 'type'
 })
 
-const Photo = mongoose.model('photo', photoSchema)
+const Photo = Entry.discriminator('Photo', photoSchema)
 module.exports = Photo

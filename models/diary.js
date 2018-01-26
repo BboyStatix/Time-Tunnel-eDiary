@@ -1,14 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const Entry = require('./entry')
 
-const diarySchema = new Schema({
-  userID: { type: String, required: true },
-  filename: { type: String, required: true },
-  name: { type: String, required: true }
-},
+const diarySchema = new Schema({},
 {
-  timestamps: { createdAt: 'created_at' }
+  discriminatorKey: 'type'
 })
 
-const Diary = mongoose.model('diary', diarySchema)
+const Diary = Entry.discriminator('Diary', diarySchema)
 module.exports = Diary

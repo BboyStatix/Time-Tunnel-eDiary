@@ -1,14 +1,11 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const Entry = require('./entry')
 
-const videoSchema = new Schema({
-  userID: { type: String, required: true },
-  filename: { type: String, required: true },
-  name: { type: String, required: true }
-},
+const videoSchema = new Schema({},
 {
-  timestamps: { createdAt: 'created_at' }
+  discriminatorKey: 'type'
 })
 
-const Video = mongoose.model('video', videoSchema)
+const Video = Entry.discriminator('Video', videoSchema)
 module.exports = Video

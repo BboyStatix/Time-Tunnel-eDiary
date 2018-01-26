@@ -1,15 +1,13 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
+const Entry = require('./entry')
 
 const audioSchema = new Schema({
-  userID: { type: String, required: true },
-  filename: { type: String, required: true },
-  name: { type: String, required: true },
   artist: { type: String }
 },
 {
-  timestamps: { createdAt: 'created_at' }
+  discriminatorKey: 'type'
 })
 
-const Audio = mongoose.model('audio', audioSchema)
+const Audio = Entry.discriminator('Audio', audioSchema)
 module.exports = Audio

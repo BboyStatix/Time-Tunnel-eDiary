@@ -30,6 +30,7 @@ const Diary = require('./models/diary')
 const Video = require('./models/video')
 const Photo = require('./models/photo')
 const Audio = require('./models/audio')
+const Entry = require('./models/entry')
 
 //for use in production. serve the build folder for files optimized
 //for production created by npm run build in client directory
@@ -303,6 +304,26 @@ app.post('/video/entries', (req, res) => {
       res.json({
         status:200,
         entries: entries
+      })
+    }
+  })
+})
+
+app.post('/entries/dates', (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+
+  Entry.distinct('created_at', {userID: userID}, (err, dates) => {
+    if(err) {
+      res.json({
+        status: 500,
+        error: err
+      })
+    }
+    else{
+      res.json({
+        status:200,
+        dates: dates
       })
     }
   })
