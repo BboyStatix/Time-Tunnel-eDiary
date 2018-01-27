@@ -43,7 +43,7 @@ class MainContainer extends Component {
   loadJquery(){
     $(document).ready(function($){
       var timelines = $('.cd-horizontal-timeline'),
-        eventsMinDistance = 60;
+        eventsMinDistance = 90;
 
       (timelines.length > 0) && initTimeline(timelines);
 
