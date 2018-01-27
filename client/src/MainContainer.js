@@ -301,7 +301,7 @@ class MainContainer extends Component {
                     {
                       this.state.dates.map((date,idx) =>
                         <li key={idx}>
-                          <a onClick={this.setDate.bind(this,date)} data-date={date} className={(date === this.state.selectedDate) ? "selected" : null}>{date}</a>
+                          <a onClick={this.setDate.bind(this, date)} data-date={date} className={(date === this.state.selectedDate) ? "selected" : null}>{date}</a>
                         </li>
                       )
                     }
