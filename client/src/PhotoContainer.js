@@ -3,16 +3,21 @@ import React, { Component } from 'react'
 class PhotoContainer extends Component {
   constructor(props){
     super(props)
+    this.fetchEntries = this.fetchEntries.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.state = {
-      entries: this.setEntryState(),
+      entries: [],
       modalTitle: "Title",
       filename: "",
       modalVisible: false
     }
   }
 
-  setEntryState() {
+  componentWillReceiveProps(newProps) {
+    this.fetchEntries(newProps.date)
+  }
+
+  fetchEntries(date) {
     fetch('/photo/entries', {
       method: 'POST',
       headers: {
@@ -20,7 +25,7 @@ class PhotoContainer extends Component {
       },
       body: JSON.stringify({
         jwt: localStorage.jwt,
-        date: this.props.date
+        date: date
       })
     }).then((res) => {
       return res.json()

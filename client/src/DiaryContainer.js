@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class DiaryContainer extends Component {
   constructor(props){
     super(props)
-    this.fetchDiaryEntries = this.fetchDiaryEntries.bind(this)
+    this.fetchEntries = this.fetchEntries.bind(this)
     this.showModal = this.showModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.state = {
@@ -15,10 +15,10 @@ class DiaryContainer extends Component {
   }
 
   componentWillReceiveProps(newProps) {
-    this.fetchDiaryEntries(newProps.date)
+    this.fetchEntries(newProps.date)
   }
 
-  fetchDiaryEntries(date) {
+  fetchEntries(date) {
     fetch('/diary/entries', {
       method: 'POST',
       headers: {
