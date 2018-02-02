@@ -1,20 +1,17 @@
 import React, { Component } from 'react'
-import { Link, Switch, Route } from 'react-router-dom'
 
 import AuthContainer from './AuthContainer'
 import MainContainer from './MainContainer'
 import Header from './Header'
 
-import './App.css'
+import './css/App.css'
 
 class App extends Component {
   constructor(props) {
     super(props)
-    this.state = {authenticated: false}
-  }
-
-  componentWillMount() {
-    this.setAuthenticationState()
+    this.state = {
+      authenticated: this.setAuthenticationState()
+    }
   }
 
   setAuthenticationState() {

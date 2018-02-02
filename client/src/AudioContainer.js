@@ -4,19 +4,25 @@ import ReactAudioPlayer from 'react-audioplayer'
 class AudioContainer extends Component {
   constructor(props){
     super(props)
+    this.fetchEntries = this.fetchEntries.bind(this)
     this.state = {
-      entries: this.setEntryState()
+      entries: []
     }
   }
 
-  setEntryState() {
+  componentWillReceiveProps(newProps) {
+    this.fetchEntries(newProps.date)
+  }
+
+  fetchEntries(date) {
     fetch('/audio/entries', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        jwt: localStorage.jwt
+        jwt: localStorage.jwt,
+        date: date
       })
     }).then((res) => {
       return res.json()

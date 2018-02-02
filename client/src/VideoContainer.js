@@ -5,23 +5,29 @@ import "../node_modules/video-react/dist/video-react.css"
 class VideoContainer extends Component {
   constructor(props){
     super(props)
+    this.fetchEntries = this.fetchEntries.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.state = {
-      entries: this.setEntryState(),
+      entries: [],
       modalTitle: "Title",
       filename: "",
       modalVisible: false
     }
   }
 
-  setEntryState() {
+  componentWillReceiveProps(newProps) {
+    this.fetchEntries(newProps.date)
+  }
+
+  fetchEntries(date) {
     fetch('/video/entries', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        jwt: localStorage.jwt
+        jwt: localStorage.jwt,
+        date: date
       })
     }).then((res) => {
       return res.json()

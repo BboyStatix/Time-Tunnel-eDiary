@@ -3,24 +3,30 @@ import React, { Component } from 'react'
 class DiaryContainer extends Component {
   constructor(props){
     super(props)
+    this.fetchEntries = this.fetchEntries.bind(this)
     this.showModal = this.showModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
     this.state = {
-      entries: this.setEntryState(),
+      entries: [],
       modalTitle: "Title",
       modalBody: "Body",
       modalVisible: false
     }
   }
 
-  setEntryState() {
+  componentWillReceiveProps(newProps) {
+    this.fetchEntries(newProps.date)
+  }
+
+  fetchEntries(date) {
     fetch('/diary/entries', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        jwt: localStorage.jwt
+        jwt: localStorage.jwt,
+        date: date
       })
     }).then((res) => {
       return res.json()

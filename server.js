@@ -30,6 +30,7 @@ const Diary = require('./models/diary')
 const Video = require('./models/video')
 const Photo = require('./models/photo')
 const Audio = require('./models/audio')
+const Entry = require('./models/entry')
 
 //for use in production. serve the build folder for files optimized
 //for production created by npm run build in client directory
@@ -169,26 +170,6 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
   }
 })
 
-app.post('/diary/entries', (req, res) => {
-  const token = req.body.jwt
-  const userID = jwt.decode(token, 'secret').user._id
-
-  Diary.find({userID: userID}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
-    if(err) {
-      res.json({
-        status: 500,
-        error: err
-      })
-    }
-    else{
-      res.json({
-        status:200,
-        entries: entries
-      })
-    }
-  })
-})
-
 app.post('/diary/view', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
@@ -248,11 +229,43 @@ app.get('/video/view', (req,res) => {
   })
 })
 
+app.post('/diary/entries', (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+
+  const dateString = req.body.date
+  const dateParts = dateString.split("/")
+  const dateObject = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
+  const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
+  nextDay.setDate(nextDay.getDate() + 1)
+
+  Diary.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
+    if(err) {
+      res.json({
+        status: 500,
+        error: err
+      })
+    }
+    else{
+      res.json({
+        status:200,
+        entries: entries
+      })
+    }
+  })
+})
+
 app.post('/photo/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
 
-  Photo.find({userID: userID}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
+  const dateString = req.body.date
+  const dateParts = dateString.split("/")
+  const dateObject = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
+  const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
+  nextDay.setDate(nextDay.getDate() + 1)
+
+  Photo.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -272,7 +285,13 @@ app.post('/audio/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
 
-  Audio.find({userID: userID}, {name: true, filename: true, artist: true, created_at: true, _id: false}, (err, entries) => {
+  const dateString = req.body.date
+  const dateParts = dateString.split("/")
+  const dateObject = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
+  const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
+  nextDay.setDate(nextDay.getDate() + 1)
+
+  Audio.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, artist: true, created_at: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -292,7 +311,13 @@ app.post('/video/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
 
-  Video.find({userID: userID}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
+  const dateString = req.body.date
+  const dateParts = dateString.split("/")
+  const dateObject = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
+  const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
+  nextDay.setDate(nextDay.getDate() + 1)
+
+  Video.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -303,6 +328,26 @@ app.post('/video/entries', (req, res) => {
       res.json({
         status:200,
         entries: entries
+      })
+    }
+  })
+})
+
+app.post('/entries/dates', (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+
+  Entry.distinct('created_at', {userID: userID}, (err, dates) => {
+    if(err) {
+      res.json({
+        status: 500,
+        error: err
+      })
+    }
+    else{
+      res.json({
+        status:200,
+        dates: dates
       })
     }
   })
