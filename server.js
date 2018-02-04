@@ -18,12 +18,14 @@ const storage = multer.diskStorage({
   }
 })
 const fileFilter = function (req, file, cb) {
-  if (!file.originalname.match(/\.(wtv|flv|mp4|txt|mp3|jpg|jpeg|png|gif)$/)) {
+  if (!file.originalname.match(/\.(wtv|flv|mp4|txt|docx|mp3|jpg|jpeg|png|gif)$/)) {
       return cb(new Error('Unsupported file format!'), false)
   }
   cb(null, true)
 }
 const upload = multer({ fileFilter: fileFilter, storage: storage})
+const textract = require('textract')
+const Parser = require('./Parser')
 
 const User = require('./models/user')
 const Diary = require('./models/diary')
@@ -124,16 +126,39 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
   const userID = jwt.decode(token, 'secret').user._id
   const name = req.file.originalname
   const filename = req.file.filename
-  const path = req.file.path
 
   if(name.match(/\.(txt)$/)){
-    const diary = new Diary({userID: userID, filename: filename, name: name})
-    diary.save(function (err) {
+    const description = fs.readFileSync(req.file.path,'utf8')
+    const diary = new Diary({userID: userID, filename: filename, name: name, description: description})
+    diary.save((err) => {
       if (err) {
         console.log(err)
       } else {
         console.log('Diary successfully saved')
       }
+    })
+  }
+  else if(name.match(/\.(docx)$/)){
+    textract.fromFileWithPath(req.file.path, {preserveLineBreaks: true}, (err, text) => {
+      const myParser = new Parser
+      const dataArray = myParser.parseString(text)
+      var diaryArray = []
+      var idx = 0
+      for(var i=0; i < dataArray.length/4; i++){
+        const date = new Date(dataArray[idx] + '-' + dataArray[idx+1].slice(0, 2) + '-' + dataArray[idx+1].slice(2, 4))
+        debugger
+        const description = dataArray[idx+2]
+        const eventType = dataArray[idx+3]
+        diaryArray.push({userID: userID,  filename: filename, name: name, description: description, eventDate: date, eventType: eventType})
+        idx += 4
+      }
+      Diary.insertMany(diaryArray, (err) => {
+        if (err) {
+          console.log(err)
+        } else {
+          console.log('Diaries successfully saved')
+        }
+      })
     })
   }
   else if(name.match(/\.(wtv|flv|mp4)$/)){
@@ -183,11 +208,9 @@ app.post('/diary/view', (req, res) => {
       })
     }
     else{
-      const filePath = path.join(__dirname, '/uploads/' + filename)
-      const data = fs.readFileSync(filePath,'utf8')
       res.json({
         status: 200,
-        data: data
+        data: diary[0].description
       })
     }
   })
