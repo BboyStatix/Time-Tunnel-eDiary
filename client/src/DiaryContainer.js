@@ -36,7 +36,7 @@ class DiaryContainer extends Component {
     })
   }
 
-  showModal(name, filename) {
+  showModal(name, objectID) {
     fetch('/diary/view', {
       method: 'POST',
       headers: {
@@ -44,7 +44,7 @@ class DiaryContainer extends Component {
       },
       body: JSON.stringify({
         jwt: localStorage.jwt,
-        filename: filename
+        objectID: objectID
       })
     }).then((res) => {
       return res.json()
@@ -99,7 +99,8 @@ class DiaryContainer extends Component {
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">name</th>
-                  <th scope="col">created_at</th>
+                  <th scope="col">Description</th>
+                  <th scope="col">Type</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -114,8 +115,9 @@ class DiaryContainer extends Component {
                     <tr key={idx}>
                       <th scope="row">{idx+1}</th>
                       <td>{entry.name}</td>
-                      <td>{entry.created_at}</td>
-                      <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry.filename)}>View</button></td>
+                      <td>{entry.description}</td>
+                      <td>{entry.eventType}</td>
+                      <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry._id)}>View</button></td>
                     </tr>
                   )
                 }

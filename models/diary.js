@@ -4,8 +4,7 @@ const Entry = require('./entry')
 
 const diarySchema = new Schema({
   description: {type: String},
-  eventType: {type: String},
-  eventDate: {type: String}
+  eventType: {type: String}
 },
 {
   discriminatorKey: 'type'

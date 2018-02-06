@@ -126,9 +126,10 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
   const userID = jwt.decode(token, 'secret').user._id
   const name = req.file.originalname
   const filename = req.file.filename
+  const filePath = req.file.path
 
   if(name.match(/\.(txt)$/)){
-    const description = fs.readFileSync(req.file.path,'utf8')
+    const description = fs.readFileSync(filePath,'utf8')
     const diary = new Diary({userID: userID, filename: filename, name: name, description: description})
     diary.save((err) => {
       if (err) {
@@ -139,17 +140,16 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     })
   }
   else if(name.match(/\.(docx)$/)){
-    textract.fromFileWithPath(req.file.path, {preserveLineBreaks: true}, (err, text) => {
+    textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
       const myParser = new Parser
       const dataArray = myParser.parseString(text)
       var diaryArray = []
       var idx = 0
       for(var i=0; i < dataArray.length/4; i++){
         const date = new Date(dataArray[idx] + '-' + dataArray[idx+1].slice(0, 2) + '-' + dataArray[idx+1].slice(2, 4))
-        debugger
         const description = dataArray[idx+2]
         const eventType = dataArray[idx+3]
-        diaryArray.push({userID: userID,  filename: filename, name: name, description: description, eventDate: date, eventType: eventType})
+        diaryArray.push({userID: userID,  filename: filename, name: name, description: description, created_at: date, eventType: eventType})
         idx += 4
       }
       Diary.insertMany(diaryArray, (err) => {
@@ -182,7 +182,7 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     })
   }
   else if(name.match(/\.(mp3)$/)){
-    const parser = mm(fs.createReadStream(path), (err, metadata) => {
+    const parser = mm(fs.createReadStream(filePath), (err, metadata) => {
       const audio = new Audio({userID: userID, filename: filename, name: name, artist: metadata.artist[0]})
       audio.save((err) => {
         if (err) {
@@ -198,9 +198,9 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
 app.post('/diary/view', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
-  const filename = req.body.filename
+  const objectID = req.body.objectID
 
-  Diary.find({userID: userID, filename: filename}, (err, diary) => {
+  Diary.find({userID: userID, _id: objectID}, (err, diary) => {
     if(err) {
       res.json({
         status: 500,
@@ -262,7 +262,7 @@ app.post('/diary/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Diary.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
+  Diary.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, eventType: true, created_at: true}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -367,9 +367,10 @@ app.post('/entries/dates', (req, res) => {
         error: err
       })
     }
-    else{
+    else {
+      dates.sort((a, b) => a - b)
       res.json({
-        status:200,
+        status: 200,
         dates: dates
       })
     }
