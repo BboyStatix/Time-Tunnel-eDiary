@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
   }
 })
 const fileFilter = function (req, file, cb) {
-  if (!file.originalname.match(/\.(wtv|flv|mp4|txt|docx|mp3|jpg|jpeg|png|gif)$/)) {
+  if (!file.originalname.match(/\.(wtv|flv|mp4|txt|docx|mp3|wav|jpg|jpeg|png|gif|bmp)$/)) {
       return cb(new Error('Unsupported file format!'), false)
   }
   cb(null, true)
@@ -171,7 +171,7 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
       }
     })
   }
-  else if(name.match(/\.(jpg|jpeg|png|gif)$/)){
+  else if(name.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
     const photo = new Photo({userID: userID, filename: filename, name: name})
     photo.save(function (err) {
       if (err) {
@@ -181,7 +181,7 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
       }
     })
   }
-  else if(name.match(/\.(mp3)$/)){
+  else if(name.match(/\.(mp3|wav)$/)){
     const parser = mm(fs.createReadStream(filePath), (err, metadata) => {
       const audio = new Audio({userID: userID, filename: filename, name: name, artist: metadata.artist[0]})
       audio.save((err) => {
