@@ -2,7 +2,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Entry = require('./entry')
 
-const diarySchema = new Schema({},
+const diarySchema = new Schema({
+  description: {type: String},
+  eventType: {type: String}
+},
 {
   discriminatorKey: 'type'
 })
