@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import DiaryContainer from './DiaryContainer'
 import PhotoContainer from './PhotoContainer'
@@ -269,7 +270,10 @@ class MainContainer extends Component {
               <input className="form-control mr-sm-2" id="file" type="file" />
               <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
           </form>
-          <button className="btn btn-outline-success my-2 my-sm-0" onClick={this.logout}>Log out</button>
+          <button className="btn btn-outline-success">
+            <Link to="/all">View All</Link>
+          </button>
+          <button className="btn btn-outline-success" onClick={this.logout}>Log out</button>
         </nav>
         <br />
         <div className="container-fluid">

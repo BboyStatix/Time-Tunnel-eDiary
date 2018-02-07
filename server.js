@@ -182,7 +182,7 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     })
   }
   else if(name.match(/\.(mp3|wav)$/)){
-    const parser = mm(fs.createReadStream(filePath), (err, metadata) => {
+    mm(fs.createReadStream(filePath), (err, metadata) => {
       const audio = new Audio({userID: userID, filename: filename, name: name, artist: metadata.artist[0]})
       audio.save((err) => {
         if (err) {
