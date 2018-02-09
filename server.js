@@ -252,6 +252,26 @@ app.get('/video/view', (req,res) => {
   })
 })
 
+app.post('/entries', (req, res) => {
+  const token = req.body.jwt
+  const userID = jwt.decode(token, 'secret').user._id
+
+  Entry.find({userID: userID}).sort('created_at').exec((err, entries) => {
+    if(err) {
+      res.json({
+        status: 500,
+        error: err
+      })
+    }
+    else{
+      res.json({
+        status:200,
+        entries: entries
+      })
+    }
+  })
+})
+
 app.post('/diary/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
