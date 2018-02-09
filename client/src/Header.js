@@ -7,7 +7,7 @@ class Header extends Component {
     return (
       <div className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <h2>Time Tunnel Website</h2>
+        <h4>Time Tunnel Website</h4>
       </div>
     )
   }
