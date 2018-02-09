@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 
 class EntryContainer extends Component {
   constructor(props){
     super(props)
+    this.handleSearch = this.handleSearch.bind(this)
     this.state = {
-      entries: []
+      entries: [],
+      displayedEntries: []
     }
   }
 
@@ -22,7 +23,21 @@ class EntryContainer extends Component {
       return res.json()
     })
     .then((json) => {
-      this.setState({entries: json.entries.reverse()})
+      this.setState({
+        entries: json.entries.reverse(),
+        displayedEntries: json.entries.reverse()
+      })
+    })
+  }
+
+  handleSearch(e) {
+    const query = e.target.value.toLowerCase()
+    var displayedEntries = this.state.entries.filter((entry) => {
+      const entryName = entry.name.toLowerCase()
+      return entryName.indexOf(query) !== -1
+    })
+    this.setState({
+      displayedEntries: displayedEntries
     })
   }
 
@@ -31,8 +46,7 @@ class EntryContainer extends Component {
       <div>
         <nav className="navbar">
           <form className="form-inline my-2 my-lg-0">
-              <input className="form-control mr-sm-2" />
-              <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+              <input className="form-control mr-sm-2" placeholder="Search" onChange={this.handleSearch} />
           </form>
         </nav>
         <table className="table table-hover">
@@ -48,7 +62,7 @@ class EntryContainer extends Component {
               <tr>
               </tr>
               :
-              this.state.entries.map((entry,idx) =>
+              this.state.displayedEntries.map((entry,idx) =>
                 <tr key={idx}>
                   <td>{entry.name}</td>
                   <td>{entry.created_at.slice(0,10)}</td>
