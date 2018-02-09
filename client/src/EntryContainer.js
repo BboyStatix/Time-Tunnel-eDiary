@@ -4,6 +4,7 @@ class EntryContainer extends Component {
   constructor(props){
     super(props)
     this.handleSearch = this.handleSearch.bind(this)
+    this.logout = this.logout.bind(this)
     this.state = {
       entries: [],
       displayedEntries: []
@@ -42,6 +43,11 @@ class EntryContainer extends Component {
     })
   }
 
+  logout (){
+    localStorage.jwt = null
+    window.location.reload()
+  }
+
   render() {
     return (
       <div>
@@ -49,6 +55,7 @@ class EntryContainer extends Component {
           <form className="form-inline my-2 my-lg-0">
               <input className="form-control mr-sm-2" placeholder="Search" onChange={this.handleSearch} />
           </form>
+          <button className="btn btn-outline-success" onClick={this.logout}>Log out</button>
         </nav>
         <table className="table table-hover">
           <thead>
