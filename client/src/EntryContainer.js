@@ -76,7 +76,7 @@ class EntryContainer extends Component {
               <th scope="col">name</th>
               <th scope="col">description</th>
               <th scope="col">artist</th>
-              <th scope="col">created_at</th>
+              <th scope="col">Date</th>
               <th scope="col"></th>
             </tr>
           </thead>

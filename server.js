@@ -294,7 +294,7 @@ app.post('/diary/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Diary.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, eventType: true, created_at: true}, (err, entries) => {
+  Diary.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, eventType: true, description: true}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -320,7 +320,7 @@ app.post('/photo/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Photo.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
+  Photo.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -346,7 +346,7 @@ app.post('/audio/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Audio.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, artist: true, created_at: true, _id: false}, (err, entries) => {
+  Audio.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, artist: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
@@ -372,7 +372,7 @@ app.post('/video/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Video.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, created_at: true, _id: false}, (err, entries) => {
+  Video.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,

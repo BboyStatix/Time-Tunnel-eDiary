@@ -115,7 +115,12 @@ class DiaryContainer extends Component {
                     <tr key={idx}>
                       <th scope="row">{idx+1}</th>
                       <td>{entry.name}</td>
-                      <td>{entry.description}</td>
+                      {
+                        entry.description === undefined ?
+                        <td></td>
+                        :
+                        <td>{entry.description.slice(0,20)+'...'}</td>
+                      }
                       <td>{entry.eventType}</td>
                       <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry._id)}>View</button></td>
                     </tr>
