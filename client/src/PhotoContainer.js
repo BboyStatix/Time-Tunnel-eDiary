@@ -80,6 +80,7 @@ class PhotoContainer extends Component {
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">name</th>
+                <th scope="col">resolution</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -94,6 +95,7 @@ class PhotoContainer extends Component {
                   <tr key={idx}>
                     <th scope="row">{idx+1}</th>
                     <td>{entry.name}</td>
+                    <td>{entry.resolution}</td>
                     <td><button className="btn btn-outline-success" onClick={() => this.setState({modalVisible: true, modalTitle: entry.name, filename: entry.filename})}>View</button></td>
                   </tr>
                 )
