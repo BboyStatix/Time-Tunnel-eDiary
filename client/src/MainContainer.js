@@ -270,9 +270,11 @@ class MainContainer extends Component {
               <input className="form-control mr-sm-2" id="file" type="file" />
               <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
           </form>
-          <button className="btn btn-outline-success">
-            <Link to="/all">View All</Link>
-          </button>
+          <Link to="/all">
+            <button className="btn btn-outline-success">
+              View All
+            </button>
+          </Link>
           <button className="btn btn-outline-success" onClick={this.logout}>Log out</button>
         </nav>
         <br />
