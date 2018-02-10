@@ -268,7 +268,7 @@ app.post('/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
 
-  Entry.find({userID: userID}).sort('created_at').exec((err, entries) => {
+  Entry.find({userID: userID}, {name: true, filename: true, description: true, artist: true, created_at: true, _id: false}).sort('created_at').exec((err, entries) => {
     if(err) {
       res.json({
         status: 500,

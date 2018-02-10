@@ -25,9 +25,10 @@ class EntryContainer extends Component {
       return res.json()
     })
     .then((json) => {
+      const entryArray = json.entries.reverse()
       this.setState({
-        entries: json.entries.reverse(),
-        displayedEntries: json.entries.reverse()
+        entries: entryArray,
+        displayedEntries: entryArray
       })
     })
   }
@@ -73,7 +74,10 @@ class EntryContainer extends Component {
           <thead>
             <tr>
               <th scope="col">name</th>
+              <th scope="col">description</th>
+              <th scope="col">artist</th>
               <th scope="col">created_at</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
@@ -84,8 +88,16 @@ class EntryContainer extends Component {
               :
               this.state.displayedEntries.map((entry,idx) =>
                 <tr key={idx}>
-                  <td onClick={this.downloadFile.bind(this, entry.name, entry.filename)}>{entry.name}</td>
+                  <td>{entry.name}</td>
+                  {
+                    (entry.description === undefined) ?
+                    <td></td>
+                    :
+                    <td>{entry.description.slice(0,20)+ '...'}</td>
+                  }
+                  <td>{entry.artist}</td>
                   <td>{entry.created_at.slice(0,10)}</td>
+                  <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
                 </tr>
               )
             }
