@@ -26,6 +26,7 @@ const fileFilter = function (req, file, cb) {
 const upload = multer({ fileFilter: fileFilter, storage: storage})
 const textract = require('textract')
 const Parser = require('./Parser')
+const sizeOf = require('image-size')
 
 const User = require('./models/user')
 const Diary = require('./models/diary')
@@ -172,7 +173,8 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     })
   }
   else if(name.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
-    const photo = new Photo({userID: userID, filename: filename, name: name})
+    const dimensions = sizeOf(filePath)
+    const photo = new Photo({userID: userID, filename: filename, name: name, resolution: dimensions.width + 'x' + dimensions.height})
     photo.save(function (err) {
       if (err) {
         console.log(err)
@@ -320,7 +322,7 @@ app.post('/photo/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Photo.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, _id: false}, (err, entries) => {
+  Photo.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, resolution: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
