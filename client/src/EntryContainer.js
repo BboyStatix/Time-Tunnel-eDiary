@@ -4,6 +4,7 @@ class EntryContainer extends Component {
   constructor(props){
     super(props)
     this.handleSearch = this.handleSearch.bind(this)
+    this.downloadFile = this.downloadFile.bind(this)
     this.logout = this.logout.bind(this)
     this.state = {
       entries: [],
@@ -43,6 +44,17 @@ class EntryContainer extends Component {
     })
   }
 
+  downloadFile(name, filename) {
+    fetch('/download/file?jwt=' + localStorage.jwt + "&filename=" + filename)
+    .then((res) => {
+      return res.blob()
+    })
+    .then((blob) => {
+      const FileSaver = require('file-saver')
+      FileSaver.saveAs(blob, name)
+    })
+  }
+
   logout (){
     localStorage.jwt = null
     window.location.reload()
@@ -72,7 +84,7 @@ class EntryContainer extends Component {
               :
               this.state.displayedEntries.map((entry,idx) =>
                 <tr key={idx}>
-                  <td>{entry.name}</td>
+                  <td onClick={this.downloadFile.bind(this, entry.name, entry.filename)}>{entry.name}</td>
                   <td>{entry.created_at.slice(0,10)}</td>
                 </tr>
               )

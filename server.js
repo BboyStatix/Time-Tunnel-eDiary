@@ -195,6 +195,18 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
   }
 })
 
+app.get('/download/file', (req, res) => {
+  const filePath = path.join(__dirname, '/uploads/' + req.query.filename)
+  jwt.verify(req.query.jwt, 'secret', (err, decoded) => {
+    if (err){
+      throw err
+    }
+    else{
+      res.sendFile(filePath)
+    }
+  })
+})
+
 app.post('/diary/view', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
