@@ -70,7 +70,7 @@ class EntryContainer extends Component {
           </form>
           <button className="btn btn-outline-success" onClick={this.logout}>Log out</button>
         </nav>
-        <table className="table table-hover">
+        <table className="table table-hover table-bordered">
           <thead>
             <tr>
               <th scope="col">name</th>
