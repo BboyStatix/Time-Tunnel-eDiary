@@ -275,11 +275,11 @@ class MainContainer extends Component {
         <nav className="navbar">
           <form className="form-inline my-2 my-lg-0" onSubmit={this.uploadFile}>
               <input className="form-control mr-sm-2" id="file" type="file" />
-              <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
+              <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Upload</button>
           </form>
           <Link to="/all">
             <button className="btn btn-outline-success">
-              View All
+              Search
             </button>
           </Link>
           <button className="btn btn-outline-success" onClick={this.logout}>Log out</button>
