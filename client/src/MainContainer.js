@@ -7,6 +7,7 @@ import AudioContainer from './AudioContainer'
 import VideoContainer from './VideoContainer'
 
 import './css/Modal.css'
+import './css/Container.css'
 import './css/reset.css'
 import './css/style.css'
 import $ from "jquery"

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import './css/Container.css'
+
 class EntryContainer extends Component {
   constructor(props){
     super(props)
@@ -38,7 +40,8 @@ class EntryContainer extends Component {
     var displayedEntries = this.state.entries.filter((entry) => {
       const entryName = entry.name.toLowerCase()
       const entryDate = entry.created_at.slice(0,10)
-      return entryName.search(query) !== -1 || entryDate.search(query) !== -1
+      const entryDescription = entry.description
+      return entryName.search(query) !== -1 || (entryDescription !== undefined && entryDescription.toLowerCase().search(query) !== -1)
     })
     this.setState({
       displayedEntries: displayedEntries
@@ -70,39 +73,41 @@ class EntryContainer extends Component {
           </form>
           <button className="btn btn-outline-success" onClick={this.logout}>Log out</button>
         </nav>
-        <table className="table table-hover table-bordered">
-          <thead>
-            <tr>
-              <th scope="col">name</th>
-              <th scope="col">description</th>
-              <th scope="col">artist</th>
-              <th scope="col">Date</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {
-              this.state.entries === undefined ?
+        <div className="entry_container">
+          <table className="table table-hover table-bordered">
+            <thead>
               <tr>
+                <th scope="col">name</th>
+                <th scope="col">description</th>
+                <th scope="col">artist</th>
+                <th scope="col">Date</th>
+                <th scope="col"></th>
               </tr>
-              :
-              this.state.displayedEntries.map((entry,idx) =>
-                <tr key={idx}>
-                  <td>{entry.name}</td>
-                  {
-                    (entry.description === undefined) ?
-                    <td></td>
-                    :
-                    <td>{entry.description.slice(0,20)+ '...'}</td>
-                  }
-                  <td>{entry.artist}</td>
-                  <td>{entry.created_at.slice(0,10)}</td>
-                  <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
+            </thead>
+            <tbody>
+              {
+                this.state.entries === undefined ?
+                <tr>
                 </tr>
-              )
-            }
-          </tbody>
-        </table>
+                :
+                this.state.displayedEntries.map((entry,idx) =>
+                  <tr key={idx}>
+                    <td>{entry.name}</td>
+                    {
+                      (entry.description === undefined) ?
+                      <td></td>
+                      :
+                      <td>{entry.description.slice(0,20)+ '...'}</td>
+                    }
+                    <td>{entry.artist}</td>
+                    <td>{entry.created_at.slice(0,10)}</td>
+                    <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
+                  </tr>
+                )
+              }
+            </tbody>
+          </table>
+        </div>
       </div>
     )
   }
