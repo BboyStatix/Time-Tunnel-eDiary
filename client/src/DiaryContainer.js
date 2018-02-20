@@ -121,7 +121,7 @@ class DiaryContainer extends Component {
                         :
                         <td className="text-truncate">{entry.description}</td>
                       }
-                      <td className="text-truncate">{entry.eventType}</td>
+                      <td>{entry.eventType}</td>
                       <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry._id)}>View</button></td>
                     </tr>
                   )
