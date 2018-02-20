@@ -134,9 +134,13 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     const diary = new Diary({userID: userID, filename: filename, name: name, description: description})
     diary.save((err) => {
       if (err) {
-        console.log(err)
+        res.json({
+          success: false
+        })
       } else {
-        console.log('Diary successfully saved')
+        res.json({
+          success: true
+        })
       }
     })
   }
@@ -155,9 +159,13 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
       }
       Diary.insertMany(diaryArray, (err) => {
         if (err) {
-          console.log(err)
+          res.json({
+            success: false
+          })
         } else {
-          console.log('Diaries successfully saved')
+          res.json({
+            success: true
+          })
         }
       })
     })
@@ -166,9 +174,13 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     const video = new Video({userID: userID, filename: filename, name: name})
     video.save(function (err) {
       if (err) {
-        console.log(err)
+        res.json({
+          success: false
+        })
       } else {
-        console.log('Video successfully saved')
+        res.json({
+          success: true
+        })
       }
     })
   }
@@ -177,9 +189,13 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     const photo = new Photo({userID: userID, filename: filename, name: name, resolution: dimensions.width + 'x' + dimensions.height})
     photo.save(function (err) {
       if (err) {
-        console.log(err)
+        res.json({
+          success: false
+        })
       } else {
-        console.log('Photo successfully saved')
+        res.json({
+          success: true
+        })
       }
     })
   }
@@ -188,9 +204,13 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
       const audio = new Audio({userID: userID, filename: filename, name: name, artist: metadata.artist[0]})
       audio.save((err) => {
         if (err) {
-          console.log(err)
+          res.json({
+            success: false
+          })
         } else {
-          console.log('Audio successfully saved')
+          res.json({
+            success: true
+          })
         }
       })
     })

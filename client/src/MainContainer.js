@@ -254,6 +254,12 @@ class MainContainer extends Component {
     fetch('/upload/file', {
       method: 'POST',
       body: formData
+    }).then((res) => {
+      return res.json()
+    }).then((json) => {
+      if(json.success === true){
+        window.location.reload()
+      }
     })
     e.preventDefault()
   }
