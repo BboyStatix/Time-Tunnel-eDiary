@@ -114,14 +114,14 @@ class DiaryContainer extends Component {
                   this.state.entries.map((entry,idx) =>
                     <tr key={idx}>
                       <th scope="row">{idx+1}</th>
-                      <td>{entry.name}</td>
+                      <td className="text-truncate">{entry.name}</td>
                       {
                         entry.description === undefined ?
                         <td></td>
                         :
-                        <td>{entry.description.slice(0,20)+'...'}</td>
+                        <td className="text-truncate">{entry.description}</td>
                       }
-                      <td>{entry.eventType}</td>
+                      <td className="text-truncate">{entry.eventType}</td>
                       <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry._id)}>View</button></td>
                     </tr>
                   )

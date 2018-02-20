@@ -97,7 +97,7 @@ class VideoContainer extends Component {
                   this.state.entries.map((entry,idx) =>
                     <tr key={idx}>
                       <th scope="row">{idx+1}</th>
-                      <td>{entry.name}</td>
+                      <td className="text-truncate">{entry.name}</td>
                       <td><button className="btn btn-outline-dark" onClick={() => this.setState({modalVisible: true, modalTitle: entry.name, filename: entry.filename})}>Watch</button></td>
                     </tr>
                   )

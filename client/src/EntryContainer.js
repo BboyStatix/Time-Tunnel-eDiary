@@ -92,14 +92,14 @@ class EntryContainer extends Component {
                 :
                 this.state.displayedEntries.map((entry,idx) =>
                   <tr key={idx}>
-                    <td>{entry.name}</td>
+                    <td className="text-truncate">{entry.name}</td>
                     {
                       (entry.description === undefined) ?
                       <td></td>
                       :
-                      <td>{entry.description.slice(0,20)+ '...'}</td>
+                      <td className="text-truncate">{entry.description}</td>
                     }
-                    <td>{entry.artist}</td>
+                    <td className="text-truncate">{entry.artist}</td>
                     <td>{entry.created_at.slice(0,10)}</td>
                     <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
                   </tr>
