@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import ReactAudioPlayer from 'react-audioplayer'
+import expandLogo from './img/expand.svg'
 
 class AudioContainer extends Component {
   constructor(props){
@@ -37,6 +38,7 @@ class AudioContainer extends Component {
       <div className="card">
         <div className="card-header bg-danger text-light">
           Audio
+          <img className='expandLogo float-right' src={expandLogo} />
         </div>
         <div className="card-body">
           <div className="container">

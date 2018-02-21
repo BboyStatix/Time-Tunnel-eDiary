@@ -10,3 +10,7 @@
 table {
   table-layout: fixed;
 }
+
+.expandLogo {
+  max-width: 3%;
+}
