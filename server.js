@@ -148,26 +148,42 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
       const myParser = new Parser
       const dataArray = myParser.parseString(text)
-      var diaryArray = []
-      var idx = 0
-      for(var i=0; i < dataArray.length/4; i++){
-        const date = new Date(dataArray[idx] + '-' + dataArray[idx+1].slice(0, 2) + '-' + dataArray[idx+1].slice(2, 4))
-        const description = dataArray[idx+2]
-        const eventType = dataArray[idx+3]
-        diaryArray.push({userID: userID,  filename: filename, name: name, description: description, created_at: date, eventType: eventType})
-        idx += 4
-      }
-      Diary.insertMany(diaryArray, (err) => {
-        if (err) {
-          res.json({
-            success: false
-          })
-        } else {
-          res.json({
-            success: true
-          })
+      if(dataArray.length !== 0) {
+        var diaryArray = []
+        var idx = 0
+        for(var i=0; i < dataArray.length/4; i++){
+          const date = new Date(dataArray[idx] + '-' + dataArray[idx+1].slice(0, 2) + '-' + dataArray[idx+1].slice(2, 4))
+          const description = dataArray[idx+2]
+          const eventType = dataArray[idx+3]
+          diaryArray.push({userID: userID,  filename: filename, name: name, description: description, created_at: date, eventType: eventType})
+          idx += 4
         }
-      })
+        Diary.insertMany(diaryArray, (err) => {
+          if (err) {
+            res.json({
+              success: false
+            })
+          } else {
+            res.json({
+              success: true
+            })
+          }
+        })
+      }
+      else {
+        const diary = new Diary({userID: userID, filename: filename, name: name, description: text})
+        diary.save((err) => {
+          if (err) {
+            res.json({
+              success: false
+            })
+          } else {
+            res.json({
+              success: true
+            })
+          }
+        })
+      }
     })
   }
   else if(name.match(/\.(wtv|flv|mp4)$/)){
