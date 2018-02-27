@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
   }
 })
 const fileFilter = function (req, file, cb) {
-  if (!file.originalname.match(/\.(wtv|flv|mp4|txt|docx|mp3|wav|jpg|jpeg|png|gif|bmp)$/)) {
+  if (!file.originalname.match(/\.(wtv|flv|mp4|txt|doc|docx|mp3|wav|jpg|jpeg|png|gif|bmp)$/)) {
       return cb(new Error('Unsupported file format!'), false)
   }
   cb(null, true)
@@ -144,7 +144,7 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
       }
     })
   }
-  else if(name.match(/\.(docx)$/)){
+  else if(name.match(/\.(doc|docx)$/)){
     textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
       const myParser = new Parser
       const dataArray = myParser.parseString(text)
