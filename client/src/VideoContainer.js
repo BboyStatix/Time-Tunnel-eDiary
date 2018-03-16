@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Player } from 'video-react'
 import "../node_modules/video-react/dist/video-react.css"
+import expandLogo from './img/expand.svg'
 
 class VideoContainer extends Component {
   constructor(props){
@@ -77,6 +78,7 @@ class VideoContainer extends Component {
         <div className="card">
           <div className="card-header bg-dark text-light">
             Video
+            <img className='expandLogo float-right' src={expandLogo} />
           </div>
           <div className="card-body" style={{padding: 0}}>
             <table className="table table-hover">
