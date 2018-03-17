@@ -40,19 +40,21 @@ describe('Parser', () => {
     })
 
     it('should return empty hash if inappropriate string', () => {
-      const parsedStringHash = audioParser.parseAudioString('sfsafkndsafa.mp3')
+      var parsedStringHash = audioParser.parseAudioString('sfsafkndsafa.mp3')
+      assert.deepEqual(parsedStringHash, {})
+      parsedStringHash = audioParser.parseAudioString(
+        "{}[]_{}[]()_test_test [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaend]"
+      )
       assert.deepEqual(parsedStringHash, {})
     })
   })
 })
-
 
 // {US chart entry date}[UK chart entry date]_{US peak position}(for ? weeks)[UK peak position](for ? weeks)_song name  [song information]_artist name
 // ***  [song information]  - set its length = maximum length of filename
 // it('should return correct data', () => {
 //   testFilenameArray = [
 //     "{}[19681106]_{}()[5]()_I'M THE URBAN SPACEMAN_BONZO DOG DOO DAH BAND",
-//     "{}[]_{}[]()_test_test [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaend]",
 //     "{}[19681106]_{}()[1](4)_LILY THE PINK_SCAFFOLD",
 //     "{}[19681106]_{}()[9]()_I'M A TIGER_LULU",
 //     "{}[19681120]_{}()[4]()_1-2-3 O'LEARY_DES O'CONNOR",
