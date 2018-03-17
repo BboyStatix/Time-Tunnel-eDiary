@@ -147,7 +147,7 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
   else if(name.match(/\.(doc|docx)$/)){
     textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
       const myParser = new Parser
-      const dataArray = myParser.parseString(text)
+      const dataArray = myParser.parseDocString(text)
       if(dataArray.length !== 0) {
         var diaryArray = []
         var idx = 0
@@ -216,8 +216,11 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     })
   }
   else if(name.match(/\.(mp3|wav)$/)){
-    mm(fs.createReadStream(filePath), (err, metadata) => {
-      const audio = new Audio({userID: userID, filename: filename, name: name, artist: metadata.artist[0]})
+    const audioParser = new Parser
+    const audioHash = audioParser.parseAudioString(name)
+
+    if (Object.keys(audioHash).length !== 0){
+      const audio = new Audio(Object.assign({userID: userID, filename: filename}, audioHash))
       audio.save((err) => {
         if (err) {
           res.json({
@@ -229,7 +232,23 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
           })
         }
       })
-    })
+    }
+    else {
+      mm(fs.createReadStream(filePath), (err, metadata) => {
+        audio = new Audio({userID: userID, filename: filename, name: name, artist: metadata.artist[0], album: metadata.album[0]})
+        audio.save((err) => {
+          if (err) {
+            res.json({
+              success: false
+            })
+          } else {
+            res.json({
+              success: true
+            })
+          }
+        })
+      })
+    }
   }
 })
 
