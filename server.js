@@ -403,7 +403,7 @@ app.post('/audio/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Audio.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, artist: true, _id: false}, (err, entries) => {
+  Audio.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,

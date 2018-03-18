@@ -39,10 +39,9 @@ class EntryContainer extends Component {
   handleSearch(e) {
     const query = e.target.value.toLowerCase()
     var displayedEntries = this.state.entries.filter((entry) => {
-      const entryName = entry.name.toLowerCase()
-      const entryDate = entry.created_at.slice(0,10)
-      const entryDescription = entry.description
-      return entryName.search(query) !== -1 || (entryDescription !== undefined && entryDescription.toLowerCase().search(query) !== -1)
+      const name = entry.name.toLowerCase()
+      const date = entry.created_at.slice(0,10)
+      return name.search(query) !== -1
     })
     this.setState({
       displayedEntries: displayedEntries
@@ -83,8 +82,6 @@ class EntryContainer extends Component {
             <thead>
               <tr>
                 <th scope="col">name</th>
-                <th scope="col">description</th>
-                <th scope="col">artist</th>
                 <th scope="col">Date</th>
                 <th scope="col"></th>
               </tr>
@@ -98,13 +95,6 @@ class EntryContainer extends Component {
                 this.state.displayedEntries.map((entry,idx) =>
                   <tr key={idx}>
                     <td className="text-truncate">{entry.name}</td>
-                    {
-                      (entry.description === undefined) ?
-                      <td></td>
-                      :
-                      <td className="text-truncate">{entry.description}</td>
-                    }
-                    <td className="text-truncate">{entry.artist}</td>
                     <td>{entry.created_at.slice(0,10)}</td>
                     <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
                   </tr>
