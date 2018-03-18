@@ -20,11 +20,11 @@ describe('Parser', () => {
 
       assert.equal(parsedStringHash.name, 'WITH A LITTLE HELP FROM MY FRIENDS')
       assert.equal(parsedStringHash.information, 'BY BEATLES')
-      assert.equal(parsedStringHash.artist, 'JOE COCKER.mp3')
+      assert.equal(parsedStringHash.artist, 'JOE COCKER')
     })
 
     it('should parse audio string and return appropriate hash', () => {
-      const audioString = "{}[19681106]_{}()[5]()_I'M THE URBAN SPACEMAN_BONZO DOG DOO DAH BAND.mp3"
+      const audioString = "{}[19681106]_{}()[5]()_I'M THE URBAN SPACEMAN_BONZO DOG DOO DAH BAND.wav"
       const parsedStringHash = audioParser.parseAudioString(audioString)
 
       assert.equal(parsedStringHash.usChartDate, '')
@@ -36,7 +36,7 @@ describe('Parser', () => {
       assert.equal(parsedStringHash.ukPeakNumOfWeeks, '')
 
       assert.equal(parsedStringHash.name, "I'M THE URBAN SPACEMAN")
-      assert.equal(parsedStringHash.artist, 'BONZO DOG DOO DAH BAND.mp3')
+      assert.equal(parsedStringHash.artist, 'BONZO DOG DOO DAH BAND')
     })
 
     it('should return empty hash if inappropriate string', () => {
