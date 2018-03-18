@@ -235,7 +235,7 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     }
     else {
       mm(fs.createReadStream(filePath), (err, metadata) => {
-        audio = new Audio({userID: userID, filename: filename, name: name, artist: metadata.artist[0], album: metadata.album[0]})
+        audio = new Audio({userID: userID, filename: filename, name: name.split('.')[0], artist: metadata.artist[0], album: metadata.album[0]})
         audio.save((err) => {
           if (err) {
             res.json({
