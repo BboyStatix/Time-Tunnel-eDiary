@@ -90,7 +90,6 @@ class DiaryContainer extends Component {
     var expandedEntries = this.state.entries.filter((entry) => {
       const entryName = entry.name.toLowerCase()
       const entryDescription = entry.description
-      console.log(entryName.search(query) !== -1 || (entryDescription !== undefined && entryDescription.toLowerCase().search(query) !== -1))
       return entryName.search(query) !== -1 || (entryDescription !== undefined && entryDescription.toLowerCase().search(query) !== -1)
     })
     this.setState({
@@ -154,9 +153,7 @@ class DiaryContainer extends Component {
                       <th scope="col">description</th>
                     </tr>
                   </thead>
-
                   <ExpandedEntries entries={this.state.expandedEntries} />
-
                 </table>
               </div>
             </div>

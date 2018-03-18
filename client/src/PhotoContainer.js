@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import expandLogo from './img/expand.svg'
 
 class PhotoContainer extends Component {
   constructor(props){
@@ -74,7 +73,6 @@ class PhotoContainer extends Component {
       <div className="card">
         <div className="card-header bg-success text-light">
           Photo
-          <img className='expandLogo float-right' src={expandLogo} />
         </div>
         <div className="card-body" style={{padding: 0}}>
           <table className="table table-hover">
