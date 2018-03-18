@@ -57,9 +57,11 @@ class AudioContainer extends Component {
   handleSearch(e) {
     const query = e.target.value.toLowerCase()
     var expandedEntries = this.state.entries.filter((entry) => {
-      const entryName = entry.name.toLowerCase()
-      const entryArtist = entry.artist
-      return entryName.search(query) !== -1 || (entryArtist !== undefined && entryArtist.toLowerCase().search(query) !== -1)
+      const name = entry.name.toLowerCase()
+      const artist = entry.artist.toLowerCase()
+      const album = entry.album.toLowerCase()
+      const information = entry.information.toLowerCase()
+      return (name.search(query) !== -1 || artist.search(query) !== -1 || album.search(query) !== -1 || information.search(query) !== -1)
     })
     this.setState({
       expandedEntries: expandedEntries
@@ -72,7 +74,16 @@ class AudioContainer extends Component {
         {
           props.entries.map((expandedEntry, index) =>
             <tr key={'expanded' + index}>
-              <td className="text-truncate">{expandedEntry.name}</td><td className="text-truncate">{expandedEntry.artist}</td>
+              <td>{expandedEntry.name}</td>
+              <td>{expandedEntry.artist}</td>
+              <td>{expandedEntry.album}</td>
+              <td>{expandedEntry.information}</td>
+              <td>{expandedEntry.usChartDate}</td>
+              <td>{expandedEntry.usPeakNumOfWeeks}</td>
+              <td>{expandedEntry.usPeakPosition}</td>
+              <td>{expandedEntry.ukChartDate}</td>
+              <td>{expandedEntry.ukPeakNumOfWeeks}</td>
+              <td>{expandedEntry.ukPeakPosition}</td>
             </tr>
           )
         }
@@ -96,6 +107,14 @@ class AudioContainer extends Component {
                     <tr>
                       <th scope="col">name</th>
                       <th scope="col">artist</th>
+                      <th scope="col">album</th>
+                      <th scope="col">information</th>
+                      <th scope="col">US chart date</th>
+                      <th scope="col">US Peak Position</th>
+                      <th scope="col">US no. of weeks</th>
+                      <th scope="col">UK chart date</th>
+                      <th scope="col">UK Peak Position</th>
+                      <th scope="col">UK no. of weeks</th>
                     </tr>
                   </thead>
                   <ExpandedEntries entries={this.state.expandedEntries} />

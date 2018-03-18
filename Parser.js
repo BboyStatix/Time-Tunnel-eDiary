@@ -29,7 +29,7 @@ function getParsedAudioHash(string){
 
     audioHash.name = string.substring(string.indexOf(')_')+2, string.indexOf('\ \ ['))
     audioHash.information = string.substring(string.indexOf('\ \ [')+3, string.search(/]_[^{]/g))
-    audioHash.artist = string.substring(string.search(/]_[^{]/g)+2, string.length)
+    audioHash.artist = string.substring(string.search(/]_[^{]/g)+2, string.indexOf('.'))
   }
   else if(string.search(/^{[0-9]*}[[0-9]*]_{[0-9]*}\([0-9]*\)[[0-9]*]\([0-9]*\)_.*_.*/g) !== -1){
     audioHash.usChartDate = string.substring(1, string.indexOf('}'))
@@ -42,7 +42,7 @@ function getParsedAudioHash(string){
 
     splitStringArray = string.split('_')
     audioHash.name = splitStringArray[2]
-    audioHash.artist = splitStringArray[3]
+    audioHash.artist = (splitStringArray[3]).substring(0, splitStringArray[3].indexOf('.'))
   }
 
   return audioHash
