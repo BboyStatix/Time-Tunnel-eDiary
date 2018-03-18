@@ -17,13 +17,7 @@ const storage = multer.diskStorage({
     cb(null, Date.now() + path.extname(file.originalname))
   }
 })
-const fileFilter = function (req, file, cb) {
-  if (!file.originalname.match(/\.(wtv|flv|mp4|txt|doc|docx|mp3|wav|jpg|jpeg|png|gif|bmp)$/)) {
-      return cb(new Error('Unsupported file format!'), false)
-  }
-  cb(null, true)
-}
-const upload = multer({ fileFilter: fileFilter, storage: storage})
+const upload = multer({ storage: storage })
 const textract = require('textract')
 const Parser = require('./Parser')
 const sizeOf = require('image-size')
@@ -220,7 +214,7 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
     const audioHash = audioParser.parseAudioString(name)
 
     if (Object.keys(audioHash).length !== 0){
-      const audio = new Audio(Object.assign({userID: userID, filename: filename}, audioHash))
+      audio = new Audio(Object.assign({userID: userID, filename: filename}, audioHash))
       audio.save((err) => {
         if (err) {
           res.json({
@@ -249,6 +243,17 @@ app.post('/upload/file', upload.single('file'), (req, res) => {
         })
       })
     }
+  }
+  else {
+    entry = new Entry({userID: userID, name: name, filename: filename})
+    entry.save((err) => {
+      if(err){
+        res.json({ success: false })
+      }
+      else{
+        res.json({ success: true })
+      }
+    })
   }
 })
 
