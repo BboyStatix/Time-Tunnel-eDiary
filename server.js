@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const mm = require('musicmetadata')
+const async = require('async')
 const app = express()
 
 const multer = require('multer')
@@ -35,7 +36,7 @@ const Entry = require('./models/entry')
 //app.use(express.static(path.join(__dirname, 'client/build')))
 
 //connect to database
-mongoose.connect('mongodb://localhost/test')
+mongoose.connect('localhost/test')
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', function() {
@@ -115,146 +116,140 @@ app.post('/auth/verify', (req, res) => {
   })
 })
 
-app.post('/upload/file', upload.single('file'), (req, res) => {
-
+app.post('/upload/file', upload.array('files'), (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
-  const name = req.file.originalname
-  const filename = req.file.filename
-  const filePath = req.file.path
 
-  if(name.match(/\.(txt)$/)){
-    const description = fs.readFileSync(filePath,'utf8')
-    const diary = new Diary({userID: userID, filename: filename, name: name, description: description})
-    diary.save((err) => {
-      if (err) {
-        res.json({
-          success: false
-        })
-      } else {
-        res.json({
-          success: true
-        })
-      }
-    })
-  }
-  else if(name.match(/\.(doc|docx)$/)){
-    textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
-      const myParser = new Parser
-      const dataArray = myParser.parseDocString(text)
-      if(dataArray.length !== 0) {
-        var diaryArray = []
-        var idx = 0
-        for(var i=0; i < dataArray.length/4; i++){
-          const date = new Date(dataArray[idx] + '-' + dataArray[idx+1].slice(0, 2) + '-' + dataArray[idx+1].slice(2, 4))
-          const description = dataArray[idx+2]
-          const eventType = dataArray[idx+3]
-          diaryArray.push({userID: userID,  filename: filename, name: name, description: description, created_at: date, eventType: eventType})
-          idx += 4
+
+  async.each(req.files, (file, callback) => {
+    const name = file.originalname
+    const filename = file.filename
+    const filePath = file.path
+
+    if(name.match(/\.(txt)$/)){
+      const description = fs.readFileSync(filePath,'utf8')
+      const diary = new Diary({userID: userID, filename: filename, name: name, description: description})
+      diary.save((err) => {
+        if(err){
+          return callback(err)
         }
-        Diary.insertMany(diaryArray, (err) => {
-          if (err) {
-            res.json({
-              success: false
-            })
-          } else {
-            res.json({
-              success: true
-            })
+        else{
+          callback()
+        }
+      })
+    }
+    else if(name.match(/\.(doc|docx)$/)){
+      textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
+        const myParser = new Parser
+        const dataArray = myParser.parseDocString(text)
+        if(dataArray.length !== 0) {
+          var diaryArray = []
+          var idx = 0
+          for(var i=0; i < dataArray.length/4; i++){
+            const date = new Date(dataArray[idx] + '-' + dataArray[idx+1].slice(0, 2) + '-' + dataArray[idx+1].slice(2, 4))
+            const description = dataArray[idx+2]
+            const eventType = dataArray[idx+3]
+            diaryArray.push({userID: userID,  filename: filename, name: name, description: description, created_at: date, eventType: eventType})
+            idx += 4
+          }
+          Diary.insertMany(diaryArray, (err) => {
+            if(err){
+              return callback(err)
+            }
+            else{
+              callback('reload')
+            }
+          })
+        }
+        else {
+          const diary = new Diary({userID: userID, filename: filename, name: name, description: text})
+          diary.save((err) => {
+            if(err){
+              return callback(err)
+            }
+            else{
+              callback()
+            }
+          })
+        }
+      })
+    }
+    else if(name.match(/\.(wtv|flv|mp4)$/)){
+      const video = new Video({userID: userID, filename: filename, name: name})
+      video.save(function (err) {
+        if(err){
+          return callback(err)
+        }
+        else{
+          callback()
+        }
+      })
+    }
+    else if(name.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
+      const dimensions = sizeOf(filePath)
+      const photo = new Photo({userID: userID, filename: filename, name: name, resolution: dimensions.width + 'x' + dimensions.height})
+      photo.save(function (err) {
+        if(err){
+          return callback(err)
+        }
+        else{
+          callback()
+        }
+      })
+    }
+    else if(name.match(/\.(mp3|wav)$/)){
+      const audioParser = new Parser
+      const audioHash = audioParser.parseAudioString(name)
+
+      if (Object.keys(audioHash).length !== 0){
+        audio = new Audio(Object.assign({userID: userID, filename: filename}, audioHash))
+        audio.save((err) => {
+          if(err){
+            return callback(err)
+          }
+          else{
+            callback()
           }
         })
       }
       else {
-        const diary = new Diary({userID: userID, filename: filename, name: name, description: text})
-        diary.save((err) => {
-          if (err) {
-            res.json({
-              success: false
-            })
-          } else {
-            res.json({
-              success: true
-            })
-          }
-        })
-      }
-    })
-  }
-  else if(name.match(/\.(wtv|flv|mp4)$/)){
-    const video = new Video({userID: userID, filename: filename, name: name})
-    video.save(function (err) {
-      if (err) {
-        res.json({
-          success: false
-        })
-      } else {
-        res.json({
-          success: true
-        })
-      }
-    })
-  }
-  else if(name.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
-    const dimensions = sizeOf(filePath)
-    const photo = new Photo({userID: userID, filename: filename, name: name, resolution: dimensions.width + 'x' + dimensions.height})
-    photo.save(function (err) {
-      if (err) {
-        res.json({
-          success: false
-        })
-      } else {
-        res.json({
-          success: true
-        })
-      }
-    })
-  }
-  else if(name.match(/\.(mp3|wav)$/)){
-    const audioParser = new Parser
-    const audioHash = audioParser.parseAudioString(name)
-
-    if (Object.keys(audioHash).length !== 0){
-      audio = new Audio(Object.assign({userID: userID, filename: filename}, audioHash))
-      audio.save((err) => {
-        if (err) {
-          res.json({
-            success: false
+        mm(fs.createReadStream(filePath), (err, metadata) => {
+          audio = new Audio({userID: userID, filename: filename, name: name.split('.')[0], artist: metadata.artist[0], album: metadata.album[0]})
+          audio.save((err) => {
+            if(err){
+              return callback(err)
+            }
+            else{
+              callback()
+            }
           })
-        } else {
-          res.json({
-            success: true
-          })
+        })
+      }
+    }
+    else {
+      entry = new Entry({userID: userID, name: name, filename: filename})
+      entry.save((err) => {
+        if(err){
+          return callback(err)
+        }
+        else{
+          callback()
         }
       })
     }
-    else {
-      mm(fs.createReadStream(filePath), (err, metadata) => {
-        audio = new Audio({userID: userID, filename: filename, name: name.split('.')[0], artist: metadata.artist[0], album: metadata.album[0]})
-        audio.save((err) => {
-          if (err) {
-            res.json({
-              success: false
-            })
-          } else {
-            res.json({
-              success: true
-            })
-          }
-        })
-      })
+  }, err => {
+    if(err){
+      if(err === 'reload') {
+        res.json({success: true, reload: true})
+      }
+      else {
+        res.json({success: false})
+      }
     }
-  }
-  else {
-    entry = new Entry({userID: userID, name: name, filename: filename})
-    entry.save((err) => {
-      if(err){
-        res.json({ success: false })
-      }
-      else{
-        res.json({ success: true })
-      }
-    })
-  }
+    else{
+      res.json({success: true, reload: false})
+    }
+  })
 })
 
 app.get('/download/file', (req, res) => {
