@@ -18,9 +18,11 @@ class MainContainer extends Component {
     this.formatDates = this.formatDates.bind(this)
     this.changeDateFormat = this.changeDateFormat.bind(this)
     this.loadJquery = this.loadJquery.bind(this)
+    this.uploadFile = this.uploadFile.bind(this)
     this.state = {
       dates: [],
-      selectedDate: this.changeDateFormat(new Date())
+      selectedDate: this.changeDateFormat(new Date()),
+      uploading: false
     }
   }
 
@@ -248,23 +250,28 @@ class MainContainer extends Component {
   }
 
   uploadFile (e){
-    var formData = new FormData()
-    formData.append('jwt', localStorage.jwt)
-    const files = document.getElementById('file').files
-    for(var i=0; i<files.length; i++){
-      formData.append('files', files[i])
-    }
-    fetch('/upload/file', {
-      method: 'POST',
-      body: formData
-    }).then((res) => {
-      return res.json()
-    }).then((json) => {
-      if(json.success === true){
-        window.location.reload()
-      }
-    })
     e.preventDefault()
+    const files = document.getElementById('file').files
+    if(files.length !== 0){
+      this.setState({uploading: true})
+      var formData = new FormData()
+      formData.append('jwt', localStorage.jwt)
+      for(var i=0; i<files.length; i++){
+        formData.append('files', files[i])
+      }
+      fetch('/upload/file', {
+        method: 'POST',
+        body: formData
+      }).then((res) => {
+        return res.json()
+      }).then((json) => {
+        $('#file').val('')
+        this.setState({uploading: false})
+        if(json.reload === true){
+          window.location.reload()
+        }
+      })
+    }
   }
 
   logout (){
@@ -275,6 +282,14 @@ class MainContainer extends Component {
   render() {
     return (
       <div>
+        {
+          this.state.uploading === true ?
+          <div className='custom-modal'>
+            <div className='loadingSpinner'></div>
+          </div>
+          :
+          null
+        }
         <nav className="navbar">
           <form className="form-inline my-2 my-lg-0" onSubmit={this.uploadFile}>
               <input className="form-control mr-sm-2" id="file" type="file" multiple />

@@ -36,7 +36,7 @@ const Entry = require('./models/entry')
 //app.use(express.static(path.join(__dirname, 'client/build')))
 
 //connect to database
-mongoose.connect('mongodb://localhost/test')
+mongoose.connect('localhost/test')
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', function() {
@@ -157,7 +157,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
               return callback(err)
             }
             else{
-              callback()
+              callback('reload')
             }
           })
         }
@@ -238,13 +238,16 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
       })
     }
   }, err => {
-    if(err) {
-      console.log(err)
-      res.json({success: false})
+    if(err){
+      if(err === 'reload') {
+        res.json({success: true, reload: true})
+      }
+      else {
+        res.json({success: false})
+      }
     }
     else{
-      console.log('All files saved!')
-      res.json({success: true})
+      res.json({success: true, reload: false})
     }
   })
 })
