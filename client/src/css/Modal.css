@@ -38,6 +38,10 @@ img {
     width: 80%;
 }
 
+.audio-modal {
+  width: 100%;
+}
+
 /* The Close Button */
 .close {
     color: #aaa;

@@ -61,7 +61,7 @@ class AudioContainer extends Component {
       const artist = entry.artist.toLowerCase()
       const album = entry.album.toLowerCase()
       const information = entry.information.toLowerCase()
-      return (name.search(query) !== -1 || artist.search(query) !== -1 || album.search(query) !== -1 || information.search(query) !== -1)
+      return (name.indexOf(query) !== -1 || artist.indexOf(query) !== -1 || album.indexOf(query) !== -1 || information.indexOf(query) !== -1)
     })
     this.setState({
       expandedEntries: expandedEntries
@@ -74,10 +74,10 @@ class AudioContainer extends Component {
         {
           props.entries.map((expandedEntry, index) =>
             <tr key={'expanded' + index}>
-              <td>{expandedEntry.name}</td>
-              <td>{expandedEntry.artist}</td>
-              <td>{expandedEntry.album}</td>
-              <td>{expandedEntry.information}</td>
+              <td className="text-truncate">{expandedEntry.name}</td>
+              <td className="text-truncate">{expandedEntry.artist}</td>
+              <td className="text-truncate">{expandedEntry.album}</td>
+              <td className="text-truncate">{expandedEntry.information}</td>
               <td>{expandedEntry.usChartDate}</td>
               <td>{expandedEntry.usPeakNumOfWeeks}</td>
               <td>{expandedEntry.usPeakPosition}</td>
@@ -96,7 +96,7 @@ class AudioContainer extends Component {
           this.state.containerExpanded ?
           <div className="custom-modal" id="containerModal" onClick={this.closeContainerModal}>
             <div className="modal-dialog" role="document">
-              <div className="modal-content">
+              <div className="modal-content audio-modal">
                 <nav className='navbar'>
                   <form className="form-inline my-2 my-lg-0" onSubmit={this.handleFormSubmit}>
                     <input className="form-control mr-sm-2" placeholder="Search" onChange={this.handleSearch} />

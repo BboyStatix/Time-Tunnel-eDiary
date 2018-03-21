@@ -41,7 +41,7 @@ class EntryContainer extends Component {
     var displayedEntries = this.state.entries.filter((entry) => {
       const name = entry.name.toLowerCase()
       const date = entry.created_at.slice(0,10)
-      return name.search(query) !== -1
+      return name.indexOf(query) !== -1
     })
     this.setState({
       displayedEntries: displayedEntries
