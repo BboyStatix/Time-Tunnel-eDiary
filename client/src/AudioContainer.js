@@ -74,8 +74,16 @@ class AudioContainer extends Component {
         {
           props.entries.map((expandedEntry, index) =>
             <tr key={'expanded' + index}>
-              <td className="text-truncate" title={expandedEntry.name}>{expandedEntry.name}</td>
-              <td className="text-truncate" title={expandedEntry.artist}>{expandedEntry.artist}</td>
+              <td className="text-truncate" title={expandedEntry.name}>
+                <a target='_blank' href={'http://www.google.com/search?q=' + expandedEntry.name.toLowerCase()}>
+                  {expandedEntry.name}
+                </a>
+              </td>
+              <td className="text-truncate" title={expandedEntry.artist}>
+                <a target='_blank' href={'http://www.google.com/search?q=' + expandedEntry.artist.toLowerCase()}>
+                  {expandedEntry.artist}
+                </a>
+              </td>
               <td className="text-truncate" title={expandedEntry.album}>{expandedEntry.album}</td>
               <td className="text-truncate" title={expandedEntry.information}>{expandedEntry.information}</td>
               <td>{expandedEntry.usChartDate}</td>
