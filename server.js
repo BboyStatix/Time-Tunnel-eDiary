@@ -264,6 +264,26 @@ app.get('/download/file', (req, res) => {
   })
 })
 
+app.delete('/delete/file', (req, res) => {
+  const filePath = path.join(__dirname, '/uploads/' + req.body.filename)
+  const userID = jwt.decode(req.body.jwt, 'secret').user._id
+  Entry.remove({userID: userID, filename: req.body.filename}, (err, entry) => {
+    if(err){
+      res.json({ status: 500, error: err })
+    }
+    else{
+      fs.unlink(filePath, (err) => {
+        if(err){
+          res.json({ status: 500, error: err })
+        }
+        else {
+          res.json({ status: 200 })
+        }
+      })
+    }
+  })
+})
+
 app.post('/diary/view', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id

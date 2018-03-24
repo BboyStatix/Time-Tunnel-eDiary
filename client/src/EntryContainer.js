@@ -7,6 +7,8 @@ class EntryContainer extends Component {
     super(props)
     this.handleSearch = this.handleSearch.bind(this)
     this.downloadFile = this.downloadFile.bind(this)
+    this.deleteFile = this.deleteFile.bind(this)
+    this.fetchEntries = this.fetchEntries.bind(this)
     this.logout = this.logout.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.state = {
@@ -16,6 +18,10 @@ class EntryContainer extends Component {
   }
 
   componentDidMount() {
+    this.fetchEntries()
+  }
+
+  fetchEntries() {
     fetch('/entries', {
       method: 'POST',
       headers: {
@@ -59,6 +65,23 @@ class EntryContainer extends Component {
     })
   }
 
+  deleteFile(filename) {
+    fetch('/delete/file', {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        jwt: localStorage.jwt,
+        filename: filename
+      })
+    }).then((res) => {
+        return res.json()
+    }).then((json) => {
+        this.fetchEntries()
+    })
+  }
+
   logout(){
     localStorage.jwt = null
     window.location.reload()
@@ -84,6 +107,7 @@ class EntryContainer extends Component {
                 <th scope="col">name</th>
                 <th scope="col">Date</th>
                 <th scope="col"></th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
@@ -97,6 +121,7 @@ class EntryContainer extends Component {
                     <td className="text-truncate">{entry.name}</td>
                     <td>{entry.created_at.slice(0,10)}</td>
                     <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
+                    <td><button className="btn btn-outline-danger" onClick={() => this.deleteFile(entry.filename)}>Delete</button></td>
                   </tr>
                 )
               }
