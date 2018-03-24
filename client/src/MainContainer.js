@@ -295,12 +295,12 @@ class MainContainer extends Component {
               <input className="form-control mr-sm-2" id="file" type="file" multiple />
               <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Upload</button>
           </form>
-          <Link to="/all">
-            <button className="btn btn-outline-success">
-              Search
-            </button>
-          </Link>
-          <button className="btn btn-outline-success" onClick={this.logout}>Log out</button>
+          <form className="form-inline my-2 my-lg-0">
+            <Link to="/all">
+              <button className="btn btn-outline-success" style={{'margin-right': '10px'}}>Search</button>
+            </Link>
+            <button className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
+          </form>
         </nav>
         <br />
         <div className="container-fluid">

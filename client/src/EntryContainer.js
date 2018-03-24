@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 
 import './css/Container.css'
 
@@ -98,7 +99,12 @@ class EntryContainer extends Component {
           <form className="form-inline my-2 my-lg-0" onSubmit={this.handleFormSubmit}>
             <input className="form-control mr-sm-2" placeholder="Search" onChange={this.handleSearch} />
           </form>
-          <button className="btn btn-outline-success" onClick={this.logout}>Log out</button>
+          <form className="form-inline my-2 my-lg-0">
+            <Link to="/">
+              <button className="btn btn-outline-success" style={{'margin-right': '10px'}}>Go Back</button>
+            </Link>
+            <button className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
+          </form>
         </nav>
         <div className="entry_container">
           <table className="table table-hover table-bordered">
