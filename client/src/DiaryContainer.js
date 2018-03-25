@@ -146,7 +146,7 @@ class DiaryContainer extends Component {
                   <form className="form-inline my-2 my-lg-0" onSubmit={this.handleFormSubmit}>
                     <input className="form-control mr-sm-2" placeholder="Search" onChange={this.handleSearch} />
                   </form>
-                  <Link to={{pathname: "/search", search: 'type=diary'}}>
+                  <Link to={{pathname: "/search", search: 'type=Diary'}}>
                     <button className="btn btn-outline-primary" style={{'marginRight': '10px'}}>Search</button>
                   </Link>
                 </nav>
