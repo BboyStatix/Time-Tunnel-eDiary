@@ -344,8 +344,10 @@ app.get('/video/view', (req,res) => {
 app.post('/entries', (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
+  const type = req.body.type
+  const query = (type === undefined || type === 'All') ? Entry.find({userID: userID}) : Entry.find({userID: userID, type: type})
 
-  Entry.find({userID: userID}, {name: true, filename: true, description: true, artist: true, created_at: true, _id: false}).sort('created_at').exec((err, entries) => {
+  query.sort('created_at').exec((err, entries) => {
     if(err) {
       res.json({
         status: 500,

@@ -16,7 +16,7 @@ class EntryContainer extends Component {
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.state = {
       entries: [],
-      type: 'all',
+      type: 'All',
       displayedEntries: []
     }
   }
@@ -115,11 +115,11 @@ class EntryContainer extends Component {
           <form className="form-inline my-2 my-lg-0" onSubmit={this.handleFormSubmit}>
             <input className="form-control mr-sm-2" placeholder="Search" onChange={this.handleSearch} />
             <select className="form-control" onChange={this.selectEntryType} value={this.state.type}>
-              <option value='all'>All</option>
-              <option value='diary'>Diary</option>
-              <option value='photo'>Photo</option>
-              <option value='audio'>Audio</option>
-              <option value='video'>Video</option>
+              <option>All</option>
+              <option>Diary</option>
+              <option>Photo</option>
+              <option>Audio</option>
+              <option>Video</option>
             </select>
           </form>
           <form className="form-inline my-2 my-lg-0">
