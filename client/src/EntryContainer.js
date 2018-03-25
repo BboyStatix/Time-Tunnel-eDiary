@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 
 import './css/Container.css'
 
@@ -10,26 +11,34 @@ class EntryContainer extends Component {
     this.downloadFile = this.downloadFile.bind(this)
     this.deleteFile = this.deleteFile.bind(this)
     this.fetchEntries = this.fetchEntries.bind(this)
+    this.selectEntryType = this.selectEntryType.bind(this)
     this.logout = this.logout.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.state = {
       entries: [],
+      type: 'all',
       displayedEntries: []
     }
   }
 
   componentDidMount() {
-    this.fetchEntries()
+    const queryString = require('query-string')
+    const parsed = queryString.parse(this.props.location.search)
+    if(parsed.type !== undefined){
+      this.setState({type: parsed.type})
+    }
+    this.fetchEntries(parsed.type)
   }
 
-  fetchEntries() {
+  fetchEntries(type) {
     fetch('/entries', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        jwt: localStorage.jwt
+        jwt: localStorage.jwt,
+        type: type
       })
     }).then((res) => {
       return res.json()
@@ -83,6 +92,13 @@ class EntryContainer extends Component {
     })
   }
 
+  selectEntryType(e) {
+    const type = e.target.value
+    this.props.history.push('?type=' + type)
+    this.setState({type: type})
+    this.fetchEntries(type)
+  }
+
   logout(){
     localStorage.jwt = null
     window.location.reload()
@@ -98,10 +114,17 @@ class EntryContainer extends Component {
         <nav className="navbar">
           <form className="form-inline my-2 my-lg-0" onSubmit={this.handleFormSubmit}>
             <input className="form-control mr-sm-2" placeholder="Search" onChange={this.handleSearch} />
+            <select className="form-control" onChange={this.selectEntryType} value={this.state.type}>
+              <option value='all'>All</option>
+              <option value='diary'>Diary</option>
+              <option value='photo'>Photo</option>
+              <option value='audio'>Audio</option>
+              <option value='video'>Video</option>
+            </select>
           </form>
           <form className="form-inline my-2 my-lg-0">
             <Link to="/">
-              <button className="btn btn-outline-success" style={{'margin-right': '10px'}}>Go Back</button>
+              <button className="btn btn-outline-success" style={{'marginRight': '10px'}}>Go Back</button>
             </Link>
             <button className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
           </form>

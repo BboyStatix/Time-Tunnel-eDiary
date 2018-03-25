@@ -42,7 +42,7 @@ class App extends Component {
           this.state.authenticated ?
           <Switch>
             <Route exact path="/" component={MainContainer} />
-            <Route path="/all" component={EntryContainer} />
+            <Route path="/search" component={EntryContainer} />
           </Switch>
           :
           <AuthContainer />

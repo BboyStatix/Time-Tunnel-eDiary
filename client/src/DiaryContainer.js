@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import expandLogo from './img/expand.svg'
 
 class DiaryContainer extends Component {
@@ -145,6 +146,9 @@ class DiaryContainer extends Component {
                   <form className="form-inline my-2 my-lg-0" onSubmit={this.handleFormSubmit}>
                     <input className="form-control mr-sm-2" placeholder="Search" onChange={this.handleSearch} />
                   </form>
+                  <Link to={{pathname: "/search", search: 'type=diary'}}>
+                    <button className="btn btn-outline-primary" style={{'marginRight': '10px'}}>Search</button>
+                  </Link>
                 </nav>
                 <table className="table table-hover table-bordered">
                   <thead>

@@ -296,8 +296,8 @@ class MainContainer extends Component {
               <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Upload</button>
           </form>
           <form className="form-inline my-2 my-lg-0">
-            <Link to="/all">
-              <button className="btn btn-outline-success" style={{'margin-right': '10px'}}>Search</button>
+            <Link to={{pathname: "/search", search: 'type=all'}} >
+              <button className="btn btn-outline-success" style={{'marginRight': '10px'}}>Search</button>
             </Link>
             <button className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
           </form>
