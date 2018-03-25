@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router-dom'
 
+import Table from './Table.js'
+
 import './css/Container.css'
 
 class EntryContainer extends Component {
@@ -129,34 +131,9 @@ class EntryContainer extends Component {
             <button className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
           </form>
         </nav>
-        <div className="entry_container">
-          <table className="table table-hover table-bordered">
-            <thead>
-              <tr>
-                <th scope="col">name</th>
-                <th scope="col">Date</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.state.entries === undefined ?
-                <tr>
-                </tr>
-                :
-                this.state.displayedEntries.map((entry,idx) =>
-                  <tr key={idx}>
-                    <td className="text-truncate">{entry.name}</td>
-                    <td>{entry.created_at.slice(0,10)}</td>
-                    <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
-                    <td><button className="btn btn-outline-danger" onClick={() => this.deleteFile(entry.filename)}>Delete</button></td>
-                  </tr>
-                )
-              }
-            </tbody>
-          </table>
-        </div>
+
+        <Table type={this.state.type} entries={this.state.displayedEntries}/>
+
       </div>
     )
   }
