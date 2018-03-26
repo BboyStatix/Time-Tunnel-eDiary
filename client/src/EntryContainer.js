@@ -10,8 +10,6 @@ class EntryContainer extends Component {
   constructor(props){
     super(props)
     this.handleSearch = this.handleSearch.bind(this)
-    this.downloadFile = this.downloadFile.bind(this)
-    this.deleteFile = this.deleteFile.bind(this)
     this.fetchEntries = this.fetchEntries.bind(this)
     this.selectEntryType = this.selectEntryType.bind(this)
     this.logout = this.logout.bind(this)
@@ -19,7 +17,7 @@ class EntryContainer extends Component {
     this.state = {
       entries: [],
       type: 'All',
-      displayedEntries: []
+      query: ''
     }
   }
 
@@ -47,51 +45,13 @@ class EntryContainer extends Component {
     })
     .then((json) => {
       const entryArray = json.entries.reverse()
-      this.setState({
-        entries: entryArray,
-        displayedEntries: entryArray
-      })
+      this.setState({ entries: entryArray })
     })
   }
 
   handleSearch(e) {
     const query = e.target.value.toLowerCase()
-    var displayedEntries = this.state.entries.filter((entry) => {
-      const name = entry.name.toLowerCase()
-      const date = entry.created_at.slice(0,10)
-      return name.indexOf(query) !== -1
-    })
-    this.setState({
-      displayedEntries: displayedEntries
-    })
-  }
-
-  downloadFile(name, filename) {
-    fetch('/download/file?jwt=' + localStorage.jwt + "&filename=" + filename)
-    .then((res) => {
-      return res.blob()
-    })
-    .then((blob) => {
-      const FileSaver = require('file-saver')
-      FileSaver.saveAs(blob, name)
-    })
-  }
-
-  deleteFile(filename) {
-    fetch('/delete/file', {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        jwt: localStorage.jwt,
-        filename: filename
-      })
-    }).then((res) => {
-        return res.json()
-    }).then((json) => {
-        this.fetchEntries()
-    })
+    this.setState({ query: query })
   }
 
   selectEntryType(e) {
@@ -132,7 +92,7 @@ class EntryContainer extends Component {
           </form>
         </nav>
 
-        <Table type={this.state.type} entries={this.state.displayedEntries}/>
+        <Table type={this.state.type} entries={this.state.entries} query={this.state.query}/>
 
       </div>
     )
