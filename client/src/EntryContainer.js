@@ -92,7 +92,7 @@ class EntryContainer extends Component {
           </form>
         </nav>
 
-        <Table type={this.state.type} entries={this.state.entries} query={this.state.query}/>
+        <Table type={this.state.type} entries={this.state.entries} query={this.state.query} />
 
       </div>
     )

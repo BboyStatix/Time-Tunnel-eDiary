@@ -60,7 +60,7 @@ class Table extends Component {
       <div className="entry_container">
         <table className="table table-hover table-bordered">
           <thead>
-            <DiaryColumns />
+            <AllColumns />
           </thead>
           <tbody>
             {
@@ -84,10 +84,23 @@ class Table extends Component {
   }
 }
 
+function AllColumns() {
+  return (
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Date</th>
+      <th scope="col"></th>
+      <th scope="col"></th>
+    </tr>
+  )
+}
+
 function DiaryColumns() {
   return (
     <tr>
-      <th scope="col">name</th>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Type</th>
       <th scope="col">Date</th>
       <th scope="col"></th>
       <th scope="col"></th>
