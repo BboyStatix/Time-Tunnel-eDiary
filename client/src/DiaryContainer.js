@@ -175,7 +175,7 @@ class DiaryContainer extends Component {
               <thead>
                 <tr>
                   <th scope="col">#</th>
-                  <th scope="col">name</th>
+                  <th scope="col">Name</th>
                   <th scope="col">Description</th>
                   <th scope="col">Type</th>
                   <th scope="col"></th>

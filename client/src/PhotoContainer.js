@@ -79,8 +79,8 @@ class PhotoContainer extends Component {
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">name</th>
-                <th scope="col">resolution</th>
+                <th scope="col">Name</th>
+                <th scope="col">Resolution</th>
                 <th scope="col"></th>
               </tr>
             </thead>
