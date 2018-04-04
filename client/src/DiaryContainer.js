@@ -192,12 +192,7 @@ class DiaryContainer extends Component {
                     <tr key={idx}>
                       <th scope="row">{idx+1}</th>
                       <td className="text-truncate">{entry.name}</td>
-                      {
-                        entry.description === undefined ?
-                        <td></td>
-                        :
-                        <td className="text-truncate">{entry.description}</td>
-                      }
+                      <td className="text-truncate">{entry.description}</td>
                       <td>{entry.eventType}</td>
                       <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry._id)}>View</button></td>
                     </tr>
