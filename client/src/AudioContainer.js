@@ -113,10 +113,10 @@ class AudioContainer extends Component {
                 <table className="table table-hover table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">song</th>
-                      <th scope="col">artist</th>
-                      <th scope="col">album</th>
-                      <th scope="col">information</th>
+                      <th scope="col">Song</th>
+                      <th scope="col">Artist</th>
+                      <th scope="col">Album</th>
+                      <th scope="col">Information</th>
                       <th scope="col">US chart date</th>
                       <th scope="col">US Peak Position</th>
                       <th scope="col">US no. of weeks</th>

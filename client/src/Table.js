@@ -13,11 +13,23 @@ class Table extends Component {
     this.setState({entries: props.entries})
   }
 
-  filterEntries(entries, query) {
+  filterEntries(entries) {
+    const query = this.props.query
     var displayedEntries = query === '' ? entries : entries.filter((entry) => {
       const name = entry.name.toLowerCase()
       const date = entry.created_at.slice(0,10)
-      return name.indexOf(this.props.query) !== -1
+      switch (this.props.type) {
+        case 'Diary':
+          const description = entry.description === undefined ? '' : entry.description.toLowerCase()
+          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || description.indexOf(query) !== -1
+        case 'Audio':
+          const artist = entry.artist === undefined ? '' : entry.artist.toLowerCase()
+          const album = entry.album === undefined ? '' : entry.album.toLowerCase()
+          const information = entry.information === undefined ? '' : entry.information.toLowerCase()
+          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || artist.indexOf(query) !== -1 || album.indexOf(query) !== -1 || information.indexOf(query) !== -1
+        default:
+          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1
+      }
     })
     return displayedEntries
   }
@@ -60,21 +72,12 @@ class Table extends Component {
       <div className="entry_container">
         <table className="table table-hover table-bordered">
           <thead>
-            <AllColumns />
+            <Columns type={this.props.type}/>
           </thead>
           <tbody>
             {
-              entries === undefined ?
-              <tr>
-              </tr>
-              :
-              entries.map((entry,idx) =>
-                <tr key={idx}>
-                  <td className="text-truncate">{entry.name}</td>
-                  <td>{entry.created_at.slice(0,10)}</td>
-                  <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
-                  <td><button className="btn btn-outline-danger" onClick={() => this.deleteFile(entry._id, entry.filename)}>Delete</button></td>
-                </tr>
+              entries.map((entry, idx) =>
+                <RowData key={idx} type={this.props.type} entry={entry} idx={idx} downloadFile={this.downloadFile} deleteFile={this.deleteFile}/>
               )
             }
           </tbody>
@@ -84,28 +87,128 @@ class Table extends Component {
   }
 }
 
-function AllColumns() {
-  return (
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Date</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-  )
+function RowData(props) {
+  const type = props.type
+  const entry = props.entry
+  const idx = props.idx
+
+  switch (type) {
+    case 'Diary':
+      return (
+        <tr key={idx}>
+          <td className="text-truncate">{entry.name}</td>
+          <td className="text-truncate">{entry.description}</td>
+          <td>{entry.eventType}</td>
+          <td>{entry.created_at.slice(0,10)}</td>
+          <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
+          <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
+        </tr>
+      )
+    case 'Audio':
+      return (
+        <tr key={idx}>
+          <td className="text-truncate" title={entry.name}>
+            <a target='_blank' href={'http://www.google.com/search?q=' + entry.name.toLowerCase()}>
+              {entry.name}
+            </a>
+          </td>
+          <td className="text-truncate" title={entry.artist}>
+            {
+              entry.artist === undefined ?
+              null
+              :
+              <a target='_blank' href={'http://www.google.com/search?q=' + entry.artist.toLowerCase()}>
+                {entry.artist}
+              </a>
+            }
+          </td>
+          <td className="text-truncate" title={entry.album}>{entry.album}</td>
+          <td className="text-truncate" title={entry.information}>{entry.information}</td>
+          <td>{entry.usChartDate}</td>
+          <td>{entry.usPeakNumOfWeeks}</td>
+          <td>{entry.usPeakPosition}</td>
+          <td>{entry.ukChartDate}</td>
+          <td>{entry.ukPeakNumOfWeeks}</td>
+          <td>{entry.ukPeakPosition}</td>
+          <td>{entry.created_at.slice(0,10)}</td>
+          <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
+          <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
+        </tr>
+      )
+    case 'Photo':
+      return (
+        <tr key={idx}>
+          <td className="text-truncate">{entry.name}</td>
+          <td>{entry.resolution}</td>
+          <td>{entry.created_at.slice(0,10)}</td>
+          <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
+          <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
+        </tr>
+      )
+    default:
+      return (
+        <tr key={idx}>
+          <td className="text-truncate">{entry.name}</td>
+          <td>{entry.created_at.slice(0,10)}</td>
+          <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
+          <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
+        </tr>
+      )
+  }
 }
 
-function DiaryColumns() {
-  return (
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Description</th>
-      <th scope="col">Type</th>
-      <th scope="col">Date</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-  )
+function Columns(props) {
+  const type = props.type
+  switch (type) {
+    case 'Diary':
+      return (
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Type</th>
+          <th scope="col">Date</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      )
+    case 'Audio':
+      return (
+        <tr>
+          <th scope="col">Song</th>
+          <th scope="col">Artist</th>
+          <th scope="col">Album</th>
+          <th scope="col">Information</th>
+          <th scope="col">US chart date</th>
+          <th scope="col">US Peak Position</th>
+          <th scope="col">US no. of weeks</th>
+          <th scope="col">UK chart date</th>
+          <th scope="col">UK Peak Position</th>
+          <th scope="col">UK no. of weeks</th>
+          <th scope="col">Date</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      )
+    case 'Photo':
+      return (
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Resolution</th>
+          <th scope="col">Date</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      )
+    default:
+      return (
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Date</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      )
+  }
 }
 
 export default Table

@@ -89,9 +89,9 @@ class DiaryContainer extends Component {
   handleSearch(e){
     const query = e.target.value.toLowerCase()
     var expandedEntries = this.state.entries.filter((entry) => {
-      const entryName = entry.name.toLowerCase()
-      const entryDescription = entry.description
-      return entryName.search(query) !== -1 || (entryDescription !== undefined && entryDescription.toLowerCase().search(query) !== -1)
+      const name = entry.name.toLowerCase()
+      const description = entry.description.toLowerCase()
+      return name.indexOf(query) !== -1 || description.indexOf(query) !== -1
     })
     this.setState({
       expandedEntries: expandedEntries
@@ -192,12 +192,7 @@ class DiaryContainer extends Component {
                     <tr key={idx}>
                       <th scope="row">{idx+1}</th>
                       <td className="text-truncate">{entry.name}</td>
-                      {
-                        entry.description === undefined ?
-                        <td></td>
-                        :
-                        <td className="text-truncate">{entry.description}</td>
-                      }
+                      <td className="text-truncate">{entry.description}</td>
                       <td>{entry.eventType}</td>
                       <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry._id)}>View</button></td>
                     </tr>
