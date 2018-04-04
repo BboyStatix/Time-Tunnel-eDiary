@@ -14,10 +14,10 @@ describe('Parser', () => {
         "{19681123}[]_{8}()[]()_BOTH SIDES NOW  [BY JONI MITCHELL]_JUDY COLLINS.mp3"
       ]
       const expectationArray = [
-        ['19681100', '19681002', '68', '', '1', '1', 'WITH A LITTLE HELP FROM MY FRIENDS', 'BY BEATLES', 'JOE COCKER'],
-        ['19681102', '', '5', '', '', '', "WHO'S MAKING LOVE", 'BY DON DAVIS, FOR ALL', 'JOHNNIE TAYLOR'],
-        ['19681102', '', '4', '', '', '', 'ABRAHAM, MARTIN AND JOHN', 'FOR LINCOLN, KING & KENNEDY', 'DION (& BELMONTS)'],
-        ['19681123', '', '8', '', '', '', 'BOTH SIDES NOW', 'BY JONI MITCHELL', 'JUDY COLLINS']
+        ['19681100', '19681002', '68', '', '1', '1', 'WITH A LITTLE HELP FROM MY FRIENDS', 'BY BEATLES', 'JOE COCKER', 'mp3'],
+        ['19681102', '', '5', '', '', '', "WHO'S MAKING LOVE", 'BY DON DAVIS, FOR ALL', 'JOHNNIE TAYLOR', 'mp3'],
+        ['19681102', '', '4', '', '', '', 'ABRAHAM, MARTIN AND JOHN', 'FOR LINCOLN, KING & KENNEDY', 'DION (& BELMONTS)', 'mp3'],
+        ['19681123', '', '8', '', '', '', 'BOTH SIDES NOW', 'BY JONI MITCHELL', 'JUDY COLLINS', 'mp3']
       ]
 
       songArray.forEach((audioString, index) => {
@@ -36,6 +36,7 @@ describe('Parser', () => {
         assert.equal(parsedStringHash.name, testArray[6])
         assert.equal(parsedStringHash.information, testArray[7])
         assert.equal(parsedStringHash.artist, testArray[8])
+        assert.equal(parsedStringHash.fileType, testArray[9])
       })
     })
 
@@ -58,20 +59,20 @@ describe('Parser', () => {
       ]
 
       const expectationArray = [
-        ['', '19681106', '', '', '5', '', "I'M THE URBAN SPACEMAN", "BONZO DOG DOO DAH BAND"],
-        ['', '19681106', '', '', '1', '4', "LILY THE PINK", 'SCAFFOLD'],
-        ['', '19681106', '', '', '9', '', "I'M A TIGER", 'LULU'],
-        ['', '19681120', '', '', '4', '', "1-2-3 O'LEARY", "DES O'CONNOR"],
-        ['', '19681120', '', '', '8', '', "PRIVATE NUMBER", "JUDY CLAY & WILLIAM BELL"],
-        ['', '19681120', '', '', '8', '', "RACE WITH THE DEVIL", 'GUN'],
-        ['', '19681127', '', '', '6', '', "SABRE DANCE (LOVE)", "LOVE SCULPTURE (FEAT DAVE EDMUNDS)"],
-        ['19681109', '', '2', '2', '', '', "FOR ONCE IN MY LIFE", 'STEVIE WONDER'],
-        ['19681116', '', '3', '', '', '', "WICHITA LINEMAN", 'GLEN CAMPBELL'],
-        ['19681116', '', '5', '', '', '', "STORMY", "CLASSICS IV FEAT DENNIS YOST"],
-        ['19681116', '', '9', '', '', '', "I LOVE HOW YOU LOVE ME", "BOBBY VINTON"],
-        ['19681123', '', '1', '7', '1', '3', "I HEARD IT THROUGH THE GRAPEVINE", "MARVIN GAYE"],
-        ['19681123', '', '6', '', '', '', "CLOUD NINE", 'TEMPTATIONS'],
-        ['19681123', '', '31', '', '5', '', "LES BICYCLETTES DE BELSIZE", 'ENGELBERT HUMPERDINCK']
+        ['', '19681106', '', '', '5', '', "I'M THE URBAN SPACEMAN", "BONZO DOG DOO DAH BAND", 'mp3'],
+        ['', '19681106', '', '', '1', '4', "LILY THE PINK", 'SCAFFOLD', 'mp3'],
+        ['', '19681106', '', '', '9', '', "I'M A TIGER", 'LULU', 'mp3'],
+        ['', '19681120', '', '', '4', '', "1-2-3 O'LEARY", "DES O'CONNOR", 'mp3'],
+        ['', '19681120', '', '', '8', '', "PRIVATE NUMBER", "JUDY CLAY & WILLIAM BELL", 'mp3'],
+        ['', '19681120', '', '', '8', '', "RACE WITH THE DEVIL", 'GUN', 'mp3'],
+        ['', '19681127', '', '', '6', '', "SABRE DANCE (LOVE)", "LOVE SCULPTURE (FEAT DAVE EDMUNDS)", 'mp3'],
+        ['19681109', '', '2', '2', '', '', "FOR ONCE IN MY LIFE", 'STEVIE WONDER', 'mp3'],
+        ['19681116', '', '3', '', '', '', "WICHITA LINEMAN", 'GLEN CAMPBELL', 'mp3'],
+        ['19681116', '', '5', '', '', '', "STORMY", "CLASSICS IV FEAT DENNIS YOST", 'mp3'],
+        ['19681116', '', '9', '', '', '', "I LOVE HOW YOU LOVE ME", "BOBBY VINTON", 'mp3'],
+        ['19681123', '', '1', '7', '1', '3', "I HEARD IT THROUGH THE GRAPEVINE", "MARVIN GAYE", 'mp3'],
+        ['19681123', '', '6', '', '', '', "CLOUD NINE", 'TEMPTATIONS', 'mp3'],
+        ['19681123', '', '31', '', '5', '', "LES BICYCLETTES DE BELSIZE", 'ENGELBERT HUMPERDINCK', 'mp3']
       ]
 
       songArray.forEach((audioString, index) => {
@@ -89,6 +90,7 @@ describe('Parser', () => {
 
         assert.equal(parsedStringHash.name, testArray[6])
         assert.equal(parsedStringHash.artist, testArray[7])
+        assert.equal(parsedStringHash.fileType, testArray[8])
       })
     })
 
