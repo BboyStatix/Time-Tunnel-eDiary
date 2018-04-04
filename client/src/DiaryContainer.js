@@ -89,9 +89,9 @@ class DiaryContainer extends Component {
   handleSearch(e){
     const query = e.target.value.toLowerCase()
     var expandedEntries = this.state.entries.filter((entry) => {
-      const entryName = entry.name.toLowerCase()
-      const entryDescription = entry.description
-      return entryName.search(query) !== -1 || (entryDescription !== undefined && entryDescription.toLowerCase().search(query) !== -1)
+      const name = entry.name.toLowerCase()
+      const description = entry.description.toLowerCase()
+      return name.indexOf(query) !== -1 || description.indexOf(query) !== -1
     })
     this.setState({
       expandedEntries: expandedEntries

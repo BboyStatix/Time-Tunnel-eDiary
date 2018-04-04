@@ -3,8 +3,8 @@ const Schema = mongoose.Schema
 const Entry = require('./entry')
 
 const diarySchema = new Schema({
-  description: {type: String},
-  eventType: {type: String}
+  description: {type: String, default: ''},
+  eventType: {type: String, default: ''}
 },
 {
   discriminatorKey: 'type'

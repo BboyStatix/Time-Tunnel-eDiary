@@ -13,11 +13,23 @@ class Table extends Component {
     this.setState({entries: props.entries})
   }
 
-  filterEntries(entries, query) {
+  filterEntries(entries) {
+    const query = this.props.query
     var displayedEntries = query === '' ? entries : entries.filter((entry) => {
       const name = entry.name.toLowerCase()
       const date = entry.created_at.slice(0,10)
-      return name.indexOf(this.props.query) !== -1 || date.indexOf(this.props.query) !== -1
+      switch (this.props.type) {
+        case 'Diary':
+          const description = entry.description === undefined ? '' : entry.description.toLowerCase()
+          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || description.indexOf(query) !== -1
+        case 'Audio':
+          const artist = entry.artist === undefined ? '' : entry.artist.toLowerCase()
+          const album = entry.album === undefined ? '' : entry.album.toLowerCase()
+          const information = entry.information === undefined ? '' : entry.information.toLowerCase()
+          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || artist.indexOf(query) !== -1 || album.indexOf(query) !== -1 || information.indexOf(query) !== -1
+        default:
+          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1
+      }
     })
     return displayedEntries
   }
@@ -65,7 +77,7 @@ class Table extends Component {
           <tbody>
             {
               entries.map((entry, idx) =>
-                <RowData type={this.props.type} entry={entry} idx={idx} downloadFile={this.downloadFile} deleteFile={this.deleteFile}/>
+                <RowData key={idx} type={this.props.type} entry={entry} idx={idx} downloadFile={this.downloadFile} deleteFile={this.deleteFile}/>
               )
             }
           </tbody>
@@ -76,7 +88,6 @@ class Table extends Component {
 }
 
 function RowData(props) {
-  var rows = []
   const type = props.type
   const entry = props.entry
   const idx = props.idx
@@ -104,7 +115,7 @@ function RowData(props) {
           <td className="text-truncate" title={entry.artist}>
             {
               entry.artist === undefined ?
-              <td></td>
+              null
               :
               <a target='_blank' href={'http://www.google.com/search?q=' + entry.artist.toLowerCase()}>
                 {entry.artist}

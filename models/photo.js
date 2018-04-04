@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 const Entry = require('./entry')
 
 const photoSchema = new Schema({
-  resolution: {type: String}
+  resolution: {type: String, default: ''}
 },
 {
   discriminatorKey: 'type'
