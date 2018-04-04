@@ -65,7 +65,7 @@ class Table extends Component {
           <tbody>
             {
               entries.map((entry, idx) =>
-                <RowData type={this.props.type} entry={entry} idx={idx}/>
+                <RowData type={this.props.type} entry={entry} idx={idx} downloadFile={this.downloadFile} deleteFile={this.deleteFile}/>
               )
             }
           </tbody>
@@ -89,8 +89,8 @@ function RowData(props) {
           <td className="text-truncate">{entry.description}</td>
           <td>{entry.eventType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
-          <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
-          <td><button className="btn btn-outline-danger" onClick={() => this.deleteFile(entry._id, entry.filename)}>Delete</button></td>
+          <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
+          <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
         </tr>
       )
     case 'Audio':
@@ -120,8 +120,8 @@ function RowData(props) {
           <td>{entry.ukPeakNumOfWeeks}</td>
           <td>{entry.ukPeakPosition}</td>
           <td>{entry.created_at.slice(0,10)}</td>
-          <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
-          <td><button className="btn btn-outline-danger" onClick={() => this.deleteFile(entry._id, entry.filename)}>Delete</button></td>
+          <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
+          <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
         </tr>
       )
     case 'Photo':
@@ -130,8 +130,8 @@ function RowData(props) {
           <td className="text-truncate">{entry.name}</td>
           <td>{entry.resolution}</td>
           <td>{entry.created_at.slice(0,10)}</td>
-          <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
-          <td><button className="btn btn-outline-danger" onClick={() => this.deleteFile(entry._id, entry.filename)}>Delete</button></td>
+          <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
+          <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
         </tr>
       )
     default:
@@ -139,8 +139,8 @@ function RowData(props) {
         <tr key={idx}>
           <td className="text-truncate">{entry.name}</td>
           <td>{entry.created_at.slice(0,10)}</td>
-          <td><button className="btn btn-outline-primary" onClick={() => this.downloadFile(entry.name, entry.filename)}>Download</button></td>
-          <td><button className="btn btn-outline-danger" onClick={() => this.deleteFile(entry._id, entry.filename)}>Delete</button></td>
+          <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
+          <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
         </tr>
       )
   }
