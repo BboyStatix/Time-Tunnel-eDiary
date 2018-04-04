@@ -99,6 +99,7 @@ function RowData(props) {
           <td className="text-truncate">{entry.name}</td>
           <td className="text-truncate">{entry.description}</td>
           <td>{entry.eventType}</td>
+          <td>{entry.fileType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
           <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
           <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
@@ -130,6 +131,7 @@ function RowData(props) {
           <td>{entry.ukChartDate}</td>
           <td>{entry.ukPeakNumOfWeeks}</td>
           <td>{entry.ukPeakPosition}</td>
+          <td>{entry.fileType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
           <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
           <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
@@ -140,6 +142,7 @@ function RowData(props) {
         <tr key={idx}>
           <td className="text-truncate">{entry.name}</td>
           <td>{entry.resolution}</td>
+          <td>{entry.fileType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
           <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
           <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
@@ -149,6 +152,7 @@ function RowData(props) {
       return (
         <tr key={idx}>
           <td className="text-truncate">{entry.name}</td>
+          <td>{entry.fileType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
           <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
           <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
@@ -165,6 +169,7 @@ function Columns(props) {
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
+          <th scope="col">Event</th>
           <th scope="col">Type</th>
           <th scope="col">Date</th>
           <th scope="col"></th>
@@ -184,6 +189,7 @@ function Columns(props) {
           <th scope="col">UK chart date</th>
           <th scope="col">UK Peak Position</th>
           <th scope="col">UK no. of weeks</th>
+          <th scope="col">Type</th>
           <th scope="col">Date</th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -194,6 +200,7 @@ function Columns(props) {
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Resolution</th>
+          <th scope="col">Type</th>
           <th scope="col">Date</th>
           <th scope="col"></th>
           <th scope="col"></th>
@@ -203,6 +210,7 @@ function Columns(props) {
       return (
         <tr>
           <th scope="col">Name</th>
+          <th scope="col">Type</th>
           <th scope="col">Date</th>
           <th scope="col"></th>
           <th scope="col"></th>

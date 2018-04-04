@@ -120,15 +120,16 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
   const token = req.body.jwt
   const userID = jwt.decode(token, 'secret').user._id
 
-
   async.each(req.files, (file, callback) => {
-    const name = file.originalname
+    const nameExtensionArr = file.originalname.split('.')
+    const name = nameExtensionArr[0]
+    const extension = nameExtensionArr[1]
     const filename = file.filename
     const filePath = file.path
 
-    if(name.match(/\.(txt)$/)){
+    if(file.originalname.match(/\.(txt)$/)){
       const description = fs.readFileSync(filePath,'utf8')
-      const diary = new Diary({userID: userID, filename: filename, name: name, description: description})
+      const diary = new Diary({userID: userID, filename: filename, name: name, fileType: extension, description: description})
       diary.save((err) => {
         if(err){
           return callback(err)
@@ -138,7 +139,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
-    else if(name.match(/\.(doc|docx)$/)){
+    else if(file.originalname.match(/\.(doc|docx)$/)){
       textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
         const myParser = new Parser
         const dataArray = myParser.parseDocString(text)
@@ -149,7 +150,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
             const date = new Date(dataArray[idx] + '-' + dataArray[idx+1].slice(0, 2) + '-' + dataArray[idx+1].slice(2, 4))
             const description = dataArray[idx+2]
             const eventType = dataArray[idx+3]
-            diaryArray.push({userID: userID,  filename: filename, name: name, description: description, created_at: date, eventType: eventType})
+            diaryArray.push({userID: userID,  filename: filename, name: name, fileType: extension, description: description, created_at: date, eventType: eventType})
             idx += 4
           }
           Diary.insertMany(diaryArray, (err) => {
@@ -162,7 +163,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
           })
         }
         else {
-          const diary = new Diary({userID: userID, filename: filename, name: name, description: text})
+          const diary = new Diary({userID: userID, filename: filename, name: name, fileType: extension, description: text})
           diary.save((err) => {
             if(err){
               return callback(err)
@@ -174,8 +175,8 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
-    else if(name.match(/\.(wtv|flv|mp4)$/)){
-      const video = new Video({userID: userID, filename: filename, name: name})
+    else if(file.originalname.match(/\.(wtv|flv|mp4)$/)){
+      const video = new Video({userID: userID, filename: filename, name: name, fileType: extension})
       video.save(function (err) {
         if(err){
           return callback(err)
@@ -185,9 +186,9 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
-    else if(name.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
+    else if(file.originalname.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
       const dimensions = sizeOf(filePath)
-      const photo = new Photo({userID: userID, filename: filename, name: name, resolution: dimensions.width + 'x' + dimensions.height})
+      const photo = new Photo({userID: userID, filename: filename, name: name, fileType: extension, resolution: dimensions.width + 'x' + dimensions.height})
       photo.save(function (err) {
         if(err){
           return callback(err)
@@ -197,7 +198,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
-    else if(name.match(/\.(mp3|wav)$/)){
+    else if(file.originalname.match(/\.(mp3|wav)$/)){
       const audioParser = new Parser
       const audioHash = audioParser.parseAudioString(name)
 
@@ -214,7 +215,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
       }
       else {
         mm(fs.createReadStream(filePath), (err, metadata) => {
-          audio = new Audio({userID: userID, filename: filename, name: name.split('.')[0], artist: metadata.artist[0], album: metadata.album[0]})
+          audio = new Audio({userID: userID, filename: filename, name: name, fileType: extension, artist: metadata.artist[0], album: metadata.album[0]})
           audio.save((err) => {
             if(err){
               return callback(err)
@@ -227,7 +228,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
       }
     }
     else {
-      entry = new Entry({userID: userID, name: name, filename: filename})
+      entry = new Entry({userID: userID, name: name, fileType: extension, filename: filename})
       entry.save((err) => {
         if(err){
           return callback(err)
