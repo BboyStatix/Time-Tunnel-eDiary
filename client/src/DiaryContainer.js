@@ -180,7 +180,7 @@ class DiaryContainer extends Component {
                 <tr>
                   <th scope="col">#</th>
                   <th scope="col">Name</th>
-                  <th scope="col">Description</th>
+                  <th className='diary-description-header' scope="col">Description</th>
                   <th scope="col">Event</th>
                   <th scope="col"></th>
                 </tr>
@@ -196,7 +196,7 @@ class DiaryContainer extends Component {
                     <tr key={idx}>
                       <th scope="row">{idx+1}</th>
                       <td className="text-truncate">{entry.name}</td>
-                      <td className="text-truncate">{entry.description}</td>
+                      <td className="diary-description text-truncate">{entry.description}</td>
                       <td>{entry.eventType}</td>
                       <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry._id)}>View</button></td>
                     </tr>
