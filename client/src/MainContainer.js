@@ -17,6 +17,7 @@ class MainContainer extends Component {
     super(props)
     this.formatDates = this.formatDates.bind(this)
     this.changeDateFormat = this.changeDateFormat.bind(this)
+    this.setDateFromDropDown = this.setDateFromDropDown.bind(this)
     this.loadJquery = this.loadJquery.bind(this)
     this.uploadFile = this.uploadFile.bind(this)
     this.state = {
@@ -245,8 +246,10 @@ class MainContainer extends Component {
     return day + '/' + month + '/' + year
   }
 
-  setDate(date){
-    this.setState({selectedDate: date})
+  setDateFromDropDown(e){
+    const date = e.target.value
+    const element = document.getElementById(date)
+    element.click()
   }
 
   uploadFile (e){
@@ -296,13 +299,47 @@ class MainContainer extends Component {
               <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Upload</button>
           </form>
           <form className="form-inline my-2 my-lg-0">
+            <select id='date-select-dropdown' className="form-control" onChange={this.setDateFromDropDown} value={this.state.selectedDate}>
+              {
+                this.state.dates.map((date, idx) =>
+                  <option key={idx}>{date}</option>
+                )
+              }
+            </select>
             <Link to={{pathname: "/search"}} >
-              <button className="btn btn-outline-success" style={{'marginRight': '10px'}}>Search</button>
+              <button className="btn btn-outline-success" style={{'marginRight': '10px', 'marginLeft': '10px'}}>Search</button>
             </Link>
             <button className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
           </form>
         </nav>
-        <br />
+        {
+          (this.state.dates.length !== 0) ?
+          <section className="cd-horizontal-timeline">
+          	<div className="timeline">
+          		<div className="events-wrapper">
+          			<div className="events">
+          				<ol>
+                    {
+                      this.state.dates.map((date,idx) =>
+                        <li key={idx}>
+                          <a id={date} onClick={() => this.setState({selectedDate: date})} data-date={date} className={(date === this.state.selectedDate) ? "selected" : null}>{date}</a>
+                        </li>
+                      )
+                    }
+          				</ol>
+          				<span className="filling-line" aria-hidden="true"></span>
+          			</div>
+          		</div>
+
+          		<ul className="cd-timeline-navigation">
+          			<li><a href="#0" className="prev inactive">Prev</a></li>
+          			<li><a href="#0" className="next">Next</a></li>
+          		</ul>
+          	</div>
+          </section>
+          :
+          null
+        }
         <div className="container-fluid">
           <div className="row">
             <div className="col">
@@ -322,34 +359,6 @@ class MainContainer extends Component {
             </div>
           </div>
         </div>
-        {
-          (this.state.dates.length !== 0) ?
-          <section className="cd-horizontal-timeline">
-          	<div className="timeline">
-          		<div className="events-wrapper">
-          			<div className="events">
-          				<ol>
-                    {
-                      this.state.dates.map((date,idx) =>
-                        <li key={idx}>
-                          <a onClick={this.setDate.bind(this, date)} data-date={date} className={(date === this.state.selectedDate) ? "selected" : null}>{date}</a>
-                        </li>
-                      )
-                    }
-          				</ol>
-          				<span className="filling-line" aria-hidden="true"></span>
-          			</div>
-          		</div>
-
-          		<ul className="cd-timeline-navigation">
-          			<li><a href="#0" className="prev inactive">Prev</a></li>
-          			<li><a href="#0" className="next">Next</a></li>
-          		</ul>
-          	</div>
-          </section>
-          :
-          null
-        }
       </div>
     )
   }

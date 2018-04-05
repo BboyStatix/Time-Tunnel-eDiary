@@ -1,5 +1,5 @@
 .card-body {
-  height: 200px;
+  height: 240px;
   overflow: auto;
 }
 
@@ -14,4 +14,26 @@ table {
 .expandLogo {
   max-width: 3%;
   cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+  table {
+    table-layout: auto;
+  }
+
+  .diary-description-header {
+    display:none;
+    width:0;
+    height:0;
+    opacity:0;
+    visibility: collapse;
+  }
+
+  .diary-description {
+    display:none;
+    width:0;
+    height:0;
+    opacity:0;
+    visibility: collapse;
+  }
 }

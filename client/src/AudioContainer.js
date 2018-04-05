@@ -141,9 +141,6 @@ class AudioContainer extends Component {
           <div className="card-body">
             <div className="container">
               {
-                this.state.entries === undefined ?
-                <div className="row"></div>
-                :
                 this.state.entries.map((entry,idx) =>
                   <div className="row" key={idx}>
                     <ReactAudioPlayer
