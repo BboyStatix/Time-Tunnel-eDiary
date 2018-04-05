@@ -23,7 +23,6 @@ Main Components
   -webkit-transition: opacity 0.2s;
   -moz-transition: opacity 0.2s;
   transition: opacity 0.2s;
-
 }
 .cd-horizontal-timeline::before {
   /* never visible - this is used in jQuery to check the current MQ */
@@ -33,7 +32,8 @@ Main Components
 .cd-horizontal-timeline.loaded {
   /* show the timeline after events position has been set (using JavaScript) */
   opacity: 1;
-  margin-top: 0px;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 .cd-horizontal-timeline .timeline {
   position: relative;

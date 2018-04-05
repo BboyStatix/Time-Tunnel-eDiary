@@ -91,7 +91,8 @@ class DiaryContainer extends Component {
     var expandedEntries = this.state.entries.filter((entry) => {
       const name = entry.name.toLowerCase()
       const description = entry.description.toLowerCase()
-      return name.indexOf(query) !== -1 || description.indexOf(query) !== -1
+      const eventType = entry.eventType.toLowerCase()
+      return name.indexOf(query) !== -1 || description.indexOf(query) !== -1 || eventType.indexOf(query) !== -1
     })
     this.setState({
       expandedEntries: expandedEntries
@@ -105,7 +106,9 @@ class DiaryContainer extends Component {
         {
           props.entries.map((expandedEntry, index) =>
             <tr key={'expanded' + index}>
-              <td className="text-truncate">{expandedEntry.name}</td><td className="text-truncate">{expandedEntry.description}</td>
+              <td className="text-truncate">{expandedEntry.name}</td>
+              <td className="text-truncate">{expandedEntry.description}</td>
+              <td>{expandedEntry.eventType}</td>
             </tr>
           )
         }
@@ -153,8 +156,9 @@ class DiaryContainer extends Component {
                 <table className="table table-hover table-bordered">
                   <thead>
                     <tr>
-                      <th scope="col">name</th>
-                      <th scope="col">description</th>
+                      <th scope="col">Name</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">Event</th>
                     </tr>
                   </thead>
                   <ExpandedEntries entries={this.state.expandedEntries} />
