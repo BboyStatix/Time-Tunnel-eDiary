@@ -78,7 +78,6 @@ class PhotoContainer extends Component {
           <table className="table table-hover">
             <thead>
               <tr>
-                <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Resolution</th>
                 <th scope="col"></th>
@@ -86,14 +85,8 @@ class PhotoContainer extends Component {
             </thead>
             <tbody>
               {
-                this.state.entries === undefined ?
-                <tr>
-                  <th scope="row">1</th>
-                </tr>
-                :
                 this.state.entries.map((entry,idx) =>
                   <tr key={idx}>
-                    <th scope="row">{idx+1}</th>
                     <td className="text-truncate">{entry.name}</td>
                     <td>{entry.resolution}</td>
                     <td><button className="btn btn-outline-success" onClick={() => this.setState({modalVisible: true, modalTitle: entry.name, filename: entry.filename})}>View</button></td>

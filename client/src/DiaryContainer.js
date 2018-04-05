@@ -178,7 +178,6 @@ class DiaryContainer extends Component {
             <table className="table table-hover">
               <thead>
                 <tr>
-                  <th scope="col">#</th>
                   <th scope="col">Name</th>
                   <th className='diary-description-header' scope="col">Description</th>
                   <th scope="col">Event</th>
@@ -187,14 +186,8 @@ class DiaryContainer extends Component {
               </thead>
               <tbody>
                 {
-                  this.state.entries === undefined ?
-                  <tr>
-                    <th scope="row">1</th>
-                  </tr>
-                  :
                   this.state.entries.map((entry,idx) =>
                     <tr key={idx}>
-                      <th scope="row">{idx+1}</th>
                       <td className="text-truncate">{entry.name}</td>
                       <td className="diary-description text-truncate">{entry.description}</td>
                       <td>{entry.eventType}</td>
