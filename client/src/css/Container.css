@@ -7,7 +7,11 @@
   overflow: auto;
 }
 
-table {
+.entry-page-table {
+  table-layout: fixed;
+}
+
+.main-page-table {
   table-layout: fixed;
 }
 
@@ -17,7 +21,7 @@ table {
 }
 
 @media screen and (max-width: 900px) {
-  table {
+  .main-page-table {
     table-layout: auto;
   }
 

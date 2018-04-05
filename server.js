@@ -200,7 +200,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
     }
     else if(file.originalname.match(/\.(mp3|wav)$/)){
       const audioParser = new Parser
-      const audioHash = audioParser.parseAudioString(name)
+      const audioHash = audioParser.parseAudioString(file.originalname)
 
       if (Object.keys(audioHash).length !== 0){
         audio = new Audio(Object.assign({userID: userID, filename: filename}, audioHash))

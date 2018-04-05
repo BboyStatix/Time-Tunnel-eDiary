@@ -21,7 +21,8 @@ class Table extends Component {
       switch (this.props.type) {
         case 'Diary':
           const description = entry.description === undefined ? '' : entry.description.toLowerCase()
-          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || description.indexOf(query) !== -1
+          const eventType = entry.eventType === undefined ? '' : entry.eventType.toLowerCase()
+          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || description.indexOf(query) !== -1 || eventType.indexOf(query) !== -1
         case 'Audio':
           const artist = entry.artist === undefined ? '' : entry.artist.toLowerCase()
           const album = entry.album === undefined ? '' : entry.album.toLowerCase()
@@ -70,7 +71,7 @@ class Table extends Component {
 
     return (
       <div className="entry_container">
-        <table className="table table-hover table-bordered">
+        <table className="table table-hover table-bordered entry-page-table">
           <thead>
             <Columns type={this.props.type}/>
           </thead>
@@ -108,21 +109,8 @@ function RowData(props) {
     case 'Audio':
       return (
         <tr key={idx}>
-          <td className="text-truncate" title={entry.name}>
-            <a target='_blank' href={'http://www.google.com/search?q=' + entry.name.toLowerCase()}>
-              {entry.name}
-            </a>
-          </td>
-          <td className="text-truncate" title={entry.artist}>
-            {
-              entry.artist === undefined ?
-              null
-              :
-              <a target='_blank' href={'http://www.google.com/search?q=' + entry.artist.toLowerCase()}>
-                {entry.artist}
-              </a>
-            }
-          </td>
+          <td className="text-truncate">{entry.name}</td>
+          <td className="text-truncate" title={entry.artist}>{entry.artist}</td>
           <td className="text-truncate" title={entry.album}>{entry.album}</td>
           <td className="text-truncate" title={entry.information}>{entry.information}</td>
           <td>{entry.usChartDate}</td>

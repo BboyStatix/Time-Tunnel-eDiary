@@ -79,7 +79,7 @@ class VideoContainer extends Component {
             Video
           </div>
           <div className="card-body" style={{padding: 0}}>
-            <table className="table table-hover">
+            <table className="table table-hover main-page-table">
               <thead>
                 <tr>
                   <th scope="col">Name</th>
