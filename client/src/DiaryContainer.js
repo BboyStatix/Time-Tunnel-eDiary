@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import expandLogo from './img/expand.svg'
 
+import DiaryModal from './DiaryModal'
+
 class DiaryContainer extends Component {
   constructor(props){
     super(props)
@@ -119,23 +121,8 @@ class DiaryContainer extends Component {
       <div>
         {
           this.state.modalVisible ?
-          <div className="custom-modal" id="myModal" onClick={this.closeModal}>
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">{this.state.modalTitle}</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span id="cross" aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body diary-body">
-                  <p>{this.state.modalBody}</p>
-                </div>
-                <div className="modal-footer">
-                  <button id="closeButton" type="button" className="btn btn-secondary">Close</button>
-                </div>
-              </div>
-            </div>
+          <div onClick={this.closeModal}>
+            <DiaryModal modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} />
           </div>
           :
           null
@@ -153,7 +140,7 @@ class DiaryContainer extends Component {
                     <button className="btn btn-outline-primary" style={{'marginRight': '10px'}}>Search</button>
                   </Link>
                 </nav>
-                <table className="table table-hover table-bordered">
+                <table className="table table-hover table-bordered main-page-table">
                   <thead>
                     <tr>
                       <th scope="col">Name</th>
@@ -175,7 +162,7 @@ class DiaryContainer extends Component {
             <img className='expandLogo float-right' src={expandLogo} onClick={this.expandContainer} />
           </div>
           <div className="card-body" style={{padding: 0}}>
-            <table className="table table-hover">
+            <table className="table table-hover main-page-table">
               <thead>
                 <tr>
                   <th scope="col">Name</th>

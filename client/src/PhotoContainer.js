@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import PhotoModal from './PhotoModal'
+
 class PhotoContainer extends Component {
   constructor(props){
     super(props)
@@ -49,23 +51,8 @@ class PhotoContainer extends Component {
       <div>
         {
           this.state.modalVisible ?
-          <div className="custom-modal" id="myModal" onClick={this.closeModal}>
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">{this.state.modalTitle}</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span id="cross" aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                <img src={"/photo/view?jwt=" + localStorage.jwt + "&filename=" + this.state.filename}></img>
-                </div>
-                <div className="modal-footer">
-                  <button id="closeButton" type="button" className="btn btn-secondary">Close</button>
-                </div>
-              </div>
-            </div>
+          <div onClick={this.closeModal}>
+            <PhotoModal modalTitle={this.state.modalTitle} filename={this.state.filename}/>
           </div>
           :
           null
@@ -75,7 +62,7 @@ class PhotoContainer extends Component {
           Photo
         </div>
         <div className="card-body" style={{padding: 0}}>
-          <table className="table table-hover">
+          <table className="table table-hover main-page-table">
             <thead>
               <tr>
                 <th scope="col">Name</th>

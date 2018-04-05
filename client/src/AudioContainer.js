@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import ReactAudioPlayer from 'react-audioplayer'
 import expandLogo from './img/expand.svg'
 
+import { Link } from 'react-router-dom'
+
 class AudioContainer extends Component {
   constructor(props){
     super(props)
@@ -109,8 +111,11 @@ class AudioContainer extends Component {
                   <form className="form-inline my-2 my-lg-0" onSubmit={this.handleFormSubmit}>
                     <input className="form-control mr-sm-2" placeholder="Search" onChange={this.handleSearch} />
                   </form>
+                  <Link to={{pathname: "/search", search: 'type=Audio'}}>
+                    <button className="btn btn-outline-danger" style={{'marginRight': '10px'}}>Search</button>
+                  </Link>
                 </nav>
-                <table className="table table-hover table-bordered">
+                <table className="table table-hover table-bordered main-page-table">
                   <thead>
                     <tr>
                       <th scope="col">Song</th>
