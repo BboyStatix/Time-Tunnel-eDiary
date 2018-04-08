@@ -8,7 +8,7 @@
     "startMac": "concurrently \"npm run dbMac\" \"npm run server\" \"npm run client\"",
     "server": "node server.js",
     "dbMac": "mongod --dbpath ./data/db",
-    "dbWindows": "C:\\Program Files\\MongoDB\\Server\\3.6\bin\\mongod.exe --dbpath ./data/db",
+    "dbWindows": "C:\\Program Files\\MongoDB\\Server\\3.6\\bin\\mongod.exe --dbpath ./data/db",
     "client": "node start-client.js",
     "test": "mocha"
   },
