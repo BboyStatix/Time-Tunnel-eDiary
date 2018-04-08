@@ -4,8 +4,11 @@
   "description": "Express server",
   "main": "server.js",
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "start": "concurrently \"npm run dbWindows\" \"npm run server\" \"npm run client\"",
+    "startMac": "concurrently \"npm run dbMac\" \"npm run server\" \"npm run client\"",
     "server": "node server.js",
+    "dbMac": "mongod --dbpath ./data/db",
+    "dbWindows": "C:\\mongod\\bin\\mongod.exe --dbpath ./data/db",
     "client": "node start-client.js",
     "test": "mocha"
   },
