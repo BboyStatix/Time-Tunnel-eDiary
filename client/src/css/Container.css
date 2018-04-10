@@ -3,6 +3,11 @@
   overflow: auto;
 }
 
+#searchButton {
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
 .entry_container {
   overflow: auto;
 }
@@ -39,5 +44,9 @@
     height:0;
     opacity:0;
     visibility: collapse;
+  }
+
+  #searchButton {
+    margin: 10px;
   }
 }
