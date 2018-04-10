@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { Switch, Route } from 'react-router-dom'
 
 import AuthContainer from './AuthContainer'
-import MainContainer from './MainContainer'
-import EntryContainer from './EntryContainer'
 import Header from './Header'
+import ParentContainer from './ParentContainer'
 
 import './css/App.css'
 
@@ -40,10 +38,7 @@ class App extends Component {
         <Header />
         {
           this.state.authenticated ?
-          <Switch>
-            <Route exact path="/" component={MainContainer} />
-            <Route path="/search" component={EntryContainer} />
-          </Switch>
+          <ParentContainer />
           :
           <AuthContainer />
         }
