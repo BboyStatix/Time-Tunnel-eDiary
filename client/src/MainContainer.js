@@ -307,9 +307,9 @@ class MainContainer extends Component {
               }
             </select>
             <Link to={{pathname: "/search"}} >
-              <button className="btn btn-outline-success" style={{'marginRight': '10px', 'marginLeft': '10px'}}>Search</button>
+              <button id="searchButton" className="btn btn-outline-success">Search</button>
             </Link>
-            <button className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
+            <button id="logoutButton" className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
           </form>
         </nav>
         {
