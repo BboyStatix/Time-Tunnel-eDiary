@@ -188,7 +188,7 @@ class AudioContainer extends Component {
                       <td className="diary-description text-truncate">{entry.artist}</td>
                       <td>{entry.album}</td>
                       <td>{entry.information}</td>
-                      <td><button className="btn btn-outline-danger" onClick={() => this.showModal(entry.name, entry.filename)}>Play</button></td>
+                      <td><button className="btn btn-outline-danger" onClick={this.props.audioHandler}>Play</button></td>
                     </tr>
                   )
                 }

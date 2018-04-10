@@ -1,3 +1,6 @@
+
+
+
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -352,7 +355,7 @@ class MainContainer extends Component {
           <br />
           <div className="row">
             <div className="col">
-              <AudioContainer date={this.state.selectedDate} />
+              <AudioContainer date={this.state.selectedDate} audioHandler={this.props.audioHandler}/>
             </div>
             <div className="col">
               <VideoContainer date={this.state.selectedDate} />

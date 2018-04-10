@@ -11,7 +11,7 @@ class ParentContainer extends Component {
   }
 
   audioHandler() {
-    console.log('going to play audio!!!')
+    console.log('test')
   }
 
   render() {
