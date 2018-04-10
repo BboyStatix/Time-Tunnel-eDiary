@@ -13,12 +13,12 @@ class AudioModal extends Component {
                 <span id="cross" aria-hidden="true">&times;</span>
               </button>
             </div>
-            {/* <div className="modal-body diary-body">
+            <div className="modal-body diary-body">
               <ReactAudioPlayer
                 playlist={[{name: this.props.name, src: "/audio/view?jwt=" + localStorage.jwt + "&filename=" + this.props.filename}]}
                 style={{width: '100%'}}
               />
-            </div> */}
+            </div>
             <div className="modal-footer">
               <button id="closeButton" type="button" className="btn btn-secondary">Close</button>
             </div>

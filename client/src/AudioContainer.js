@@ -2,23 +2,17 @@ import React, { Component } from 'react'
 import expandLogo from './img/expand.svg'
 
 import { Link } from 'react-router-dom'
-import AudioModal from './AudioModal'
 
 class AudioContainer extends Component {
   constructor(props){
     super(props)
     this.fetchEntries = this.fetchEntries.bind(this)
-    this.showModal = this.showModal.bind(this)
-    this.closeModal = this.closeModal.bind(this)
     this.expandContainer = this.expandContainer.bind(this)
     this.closeContainerModal = this.closeContainerModal.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
     this.state = {
       entries: [],
-      modalVisible: false,
-      songName: '',
-      filename: '',
       expandedEntries: [],
       containerExpanded: false
     }
@@ -44,19 +38,6 @@ class AudioContainer extends Component {
     .then((json) => {
       this.setState({entries: json.entries, expandedEntries: json.entries})
     })
-  }
-
-  showModal(songName, filename) {
-    this.setState({modalVisible: true, songName: songName, filename:  filename})
-  }
-
-  closeModal(e) {
-    const modal = document.getElementById('myModal')
-    const cross = document.getElementById('cross')
-    const closeButton = document.getElementById('closeButton')
-    if(e.target === modal || e.target === cross || e.target === closeButton){
-      this.setState({modalVisible: false})
-    }
   }
 
   expandContainer() {
@@ -121,14 +102,6 @@ class AudioContainer extends Component {
     return (
       <div>
         {
-          this.state.modalVisible ?
-          <div onClick={this.closeModal}>
-            <AudioModal songName={this.state.songName} filename={this.state.filename}/>
-          </div>
-          :
-          null
-        }
-        {
           this.state.containerExpanded ?
           <div className="custom-modal" id="containerModal" onClick={this.closeContainerModal}>
             <div className="modal-dialog" role="document">
@@ -188,7 +161,7 @@ class AudioContainer extends Component {
                       <td className="diary-description text-truncate">{entry.artist}</td>
                       <td>{entry.album}</td>
                       <td>{entry.information}</td>
-                      <td><button className="btn btn-outline-danger" onClick={this.props.audioHandler.bind(this, entry.name)}>Play</button></td>
+                      <td><button className="btn btn-outline-danger" onClick={this.props.audioHandler.bind(this, entry.name, entry.filename)}>Play</button></td>
                     </tr>
                   )
                 }
