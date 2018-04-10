@@ -10,8 +10,8 @@ class ParentContainer extends Component {
     this.audioHandler = this.audioHandler.bind(this)
   }
 
-  audioHandler() {
-    console.log('test')
+  audioHandler(value) {
+    console.log(value)
   }
 
   render() {
