@@ -29,7 +29,7 @@ class ParentContainer extends Component {
         </Switch>
         {
           this.state.audioPlayerVisible ?
-          <div key={Math.random()} id='audioPlayer' onClick={this.closeModal}>
+          <div key={this.state.filename} id='audioPlayer'>
             <AudioPlayer songName={this.state.songName} filename={this.state.filename}/>
           </div>
           :
