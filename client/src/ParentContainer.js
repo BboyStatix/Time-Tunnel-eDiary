@@ -13,6 +13,7 @@ class ParentContainer extends Component {
   constructor(props){
     super(props)
     this.audioHandler = this.audioHandler.bind(this)
+    this.closeAudioPlayer = this.closeAudioPlayer.bind(this)
     this.state = {
       audioPlayerVisible: false,
       songName: '',
@@ -22,6 +23,10 @@ class ParentContainer extends Component {
 
   audioHandler(songName, filename) {
     this.setState({audioPlayerVisible: true, songName: songName, filename: filename})
+  }
+
+  closeAudioPlayer() {
+    this.setState({audioPlayerVisible: false})
   }
 
   render() {
@@ -39,7 +44,12 @@ class ParentContainer extends Component {
             onDrag={this.handleDrag}
             onStop={this.handleStop}>
             <div className='audio-player card' key={this.state.filename}>
-              <div className='audio-header card-header bg-danger text-light'>Audio</div>
+              <div className='audio-header card-header bg-danger text-light'>
+                Audio
+                <button type="button" className="close" aria-label="Close" onClick={this.closeAudioPlayer}>
+                  <span style={{color: 'black'}} aria-hidden="true">&times;</span>
+                </button>
+              </div>
               <br />
               <AudioPlayer songName={this.state.songName} filename={this.state.filename}/>
             </div>
