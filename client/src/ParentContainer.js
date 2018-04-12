@@ -20,8 +20,11 @@ class ParentContainer extends Component {
     this.state = {
       name: '',
       filename: '',
+      songName: '',
+      songFileName: '',
       modalBody: '',
       modalVisible: false,
+      audioPlayerVisible: false,
       modalType: ''
     }
   }
@@ -29,7 +32,7 @@ class ParentContainer extends Component {
   popupHandler(name, filename, description, type) {
     switch (type) {
       case 'Audio':
-        this.setState({modalVisible: true, modalType: 'Audio', name: name, filename: filename})
+        this.setState({audioPlayerVisible: true, modalType: 'Audio', songName: name, songFileName: filename})
         break
       case 'Diary':
         this.setState({modalVisible: true, modalType: 'Diary', name: name, filename: filename, modalBody: description})
@@ -56,7 +59,7 @@ class ParentContainer extends Component {
   }
 
   closeAudioPlayer() {
-    this.setState({modalVisible: false})
+    this.setState({audioPlayerVisible: false})
   }
 
   render() {
@@ -67,8 +70,36 @@ class ParentContainer extends Component {
           <Route path="/search" render={(props) => <EntryContainer popupHandler={this.popupHandler} {...props} />} />
         </Switch>
         {
+          this.state.audioPlayerVisible ?
+            <Draggable
+              handle=".audio-header"
+              onStart={this.handleStart}
+              onDrag={this.handleDrag}
+              onStop={this.handleStop}>
+              <div className='audio-player card' key={this.state.songName}>
+                <div className='audio-header card-header bg-danger text-light'>
+                  Audio
+                  <button type="button" className="close" aria-label="Close" onClick={this.closeAudioPlayer}>
+                    <span style={{color: 'black'}} aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <br />
+                <AudioPlayer songName={this.state.songName} filename={this.state.songFileName}/>
+              </div>
+            </Draggable>
+            :
+            null
+        }
+        {
           this.state.modalVisible ?
-          <Modal this={this} type={this.state.modalType} name={this.state.name} filename={this.state.filename} modalBody={this.state.modalBody} />
+          <Modal
+            this={this}
+            type={this.state.modalType}
+            name={this.state.name}
+            filename={this.state.filename}
+            modalBody={this.state.modalBody}
+            closeModal={this.closeModal}
+          />
           :
           null
         }
@@ -79,45 +110,25 @@ class ParentContainer extends Component {
 
 function Modal(props) {
   const type=props.type
-  const _this = props.this
 
   switch (type) {
     case 'Diary':
       return (
-        <div onClick={_this.closeModal}>
+        <div onClick={props.closeModal}>
           <DiaryModal modalBody={props.modalBody} modalTitle={props.name} />
         </div>
       )
     case 'Photo':
       return (
-        <div onClick={_this.closeModal}>
+        <div onClick={props.closeModal}>
           <PhotoModal modalTitle={props.modalTitle} filename={props.filename} />
         </div>
       )
     case 'Video':
       return (
-        <div onClick={_this.closeModal}>
+        <div onClick={props.closeModal}>
           <VideoModal modalTitle={props.modalTitle} filename={props.filename}/>
         </div>
-      )
-    case 'Audio':
-      return (
-        <Draggable
-          handle=".audio-header"
-          onStart={_this.handleStart}
-          onDrag={_this.handleDrag}
-          onStop={_this.handleStop}>
-          <div className='audio-player card' key={props.filename}>
-            <div className='audio-header card-header bg-danger text-light'>
-              Audio
-              <button type="button" className="close" aria-label="Close" onClick={_this.closeAudioPlayer}>
-                <span style={{color: 'black'}} aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <br />
-            <AudioPlayer songName={props.name} filename={props.filename}/>
-          </div>
-        </Draggable>
       )
     default:
       return null
