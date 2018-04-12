@@ -139,6 +139,17 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
+    else if(file.originalname.match(/\.(pdf)$/)){
+      const diary = new Diary({userID: userID, filename: filename, name: name, fileType: extension})
+      diary.save((err) => {
+        if(err){
+          return callback(err)
+        }
+        else{
+          callback()
+        }
+      })
+    }
     else if(file.originalname.match(/\.(doc|docx)$/)){
       textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
         const myParser = new Parser
@@ -175,7 +186,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
-    else if(file.originalname.match(/\.(wtv|flv|mp4)$/)){
+    else if(file.originalname.match(/\.(wtv|flv|mp4|webm)$/)){
       const video = new Video({userID: userID, filename: filename, name: name, fileType: extension})
       video.save(function (err) {
         if(err){
@@ -198,7 +209,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
-    else if(file.originalname.match(/\.(mp3|wav)$/)){
+    else if(file.originalname.match(/\.(mp3|wav|ogg|aac)$/)){
       const audioParser = new Parser
       const audioHash = audioParser.parseAudioString(file.originalname)
 
