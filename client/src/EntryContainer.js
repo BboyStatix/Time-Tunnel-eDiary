@@ -94,7 +94,7 @@ class EntryContainer extends Component {
           type={this.state.type}
           entries={this.state.entries}
           query={this.state.query}
-          audioHandler={this.props.audioHandler}
+          popupHandler={this.props.popupHandler}
         />
       </div>
     )

@@ -343,19 +343,19 @@ class MainContainer extends Component {
         <div className="container-fluid">
           <div className="row">
             <div className="col">
-              <DiaryContainer date={this.state.selectedDate} />
+              <DiaryContainer date={this.state.selectedDate} popupHandler={this.props.popupHandler}/>
             </div>
             <div className="col">
-              <PhotoContainer date={this.state.selectedDate} />
+              <PhotoContainer date={this.state.selectedDate} popupHandler={this.props.popupHandler}/>
             </div>
           </div>
           <br />
           <div className="row">
             <div className="col">
-              <AudioContainer date={this.state.selectedDate} audioHandler={this.props.audioHandler}/>
+              <AudioContainer date={this.state.selectedDate} popupHandler={this.props.popupHandler}/>
             </div>
             <div className="col">
-              <VideoContainer date={this.state.selectedDate} />
+              <VideoContainer date={this.state.selectedDate} popupHandler={this.props.popupHandler}/>
             </div>
           </div>
         </div>

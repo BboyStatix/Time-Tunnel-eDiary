@@ -296,27 +296,6 @@ app.delete('/delete/file', (req, res) => {
   })
 })
 
-app.post('/diary/view', (req, res) => {
-  const token = req.body.jwt
-  const userID = jwt.decode(token, 'secret').user._id
-  const objectID = req.body.objectID
-
-  Diary.find({userID: userID, _id: objectID}, (err, diary) => {
-    if(err) {
-      res.json({
-        status: 500,
-        error: err
-      })
-    }
-    else{
-      res.json({
-        status: 200,
-        data: diary[0].description
-      })
-    }
-  })
-})
-
 app.get('/photo/view', (req,res) => {
   const filePath = path.join(__dirname, '/uploads/' + req.query.filename)
   jwt.verify(req.query.jwt, 'secret', (err, decoded) => {

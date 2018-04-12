@@ -78,7 +78,7 @@ class Table extends Component {
           <tbody>
             {
               entries.map((entry, idx) =>
-                <RowData key={idx} type={this.props.type} entry={entry} idx={idx} downloadFile={this.downloadFile} deleteFile={this.deleteFile} audioHandler={this.props.audioHandler}/>
+                <RowData key={idx} type={this.props.type} entry={entry} idx={idx} downloadFile={this.downloadFile} deleteFile={this.deleteFile} popupHandler={this.props.popupHandler}/>
               )
             }
           </tbody>
@@ -97,7 +97,11 @@ function RowData(props) {
     case 'Diary':
       return (
         <tr key={idx}>
-          <td className="text-truncate link" title={entry.name}>{entry.name}</td>
+          <td className="text-truncate link" title={entry.name}>
+            <span className="link" onClick={props.popupHandler.bind(this, entry.name, '', entry.description, type)}>
+              {entry.name}
+            </span>
+          </td>
           <td className="text-truncate" title={entry.description}>{entry.description}</td>
           <td>{entry.eventType}</td>
           <td>{entry.fileType}</td>
@@ -110,7 +114,7 @@ function RowData(props) {
       return (
         <tr key={idx}>
           <td className="text-truncate" title={entry.name}>
-            <span className="link" onClick={props.audioHandler.bind(this, entry.name, entry.filename)}>
+            <span className="link" onClick={props.popupHandler.bind(this, entry.name, entry.filename, '', type)}>
               {entry.name}
             </span>
           </td>
@@ -132,7 +136,11 @@ function RowData(props) {
     case 'Photo':
       return (
         <tr key={idx}>
-          <td className="text-truncate" title={entry.name}>{entry.name}</td>
+          <td className="text-truncate" title={entry.name}>
+            <span className="link" onClick={props.popupHandler.bind(this, entry.name, entry.filename, '', type)}>
+              {entry.name}
+            </span>
+          </td>
           <td>{entry.resolution}</td>
           <td>{entry.fileType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
@@ -143,16 +151,11 @@ function RowData(props) {
     default:
       return (
         <tr key={idx}>
-          {
-            entry.type === 'Audio' ?
-            <td className="text-truncate" title={entry.name}>
-              <span className="link" onClick={props.audioHandler.bind(this, entry.name, entry.filename)}>
-                {entry.name}
-              </span>
-            </td>
-            :
-            <td className="text-truncate" title={entry.name}>{entry.name}</td>
-          }
+          <td className="text-truncate" title={entry.name}>
+            <span className="link" onClick={props.popupHandler.bind(this, entry.name, entry.filename, entry.description, entry.type)}>
+              {entry.name}
+            </span>
+          </td>
           <td>{entry.fileType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
           <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>

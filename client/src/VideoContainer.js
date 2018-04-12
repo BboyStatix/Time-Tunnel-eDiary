@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
-import { Player } from 'video-react'
-import "../node_modules/video-react/dist/video-react.css"
 
 class VideoContainer extends Component {
   constructor(props){
     super(props)
     this.fetchEntries = this.fetchEntries.bind(this)
-    this.closeModal = this.closeModal.bind(this)
     this.state = {
-      entries: [],
-      modalTitle: "Title",
-      filename: "",
-      modalVisible: false
+      entries: []
     }
   }
 
@@ -37,67 +31,31 @@ class VideoContainer extends Component {
     })
   }
 
-  closeModal(e) {
-    const modal = document.getElementById('myModal')
-    const cross = document.getElementById('cross')
-    const closeButton = document.getElementById('closeButton')
-    if(e.target === modal || e.target === cross || e.target === closeButton){
-      this.setState({modalVisible: false})
-    }
-  }
-
   render() {
     return (
-      <div>
-        {
-          this.state.modalVisible ?
-          <div className="custom-modal" id="myModal" onClick={this.closeModal}>
-            <div className="modal-dialog" role="document">
-              <div className="modal-content">
-                <div className="modal-header">
-                  <h5 className="modal-title">{this.state.modalTitle}</h5>
-                  <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                    <span id="cross" aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div className="modal-body">
-                  <Player>
-                    <source src={"/video/view?jwt=" + localStorage.jwt + "&filename=" + this.state.filename} />
-                  </Player>
-                </div>
-                <div className="modal-footer">
-                  <button id="closeButton" type="button" className="btn btn-secondary">Close</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          :
-          null
-        }
-        <div className="card">
-          <div className="card-header bg-dark text-light">
-            Video
-          </div>
-          <div className="card-body" style={{padding: 0}}>
-            <table className="table table-hover main-page-table">
-              <thead>
-                <tr>
-                  <th scope="col">Name</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {
-                  this.state.entries.map((entry,idx) =>
-                    <tr key={idx}>
-                      <td className="text-truncate">{entry.name}</td>
-                      <td><button className="btn btn-outline-dark" onClick={() => this.setState({modalVisible: true, modalTitle: entry.name, filename: entry.filename})}>Watch</button></td>
-                    </tr>
-                  )
-                }
-              </tbody>
-            </table>
-          </div>
+      <div className="card">
+        <div className="card-header bg-dark text-light">
+          Video
+        </div>
+        <div className="card-body" style={{padding: 0}}>
+          <table className="table table-hover main-page-table">
+            <thead>
+              <tr>
+                <th scope="col">Name</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              {
+                this.state.entries.map((entry,idx) =>
+                  <tr key={idx}>
+                    <td className="text-truncate">{entry.name}</td>
+                    <td><button className="btn btn-outline-dark" onClick={this.props.popupHandler.bind(this, entry.name, entry.filename, '', 'Video')}>Watch</button></td>
+                  </tr>
+                )
+              }
+            </tbody>
+          </table>
         </div>
       </div>
     )

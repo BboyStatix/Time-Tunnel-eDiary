@@ -5,7 +5,7 @@ import ReactAudioPlayer from 'react-audioplayer'
 class AudioPlayer extends Component {
 
   componentWillUnmount() {
-    ReactDOM.findDOMNode(this.audioComponent).dispatchEvent(new Event('audio-pause'));
+    ReactDOM.findDOMNode(this.audioComponent).dispatchEvent(new Event('audio-pause'))
   }
 
   render() {
