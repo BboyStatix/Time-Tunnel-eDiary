@@ -3,6 +3,15 @@
   overflow: auto;
 }
 
+.link {
+  cursor:pointer;
+  color: #7b9d6f;
+}
+
+.link:hover {
+  text-decoration:underline;
+}
+
 #searchButton {
   margin-right: 10px;
   margin-left: 10px;
