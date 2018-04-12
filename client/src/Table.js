@@ -46,7 +46,7 @@ class Table extends Component {
     })
   }
 
-  deleteFile(id, filename) {
+  deleteFile(objectID, filename) {
     fetch('/delete/file', {
       method: 'DELETE',
       headers: {
@@ -54,13 +54,14 @@ class Table extends Component {
       },
       body: JSON.stringify({
         jwt: localStorage.jwt,
+        objectID: objectID,
         filename: filename
       })
     }).then((res) => {
         return res.json()
     }).then((json) => {
       const entries = this.state.entries.filter((entry) => {
-        return !(entry._id === id)
+        return !(entry._id === objectID)
       })
       this.setState({entries: entries})
     })
