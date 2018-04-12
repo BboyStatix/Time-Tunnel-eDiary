@@ -38,8 +38,9 @@ class ParentContainer extends Component {
             onStart={this.handleStart}
             onDrag={this.handleDrag}
             onStop={this.handleStop}>
-            <div className='audio-player' key={this.state.filename}>
-              <div className='audio-header'>Audio</div>
+            <div className='audio-player card' key={this.state.filename}>
+              <div className='audio-header card-header bg-danger text-light'>Audio</div>
+              <br />
               <AudioPlayer songName={this.state.songName} filename={this.state.filename}/>
             </div>
           </Draggable>
