@@ -2,14 +2,10 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import expandLogo from './img/expand.svg'
 
-import DiaryModal from './DiaryModal'
-
 class DiaryContainer extends Component {
   constructor(props){
     super(props)
     this.fetchEntries = this.fetchEntries.bind(this)
-    this.showModal = this.showModal.bind(this)
-    this.closeModal = this.closeModal.bind(this)
     this.expandContainer = this.expandContainer.bind(this)
     this.closeContainerModal = this.closeContainerModal.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
@@ -17,9 +13,6 @@ class DiaryContainer extends Component {
     this.state = {
       entries: [],
       expandedEntries: [],
-      modalTitle: "",
-      modalBody: "",
-      modalVisible: false,
       containerExpanded: false
     }
   }
@@ -44,19 +37,6 @@ class DiaryContainer extends Component {
     .then((json) => {
       this.setState({entries: json.entries, expandedEntries: json.entries})
     })
-  }
-
-  showModal(name, description) {
-    this.setState({modalVisible: true, modalTitle: name, modalBody: description})
-  }
-
-  closeModal(e) {
-    const modal = document.getElementById('myModal')
-    const cross = document.getElementById('cross')
-    const closeButton = document.getElementById('closeButton')
-    if(e.target === modal || e.target === cross || e.target === closeButton){
-      this.setState({modalVisible: false})
-    }
   }
 
   expandContainer() {
@@ -105,14 +85,6 @@ class DiaryContainer extends Component {
 
     return (
       <div>
-        {
-          this.state.modalVisible ?
-          <div onClick={this.closeModal}>
-            <DiaryModal modalBody={this.state.modalBody} modalTitle={this.state.modalTitle} />
-          </div>
-          :
-          null
-        }
         {
           this.state.containerExpanded ?
           <div className="custom-modal" id="containerModal" onClick={this.closeContainerModal}>
@@ -164,7 +136,7 @@ class DiaryContainer extends Component {
                       <td className="text-truncate">{entry.name}</td>
                       <td className="diary-description text-truncate">{entry.description}</td>
                       <td>{entry.eventType}</td>
-                      <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry.description)}>View</button></td>
+                      <td><button className="btn btn-outline-primary" onClick={this.props.popupHandler.bind(this, entry.name, '', entry.description, 'Diary')}>View</button></td>
                     </tr>
                   )
                 }

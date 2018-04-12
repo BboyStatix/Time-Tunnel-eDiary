@@ -161,7 +161,7 @@ class AudioContainer extends Component {
                       <td className="diary-description text-truncate">{entry.artist}</td>
                       <td>{entry.album}</td>
                       <td>{entry.information}</td>
-                      <td><button className="btn btn-outline-danger" onClick={this.props.audioHandler.bind(this, entry.name, entry.filename)}>Play</button></td>
+                      <td><button className="btn btn-outline-danger" onClick={this.props.popupHandler.bind(this, entry.name, entry.filename, '', 'Audio')}>Play</button></td>
                     </tr>
                   )
                 }

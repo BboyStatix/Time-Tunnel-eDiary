@@ -1,17 +1,11 @@
 import React, { Component } from 'react'
 
-import PhotoModal from './PhotoModal'
-
 class PhotoContainer extends Component {
   constructor(props){
     super(props)
     this.fetchEntries = this.fetchEntries.bind(this)
-    this.closeModal = this.closeModal.bind(this)
     this.state = {
-      entries: [],
-      modalTitle: "",
-      filename: "",
-      modalVisible: false
+      entries: []
     }
   }
 
@@ -37,26 +31,8 @@ class PhotoContainer extends Component {
     })
   }
 
-  closeModal(e) {
-    const modal = document.getElementById('myModal')
-    const cross = document.getElementById('cross')
-    const closeButton = document.getElementById('closeButton')
-    if(e.target === modal || e.target === cross || e.target === closeButton){
-      this.setState({modalVisible: false})
-    }
-  }
-
   render() {
     return (
-      <div>
-        {
-          this.state.modalVisible ?
-          <div onClick={this.closeModal}>
-            <PhotoModal modalTitle={this.state.modalTitle} filename={this.state.filename}/>
-          </div>
-          :
-          null
-        }
       <div className="card">
         <div className="card-header bg-success text-light">
           Photo
@@ -76,7 +52,7 @@ class PhotoContainer extends Component {
                   <tr key={idx}>
                     <td className="text-truncate">{entry.name}</td>
                     <td>{entry.resolution}</td>
-                    <td><button className="btn btn-outline-success" onClick={() => this.setState({modalVisible: true, modalTitle: entry.name, filename: entry.filename})}>View</button></td>
+                    <td><button className="btn btn-outline-success" onClick={this.props.popupHandler.bind(this, entry.name, entry.filename, '', 'Photo')}>View</button></td>
                   </tr>
                 )
               }
@@ -84,7 +60,6 @@ class PhotoContainer extends Component {
           </table>
         </div>
       </div>
-    </div>
     )
   }
 }
