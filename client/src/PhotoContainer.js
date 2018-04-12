@@ -9,7 +9,7 @@ class PhotoContainer extends Component {
     this.closeModal = this.closeModal.bind(this)
     this.state = {
       entries: [],
-      modalTitle: "Title",
+      modalTitle: "",
       filename: "",
       modalVisible: false
     }

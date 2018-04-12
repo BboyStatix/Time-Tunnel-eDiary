@@ -17,8 +17,8 @@ class DiaryContainer extends Component {
     this.state = {
       entries: [],
       expandedEntries: [],
-      modalTitle: "Title",
-      modalBody: "Body",
+      modalTitle: "",
+      modalBody: "",
       modalVisible: false,
       containerExpanded: false
     }
@@ -46,22 +46,8 @@ class DiaryContainer extends Component {
     })
   }
 
-  showModal(name, objectID) {
-    fetch('/diary/view', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        jwt: localStorage.jwt,
-        objectID: objectID
-      })
-    }).then((res) => {
-      return res.json()
-    })
-    .then((json) => {
-      this.setState({modalVisible: true, modalTitle: name, modalBody: json.data})
-    })
+  showModal(name, description) {
+    this.setState({modalVisible: true, modalTitle: name, modalBody: description})
   }
 
   closeModal(e) {
@@ -178,7 +164,7 @@ class DiaryContainer extends Component {
                       <td className="text-truncate">{entry.name}</td>
                       <td className="diary-description text-truncate">{entry.description}</td>
                       <td>{entry.eventType}</td>
-                      <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry._id)}>View</button></td>
+                      <td><button className="btn btn-outline-primary" onClick={() => this.showModal(entry.name, entry.description)}>View</button></td>
                     </tr>
                   )
                 }
