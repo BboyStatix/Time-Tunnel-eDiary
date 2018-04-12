@@ -5,6 +5,10 @@ import MainContainer from './MainContainer'
 import EntryContainer from './EntryContainer'
 import AudioPlayer from './AudioPlayer'
 
+import './css/AudioPlayer.css'
+
+import Draggable from 'react-draggable'
+
 class ParentContainer extends Component {
   constructor(props){
     super(props)
@@ -29,9 +33,16 @@ class ParentContainer extends Component {
         </Switch>
         {
           this.state.audioPlayerVisible ?
-          <div key={this.state.filename} id='audioPlayer'>
-            <AudioPlayer songName={this.state.songName} filename={this.state.filename}/>
-          </div>
+          <Draggable
+            handle=".audio-header"
+            onStart={this.handleStart}
+            onDrag={this.handleDrag}
+            onStop={this.handleStop}>
+            <div className='audio-player' key={this.state.filename}>
+              <div className='audio-header'>Audio</div>
+              <AudioPlayer songName={this.state.songName} filename={this.state.filename}/>
+            </div>
+          </Draggable>
           :
           null
         }

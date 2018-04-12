@@ -13,7 +13,6 @@ class AudioPlayer extends Component {
       <ReactAudioPlayer
         playlist={[{name: this.props.songName, src: "/audio/view?jwt=" + localStorage.jwt + "&filename=" + this.props.filename}]}
         autoPlay={true}
-        style={{width: '100%'}}
         ref={audioComponent => { this.audioComponent = audioComponent }}
       />
     )
