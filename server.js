@@ -161,7 +161,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
             const date = new Date(dataArray[idx] + '-' + dataArray[idx+1].slice(0, 2) + '-' + dataArray[idx+1].slice(2, 4))
             const description = dataArray[idx+2]
             const eventType = dataArray[idx+3]
-            diaryArray.push({userID: userID,  filename: filename, name: name, fileType: extension, description: description, created_at: date, eventType: eventType})
+            diaryArray.push({userID: userID, filename: filename, name: name, fileType: extension, description: description, created_at: date, eventType: eventType})
             idx += 4
           }
           Diary.insertMany(diaryArray, (err) => {
@@ -278,18 +278,33 @@ app.get('/download/file', (req, res) => {
 
 app.delete('/delete/file', (req, res) => {
   const filePath = path.join(__dirname, '/uploads/' + req.body.filename)
+  const objectID = req.body.objectID
+  const filename = req.body.filename
   const userID = jwt.decode(req.body.jwt, 'secret').user._id
-  Entry.remove({userID: userID, filename: req.body.filename}, (err, entry) => {
+
+  Entry.remove({userID: userID, _id: objectID, filename: filename}, (err) => {
     if(err){
       res.json({ status: 500, error: err })
     }
     else{
-      fs.unlink(filePath, (err) => {
-        if(err){
-          res.json({ status: 500, error: err })
+      Entry.find({userID: userID, filename: filename}, (error, entries) => {
+        if(error) {
+          res.json({ status: 500, error: error })
         }
         else {
-          res.json({ status: 200 })
+          if(entries.length === 0) {
+            fs.unlink(filePath, (deleteError) => {
+              if(deleteError){
+                res.json({ status: 500, error: deleteError })
+              }
+              else {
+                res.json({ status: 200 })
+              }
+            })
+          }
+          else {
+            res.json({ status: 200 })
+          }
         }
       })
     }
