@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import ReactAudioPlayer from 'react-audioplayer'
 import expandLogo from './img/expand.svg'
 
 import { Link } from 'react-router-dom'
@@ -143,19 +142,31 @@ class AudioContainer extends Component {
             Audio
             <img className='expandLogo float-right' src={expandLogo} onClick={this.expandContainer}/>
           </div>
-          <div className="card-body">
-            <div className="container">
-              {
-                this.state.entries.map((entry,idx) =>
-                  <div className="row" key={idx}>
-                    <ReactAudioPlayer
-                      playlist={[{name: entry.name, src: "/audio/view?jwt=" + localStorage.jwt + "&filename=" + entry.filename}]}
-                      style={{width: '100%'}}
-                    />
-                  </div>
-                )
-              }
-            </div>
+          <div className="card-body" style={{padding: 0}}>
+            <table className="table table-hover main-page-table">
+              <thead>
+                <tr>
+                  <th scope="col">Song</th>
+                  <th scope="col">Artist</th>
+                  <th scope="col">Album</th>
+                  <th scope="col">Information</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  this.state.entries.map((entry,idx) =>
+                    <tr key={idx}>
+                      <td className="text-truncate">{entry.name}</td>
+                      <td className="diary-description text-truncate">{entry.artist}</td>
+                      <td>{entry.album}</td>
+                      <td>{entry.information}</td>
+                      <td><button className="btn btn-outline-danger" onClick={this.props.audioHandler.bind(this, entry.name, entry.filename)}>Play</button></td>
+                    </tr>
+                  )
+                }
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

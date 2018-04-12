@@ -90,7 +90,12 @@ class EntryContainer extends Component {
             <button className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
           </form>
         </nav>
-        <Table type={this.state.type} entries={this.state.entries} query={this.state.query} />
+        <Table
+          type={this.state.type}
+          entries={this.state.entries}
+          query={this.state.query}
+          audioHandler={this.props.audioHandler}
+        />
       </div>
     )
   }
