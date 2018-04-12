@@ -9,7 +9,6 @@ class ParentContainer extends Component {
   constructor(props){
     super(props)
     this.audioHandler = this.audioHandler.bind(this)
-    this.closeModal = this.closeModal.bind(this)
     this.state = {
       audioPlayerVisible: false,
       songName: '',
@@ -21,15 +20,6 @@ class ParentContainer extends Component {
     this.setState({audioPlayerVisible: true, songName: songName, filename: filename})
   }
 
-  closeModal(e) {
-    const modal = document.getElementById('myModal')
-    const cross = document.getElementById('cross')
-    const closeButton = document.getElementById('closeButton')
-    if(e.target === modal || e.target === cross || e.target === closeButton){
-      this.setState({audioPlayerVisible: false})
-    }
-  }
-
   render() {
     return (
       <div>
@@ -39,8 +29,8 @@ class ParentContainer extends Component {
         </Switch>
         {
           this.state.audioPlayerVisible ?
-          <div onClick={this.closeModal}>
-            <AudioModal name={this.state.songName} filename={this.state.filename}/>
+          <div key={Math.random()} id='audioPlayer' onClick={this.closeModal}>
+            <AudioModal songName={this.state.songName} filename={this.state.filename}/>
           </div>
           :
           null
