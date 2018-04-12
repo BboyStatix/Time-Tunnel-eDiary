@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom'
 
 import MainContainer from './MainContainer'
 import EntryContainer from './EntryContainer'
-import AudioModal from './AudioModal'
+import AudioPlayer from './AudioPlayer'
 
 class ParentContainer extends Component {
   constructor(props){
@@ -30,7 +30,7 @@ class ParentContainer extends Component {
         {
           this.state.audioPlayerVisible ?
           <div key={Math.random()} id='audioPlayer' onClick={this.closeModal}>
-            <AudioModal songName={this.state.songName} filename={this.state.filename}/>
+            <AudioPlayer songName={this.state.songName} filename={this.state.filename}/>
           </div>
           :
           null
