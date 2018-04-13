@@ -270,6 +270,9 @@ class MainContainer extends Component {
       }).then((json) => {
         $('#file').val('')
         this.setState({uploading: false})
+        if(json.success !== true) {
+          alert(json.error)    
+        }
         if(json.reload === true){
           window.location.reload()
         }

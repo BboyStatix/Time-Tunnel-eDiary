@@ -161,7 +161,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
             const date = new Date(dataArray[idx] + '-' + dataArray[idx+1].slice(0, 2) + '-' + dataArray[idx+1].slice(2, 4))
             const description = dataArray[idx+2]
             const eventType = dataArray[idx+3]
-            diaryArray.push({userID: userID, filename: filename, name: name, fileType: extension, description: description, created_at: date, eventType: eventType})
+            diaryArray.push({userID: userID, filename: filename, name: name+i, fileType: extension, description: description, created_at: date, eventType: eventType})
             idx += 4
           }
           Diary.insertMany(diaryArray, (err) => {
@@ -255,7 +255,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         res.json({success: true, reload: true})
       }
       else {
-        res.json({success: false})
+        res.json({success: false, error: 'Some files could not be uploaded due to non-unique filenames'})
       }
     }
     else{
