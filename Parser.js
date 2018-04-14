@@ -58,8 +58,8 @@ function getParsedAudioHash(string){
 function getParsedPhotoHash(string) {
   const photoHash = {}
 
-  if(string.search(/^\[.*]_{([0-9]{4}(-[0-9][0-9]){2}){0,1}}<.*>\(.*\)\[.*]/g) !== -1) {
-    photoHash.name = string.substring(1, string.indexOf(']'))
+  if(string.search(/^\(.*\)_{([0-9]{4}(-[0-9][0-9]){2}){0,1}}<.*>\(.*\)\[.*]/g) !== -1) {
+    photoHash.name = string.substring(1, string.indexOf(')_'))
 
     const date = string.substring(string.indexOf('{')+1, string.indexOf('}'))
     if(date.length !== 0) {
@@ -70,7 +70,7 @@ function getParsedPhotoHash(string) {
     }
 
     photoHash.location = string.substring(string.indexOf('<')+1, string.indexOf('>'))
-    photoHash.occasion = string.substring(string.indexOf('(')+1, string.indexOf(')'))
+    photoHash.occasion = string.substring(string.indexOf('>(')+2, string.indexOf(')['))
 
     splitStringArray = string.split('.')
     const tagString = splitStringArray[0]

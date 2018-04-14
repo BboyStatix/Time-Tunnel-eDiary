@@ -108,10 +108,10 @@ describe('Parser', () => {
   describe('parsePhotoString', () => {
     it('should return photo hash', () => {
       const photoArray = [
-        "[]_{}<>()[].jpg",
-        "[test]_{1998-12-12}<>()[].jpg",
-        "[Hiking image]_{1998-13-12}<Lantau Island>(Hiking)[Jack,Nick,Ben].png",
-        "[Picture with jackie]_{1993-11-12}<Hong Kong>(On set with Jackie)[Jackie Chan,Actor].jpg"
+        "()_{}<>()[].jpg",
+        "(test)_{1998-12-12}<>()[].jpg",
+        "(Hiking image)_{1998-13-12}<Lantau Island>(Hiking)[Jack,Nick,Ben].png",
+        "(Picture with jackie)_{1993-11-12}<Hong Kong>(On set with Jackie)[Jackie Chan,Actor].jpg"
       ]
 
       const expectationArray = [
