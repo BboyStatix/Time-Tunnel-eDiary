@@ -13,6 +13,11 @@ module.exports = class Parser {
     return parsedAudioHash
 
   }
+
+  parsePhotoString(string) {
+    const parsedPhotoHash = getParsedPhotoHash(string)
+    return parsedPhotoHash
+  }
 }
 
 function getParsedAudioHash(string){
@@ -48,4 +53,20 @@ function getParsedAudioHash(string){
   }
 
   return audioHash
+}
+
+function getParsedPhotoHash(string) {
+  const photoHash = {}
+
+  if(string.search(/^{([0-9]{4}(-[0-9][0-9]){2}){0,1}}<[a-zA-Z0-9]*>\([a-zA-Z0-9]*\)_\[(([a-zA-Z0-9]*,)*[a-zA-Z0-9]*)*]/g) !== -1) {
+    const date = string.substring(1, string.indexOf ('}'))
+    if(date.length !== 0) {
+      photoHash.created_at = new Date(date)
+    }
+    photoHash.location = string.substring(string.indexOf('<')+1, string.indexOf('>'))
+    photoHash.occasion = string.substring(string.indexOf('(')+1, string.indexOf(')'))
+    photoHash.fileType = string.split('.')[1]
+  }
+
+  return photoHash
 }
