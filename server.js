@@ -199,7 +199,20 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
     }
     else if(file.originalname.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
       const dimensions = sizeOf(filePath)
-      const photo = new Photo({userID: userID, filename: filename, name: name, fileType: extension, resolution: dimensions.width + 'x' + dimensions.height})
+      const resolution = dimensions.width + 'x' + dimensions.height
+      const photoParser = new Parser
+      const photoHash = photoParser.parsePhotoString(file.originalname)
+
+      if (Object.keys(photoHash).length !== 0) {
+        photo = new Photo(Object.assign({
+          userID: userID,
+          filename: filename,
+          resolution: resolution
+        }, photoHash))
+      }
+      else {
+        photo = new Photo({ userID: userID, name: name, filename: filename, resolution: resolution, fileType: extension})
+      }
       photo.save(function (err) {
         if(err){
           return callback(err)

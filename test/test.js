@@ -108,33 +108,34 @@ describe('Parser', () => {
   describe('parsePhotoString', () => {
     it('should return photo hash', () => {
       const photoArray = [
-        "{}<>()[].jpg",
-        "{1998-12-12}<>()[].jpg",
-        "{1998-13-12}<Lantau Island>(Hiking)[Jack,Nick,Ben].png",
-        "{1993-11-12}<Hong Kong>(On set with Jackie)[Jackie Chan,Actor].jpg"
+        "[]_{}<>()[].jpg",
+        "[test]_{1998-12-12}<>()[].jpg",
+        "[Hiking image]_{1998-13-12}<Lantau Island>(Hiking)[Jack,Nick,Ben].png",
+        "[Picture with jackie]_{1993-11-12}<Hong Kong>(On set with Jackie)[Jackie Chan,Actor].jpg"
       ]
 
       const expectationArray = [
-        ['', '', '', '', 'jpg'],
-        [(new Date('1998-12-12')).getTime(), '', '', [''], 'jpg'],
-        ['', 'Lantau Island', 'Hiking', ['Jack', 'Nick', 'Ben'], 'png'],
-        [(new Date('1993-11-12')).getTime(), 'Hong Kong', 'On set with Jackie', ['Jackie Chan', 'Actor'], 'jpg']
+        ['', '', '', '', '', 'jpg'],
+        ['test', (new Date('1998-12-12')).getTime(), '', '', [''], 'jpg'],
+        ['Hiking image', '', 'Lantau Island', 'Hiking', ['Jack', 'Nick', 'Ben'], 'png'],
+        ['Picture with jackie', (new Date('1993-11-12')).getTime(), 'Hong Kong', 'On set with Jackie', ['Jackie Chan', 'Actor'], 'jpg']
       ]
 
       photoArray.forEach((photoString, index) => {
         const parsedStringHash = parser.parsePhotoString(photoString)
         const testArray = expectationArray[index]
 
+        assert.equal(parsedStringHash.name, testArray[0])
         if(parsedStringHash.created_at !== undefined) {
-          assert.equal(parsedStringHash.created_at.getTime(), testArray[0])
+          assert.equal(parsedStringHash.created_at.getTime(), testArray[1])
         }
-        assert.equal(parsedStringHash.location, testArray[1])
-        assert.equal(parsedStringHash.occasion, testArray[2])
-        var tagsArray = testArray[3]
+        assert.equal(parsedStringHash.location, testArray[2])
+        assert.equal(parsedStringHash.occasion, testArray[3])
+        var tagsArray = testArray[4]
         for(var i = 0; i<tagsArray.length; i++) {
             assert.equal(parsedStringHash.tags[i], tagsArray[i])
         }
-        assert.equal(parsedStringHash.fileType, testArray[4])
+        assert.equal(parsedStringHash.fileType, testArray[5])
       })
     })
 
