@@ -110,13 +110,15 @@ describe('Parser', () => {
       const photoArray = [
         "{}<>()[].jpg",
         "{1998-12-12}<>()[].jpg",
-        "{1998-13-12}<Lantau Island>(Hiking)[Jack,Nick,Ben].png"
+        "{1998-13-12}<Lantau Island>(Hiking)[Jack,Nick,Ben].png",
+        "{1993-11-12}<Hong Kong>(On set with Jackie)[Jackie Chan,Actor].jpg"
       ]
 
       const expectationArray = [
         ['', '', '', '', 'jpg'],
         [(new Date('1998-12-12')).getTime(), '', '', '', 'jpg'],
-        ['', 'Lantau Island', 'Hiking', 'Jack,Nick,Ben', 'png']
+        ['', 'Lantau Island', 'Hiking', 'Jack,Nick,Ben', 'png'],
+        [new Date('1993-11-12').getTime(), 'Hong Kong', 'On set with Jackie', 'Jackie Chan,Actor', 'jpg']
       ]
 
       photoArray.forEach((photoString, index) => {
