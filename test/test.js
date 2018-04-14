@@ -108,13 +108,15 @@ describe('Parser', () => {
   describe('parsePhotoString', () => {
     it('should return photo hash', () => {
       const photoArray = [
-        "{}<>()_[].jpg",
-        "{1998-12-12}<>()_[].jpg"
+        "{}<>()[].jpg",
+        "{1998-12-12}<>()[].jpg",
+        "{1998-13-12}<Lantau Island>(Hiking)[Jack,Nick,Ben].png"
       ]
 
       const expectationArray = [
         ['', '', '', '', 'jpg'],
-        [(new Date('1998-12-12')).getTime(), '', '', '', 'jpg']
+        [(new Date('1998-12-12')).getTime(), '', '', '', 'jpg'],
+        ['', 'Lantau Island', 'Hiking', 'Jack,Nick,Ben', 'png']
       ]
 
       photoArray.forEach((photoString, index) => {
@@ -124,7 +126,6 @@ describe('Parser', () => {
         if(parsedStringHash.created_at !== undefined) {
           assert.equal(parsedStringHash.created_at.getTime(), testArray[0])
         }
-
         assert.equal(parsedStringHash.location, testArray[1])
         assert.equal(parsedStringHash.occasion, testArray[2])
         // assert.equal(parsedStringHash.tags, testArray[3])

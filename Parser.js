@@ -58,10 +58,13 @@ function getParsedAudioHash(string){
 function getParsedPhotoHash(string) {
   const photoHash = {}
 
-  if(string.search(/^{([0-9]{4}(-[0-9][0-9]){2}){0,1}}<[a-zA-Z0-9]*>\([a-zA-Z0-9]*\)_\[(([a-zA-Z0-9]*,)*[a-zA-Z0-9]*)*]/g) !== -1) {
+  if(string.search(/^{([0-9]{4}(-[0-9][0-9]){2}){0,1}}<.*>\(.*\)\[.*]/g) !== -1) {
     const date = string.substring(1, string.indexOf ('}'))
     if(date.length !== 0) {
-      photoHash.created_at = new Date(date)
+      const dateObject = new Date(date)
+      if (dateObject.isValid()){
+        photoHash.created_at = dateObject
+      }
     }
     photoHash.location = string.substring(string.indexOf('<')+1, string.indexOf('>'))
     photoHash.occasion = string.substring(string.indexOf('(')+1, string.indexOf(')'))
@@ -69,4 +72,8 @@ function getParsedPhotoHash(string) {
   }
 
   return photoHash
+}
+
+Date.prototype.isValid = function () {
+    return this.getTime() === this.getTime()
 }
