@@ -48,7 +48,7 @@ class MainContainer extends Component {
   loadJquery(){
     $(document).ready(function($){
       var timelines = $('.cd-horizontal-timeline'),
-        eventsMinDistance = 75;
+        eventsMinDistance = 85;
 
       (timelines.length > 0) && initTimeline(timelines);
 
@@ -271,7 +271,7 @@ class MainContainer extends Component {
         $('#file').val('')
         this.setState({uploading: false})
         if(json.success !== true) {
-          alert(json.error)    
+          alert(json.error)
         }
         if(json.reload === true){
           window.location.reload()

@@ -209,18 +209,26 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
           filename: filename,
           resolution: resolution
         }, photoHash))
+        photo.save(function (err) {
+          if(err){
+            return callback(err)
+          }
+          else{
+            callback('reload')
+          }
+        })
       }
       else {
         photo = new Photo({ userID: userID, name: name, filename: filename, resolution: resolution, fileType: extension})
+        photo.save(function (err) {
+          if(err){
+            return callback(err)
+          }
+          else{
+            callback()
+          }
+        })
       }
-      photo.save(function (err) {
-        if(err){
-          return callback(err)
-        }
-        else{
-          callback()
-        }
-      })
     }
     else if(file.originalname.match(/\.(mp3|wav|ogg|aac)$/)){
       const audioParser = new Parser
