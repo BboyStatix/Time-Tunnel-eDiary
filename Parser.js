@@ -68,7 +68,13 @@ function getParsedPhotoHash(string) {
     }
     photoHash.location = string.substring(string.indexOf('<')+1, string.indexOf('>'))
     photoHash.occasion = string.substring(string.indexOf('(')+1, string.indexOf(')'))
-    photoHash.fileType = string.split('.')[1]
+
+    splitStringArray = string.split('.')
+    const tagString = splitStringArray[0]
+    const tagArray = tagString.substring(string.indexOf('[')+1,string.indexOf(']')).split(',')
+    photoHash.tags = tagArray
+    
+    photoHash.fileType = splitStringArray[1]
   }
 
   return photoHash

@@ -116,9 +116,9 @@ describe('Parser', () => {
 
       const expectationArray = [
         ['', '', '', '', 'jpg'],
-        [(new Date('1998-12-12')).getTime(), '', '', '', 'jpg'],
-        ['', 'Lantau Island', 'Hiking', 'Jack,Nick,Ben', 'png'],
-        [new Date('1993-11-12').getTime(), 'Hong Kong', 'On set with Jackie', 'Jackie Chan,Actor', 'jpg']
+        [(new Date('1998-12-12')).getTime(), '', '', [''], 'jpg'],
+        ['', 'Lantau Island', 'Hiking', ['Jack', 'Nick', 'Ben'], 'png'],
+        [(new Date('1993-11-12')).getTime(), 'Hong Kong', 'On set with Jackie', ['Jackie Chan', 'Actor'], 'jpg']
       ]
 
       photoArray.forEach((photoString, index) => {
@@ -130,7 +130,10 @@ describe('Parser', () => {
         }
         assert.equal(parsedStringHash.location, testArray[1])
         assert.equal(parsedStringHash.occasion, testArray[2])
-        // assert.equal(parsedStringHash.tags, testArray[3])
+        var tagsArray = testArray[3]
+        for(var i = 0; i<tagsArray.length; i++) {
+            assert.equal(parsedStringHash.tags[i], tagsArray[i])
+        }
         assert.equal(parsedStringHash.fileType, testArray[4])
       })
     })
