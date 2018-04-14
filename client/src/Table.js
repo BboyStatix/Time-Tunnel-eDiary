@@ -142,6 +142,8 @@ function RowData(props) {
               {entry.name}
             </span>
           </td>
+          <td className="text-truncate" title={entry.location}>{entry.location}</td>
+          <td className="text-truncate" title={entry.occasion}>{entry.occasion}</td>
           <td>{entry.resolution}</td>
           <td>{entry.fileType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
@@ -204,6 +206,8 @@ function Columns(props) {
       return (
         <tr>
           <th scope="col">Name</th>
+          <th scope="col">Location</th>
+          <th scope="col">Occasion</th>
           <th scope="col">Resolution</th>
           <th scope="col">Type</th>
           <th scope="col">Date</th>

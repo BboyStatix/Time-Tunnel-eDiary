@@ -426,7 +426,7 @@ app.post('/photo/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Photo.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, resolution: true, _id: false}, (err, entries) => {
+  Photo.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, location: true, occasion: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
