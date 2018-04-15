@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const mm = require('musicmetadata')
 const async = require('async')
+const ffmpeg = require('ffmpeg')
+
 const app = express()
 
 const multer = require('multer')
@@ -187,15 +189,40 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
       })
     }
     else if(file.originalname.match(/\.(wtv|flv|mp4|webm)$/)){
-      const video = new Video({userID: userID, filename: filename, name: name, fileType: extension})
-      video.save(function (err) {
-        if(err){
-          return callback(err)
-        }
-        else{
-          callback()
-        }
-      })
+      try {
+    		var process = new ffmpeg(filePath)
+    		process.then((video) => {
+    			// Video metadata
+          // console.log(video)
+    			console.log(video.metadata)
+          video
+          .setVideoFormat('mp4')
+          .save(filePath, (error, file) => {
+            if(!error) {
+              console.log('Video file: ' + file)
+              const video = new Video({userID: userID, filename: filename, name: name, fileType: extension})
+              video.save(function (err) {
+                if(err){
+                  return callback(err)
+                }
+                else{
+                  callback()
+                }
+              })
+            }
+            else {
+              return callback(error)
+            }
+          })
+    		}, (err) => {
+    			console.log('Error: ' + err)
+          calback(err)
+    		})
+    	} catch (e) {
+    		console.log(e.code)
+    		console.log(e.msg)
+        callback(e)
+    	}
     }
     else if(file.originalname.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
       const dimensions = sizeOf(filePath)
@@ -234,30 +261,47 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
       const audioParser = new Parser
       const audioHash = audioParser.parseAudioString(file.originalname)
 
-      if (Object.keys(audioHash).length !== 0){
-        audio = new Audio(Object.assign({userID: userID, filename: filename}, audioHash))
-        audio.save((err) => {
-          if(err){
-            return callback(err)
-          }
-          else{
-            callback()
-          }
-        })
-      }
-      else {
-        mm(fs.createReadStream(filePath), (err, metadata) => {
-          audio = new Audio({userID: userID, filename: filename, name: name, fileType: extension, artist: metadata.artist[0], album: metadata.album[0]})
-          audio.save((err) => {
-            if(err){
-              return callback(err)
-            }
-            else{
-              callback()
-            }
-          })
-        })
-      }
+      try {
+    		var process = new ffmpeg(filePath)
+    		process.then(function (audio) {
+    			// Video metadata
+    			console.log(audio.metadata)
+    			// FFmpeg configuration
+    			// console.log(audio.info_configuration);
+    		}, function (err) {
+    			console.log('Error: ' + err);
+    		});
+    	} catch (e) {
+    		console.log(e.code);
+    		console.log(e.msg);
+    	}
+
+      callback()
+
+      // if (Object.keys(audioHash).length !== 0){
+      //   audio = new Audio(Object.assign({userID: userID, filename: filename}, audioHash))
+      //   audio.save((err) => {
+      //     if(err){
+      //       return callback(err)
+      //     }
+      //     else{
+      //       callback()
+      //     }
+      //   })
+      // }
+      // else {
+      //   mm(fs.createReadStream(filePath), (err, metadata) => {
+      //     audio = new Audio({userID: userID, filename: filename, name: name, fileType: extension, artist: metadata.artist[0], album: metadata.album[0]})
+      //     audio.save((err) => {
+      //       if(err){
+      //         return callback(err)
+      //       }
+      //       else{
+      //         callback()
+      //       }
+      //     })
+      //   })
+      // }
     }
     else {
       entry = new Entry({userID: userID, name: name, fileType: extension, filename: filename})
