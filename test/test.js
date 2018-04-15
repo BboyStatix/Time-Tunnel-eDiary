@@ -3,8 +3,9 @@ const assert = require('assert')
 const Parser = require('../Parser.js')
 
 describe('Parser', () => {
+  const parser = new Parser
+
   describe('parseAudioString', () => {
-    const audioParser = new Parser
 
     it('should parse audio string type(with song info) and return appropriate hash', () => {
       const songArray = [
@@ -21,7 +22,7 @@ describe('Parser', () => {
       ]
 
       songArray.forEach((audioString, index) => {
-        const parsedStringHash = audioParser.parseAudioString(audioString)
+        const parsedStringHash = parser.parseAudioString(audioString)
         const testArray = expectationArray[index]
 
         assert.equal(parsedStringHash.usChartDate, testArray[0])
@@ -76,7 +77,7 @@ describe('Parser', () => {
       ]
 
       songArray.forEach((audioString, index) => {
-        const parsedStringHash = audioParser.parseAudioString(audioString)
+        const parsedStringHash = parser.parseAudioString(audioString)
         const testArray = expectationArray[index]
 
         assert.equal(parsedStringHash.usChartDate, testArray[0])
@@ -95,11 +96,51 @@ describe('Parser', () => {
     })
 
     it('should return empty hash if inappropriate string', () => {
-      var parsedStringHash = audioParser.parseAudioString('sfsafkndsafa.mp3')
+      var parsedStringHash = parser.parseAudioString('sfsafkndsafa.jpg')
       assert.deepEqual(parsedStringHash, {})
-      parsedStringHash = audioParser.parseAudioString(
+      parsedStringHash = parser.parseAudioString(
         "{}[]_{}[]()_test_test [aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaend]"
       )
+      assert.deepEqual(parsedStringHash, {})
+    })
+  })
+
+  describe('parsePhotoString', () => {
+    it('should return photo hash', () => {
+      const photoArray = [
+        "(test)_{1998-12-12}<>()[].jpg",
+        "(Hiking image)_{1998-13-12}<Lantau Island>(Hiking)[Jack,Nick,Ben].png",
+        "(Picture with jackie)_{1993-11-12}<Hong Kong>(On set with Jackie)[Jackie Chan,Actor].jpg"
+      ]
+
+      const expectationArray = [
+        ['test', (new Date('1998-12-12')).getTime(), '', '', [''], 'jpg'],
+        ['Hiking image', '', 'Lantau Island', 'Hiking', ['Jack', 'Nick', 'Ben'], 'png'],
+        ['Picture with jackie', (new Date('1993-11-12')).getTime(), 'Hong Kong', 'On set with Jackie', ['Jackie Chan', 'Actor'], 'jpg']
+      ]
+
+      photoArray.forEach((photoString, index) => {
+        const parsedStringHash = parser.parsePhotoString(photoString)
+        const testArray = expectationArray[index]
+
+        assert.equal(parsedStringHash.name, testArray[0])
+        if(parsedStringHash.created_at !== undefined) {
+          assert.equal(parsedStringHash.created_at.getTime(), testArray[1])
+        }
+        assert.equal(parsedStringHash.location, testArray[2])
+        assert.equal(parsedStringHash.occasion, testArray[3])
+        var tagsArray = testArray[4]
+        for(var i = 0; i<tagsArray.length; i++) {
+            assert.equal(parsedStringHash.tags[i], tagsArray[i])
+        }
+        assert.equal(parsedStringHash.fileType, testArray[5])
+      })
+    })
+
+    it('should return empty hash if inappropriate string', () => {
+      var parsedStringHash = parser.parsePhotoString('sfsafkndsafa.jpg')
+      assert.deepEqual(parsedStringHash, {})
+      var parsedStringHash = parser.parsePhotoString("()_{}<>()[].jpg")
       assert.deepEqual(parsedStringHash, {})
     })
   })

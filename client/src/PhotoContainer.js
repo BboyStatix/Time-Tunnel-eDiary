@@ -42,7 +42,8 @@ class PhotoContainer extends Component {
             <thead>
               <tr>
                 <th scope="col">Name</th>
-                <th scope="col">Resolution</th>
+                <th scope="col">Location</th>
+                <th scope="col">Occasion</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -51,7 +52,8 @@ class PhotoContainer extends Component {
                 this.state.entries.map((entry,idx) =>
                   <tr key={idx}>
                     <td className="text-truncate">{entry.name}</td>
-                    <td>{entry.resolution}</td>
+                    <td className="text-truncate">{entry.location}</td>
+                    <td className="text-truncate">{entry.occasion}</td>
                     <td><button className="btn btn-outline-success" onClick={this.props.popupHandler.bind(this, entry.name, entry.filename, '', 'Photo')}>View</button></td>
                   </tr>
                 )

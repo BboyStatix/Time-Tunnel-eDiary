@@ -199,15 +199,36 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
     }
     else if(file.originalname.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
       const dimensions = sizeOf(filePath)
-      const photo = new Photo({userID: userID, filename: filename, name: name, fileType: extension, resolution: dimensions.width + 'x' + dimensions.height})
-      photo.save(function (err) {
-        if(err){
-          return callback(err)
-        }
-        else{
-          callback()
-        }
-      })
+      const resolution = dimensions.width + 'x' + dimensions.height
+      const photoParser = new Parser
+      const photoHash = photoParser.parsePhotoString(file.originalname)
+
+      if (Object.keys(photoHash).length !== 0) {
+        photo = new Photo(Object.assign({
+          userID: userID,
+          filename: filename,
+          resolution: resolution
+        }, photoHash))
+        photo.save(function (err) {
+          if(err){
+            return callback(err)
+          }
+          else{
+            callback('reload')
+          }
+        })
+      }
+      else {
+        photo = new Photo({ userID: userID, name: name, filename: filename, resolution: resolution, fileType: extension})
+        photo.save(function (err) {
+          if(err){
+            return callback(err)
+          }
+          else{
+            callback()
+          }
+        })
+      }
     }
     else if(file.originalname.match(/\.(mp3|wav|ogg|aac)$/)){
       const audioParser = new Parser
@@ -405,7 +426,7 @@ app.post('/photo/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Photo.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, resolution: true, _id: false}, (err, entries) => {
+  Photo.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, location: true, occasion: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,

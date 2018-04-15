@@ -115,19 +115,19 @@ function Modal(props) {
     case 'Diary':
       return (
         <div onClick={props.closeModal}>
-          <DiaryModal modalBody={props.modalBody} modalTitle={props.name} />
+          <DiaryModal modalTitle={props.name} modalBody={props.modalBody} />
         </div>
       )
     case 'Photo':
       return (
         <div onClick={props.closeModal}>
-          <PhotoModal modalTitle={props.modalTitle} filename={props.filename} />
+          <PhotoModal modalTitle={props.name} filename={props.filename} />
         </div>
       )
     case 'Video':
       return (
         <div onClick={props.closeModal}>
-          <VideoModal modalTitle={props.modalTitle} filename={props.filename}/>
+          <VideoModal modalTitle={props.name} filename={props.filename}/>
         </div>
       )
     default:

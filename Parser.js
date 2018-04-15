@@ -13,6 +13,11 @@ module.exports = class Parser {
     return parsedAudioHash
 
   }
+
+  parsePhotoString(string) {
+    const parsedPhotoHash = getParsedPhotoHash(string)
+    return parsedPhotoHash
+  }
 }
 
 function getParsedAudioHash(string){
@@ -48,4 +53,35 @@ function getParsedAudioHash(string){
   }
 
   return audioHash
+}
+
+function getParsedPhotoHash(string) {
+  const photoHash = {}
+
+  if(string.search(/^\(.+\)_{([0-9]{4}(-[0-9][0-9]){2}){0,1}}<.*>\(.*\)\[.*]/g) !== -1) {
+    photoHash.name = string.substring(1, string.indexOf(')_'))
+
+    const date = string.substring(string.indexOf('{')+1, string.indexOf('}'))
+    if(date.length !== 0) {
+      const dateObject = new Date(date)
+      if (dateObject.isValid()){
+        photoHash.created_at = dateObject
+      }
+    }
+
+    photoHash.location = string.substring(string.indexOf('<')+1, string.indexOf('>'))
+    photoHash.occasion = string.substring(string.indexOf('>(')+2, string.indexOf(')['))
+
+    splitStringArray = string.split('.')
+    const tagString = splitStringArray[0]
+    const tagArray = tagString.substring(string.indexOf(')[')+2,string.indexOf('].')).split(',')
+    photoHash.tags = tagArray
+    photoHash.fileType = splitStringArray[1]
+  }
+
+  return photoHash
+}
+
+Date.prototype.isValid = function () {
+    return this.getTime() === this.getTime()
 }
