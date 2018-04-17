@@ -24,7 +24,7 @@
     "body-parser": "^1.18.2",
     "concurrently": "^3.5.1",
     "express": "^4.16.2",
-    "ffmpeg": "0.0.4",
+    "fluent-ffmpeg": "^2.1.2",
     "image-size": "^0.6.2",
     "jquery": "^3.3.1",
     "jsonwebtoken": "^8.1.1",
