@@ -188,13 +188,24 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
-    else if(file.originalname.match(/\.(wtv|flv|mp4|webm)$/)){
+    else if(file.originalname.match(/\.(wtv)$/)){
       ffmpeg.ffprobe(filePath,(err, metadata) => {
         if(err) {
           callback(err)
         }
         else {
           console.log(metadata)
+          callback()
+        }
+      })
+    }
+    else if(file.originalname.match(/\.(flv|mp4|webm)$/)){
+      const video = new Video({userID: userID, filename: filename, name: name, fileType: extension})
+      video.save((err) => {
+        if(err) {
+          return callback(err)
+        }
+        else {
           callback()
         }
       })
