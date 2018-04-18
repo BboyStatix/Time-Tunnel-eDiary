@@ -28,6 +28,9 @@ class Table extends Component {
           const album = entry.album === undefined ? '' : entry.album.toLowerCase()
           const information = entry.information === undefined ? '' : entry.information.toLowerCase()
           return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || artist.indexOf(query) !== -1 || album.indexOf(query) !== -1 || information.indexOf(query) !== -1
+        case 'Video':
+          var description = entry.description === undefined ? '' : entry.description.toLowerCase()
+          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || description.indexOf(query) !== -1
         default:
           return name.indexOf(query) !== -1 || date.indexOf(query) !== -1
       }
@@ -151,6 +154,21 @@ function RowData(props) {
           <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
         </tr>
       )
+    case 'Video':
+      return (
+        <tr key={idx}>
+          <td className="text-truncate" title={entry.name}>
+            <span className="link" onClick={props.popupHandler.bind(this, entry.name, entry.filename, entry.description, entry.type)}>
+              {entry.name}
+            </span>
+          </td>
+          <td className="text-truncate" title={entry.description}>{entry.description}</td>
+          <td>{entry.fileType}</td>
+          <td>{entry.created_at.slice(0,10)}</td>
+          <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
+          <td><button className="btn btn-outline-danger" onClick={() => props.deleteFile(entry._id, entry.filename)}>Delete</button></td>
+        </tr>
+      )
     default:
       return (
         <tr key={idx}>
@@ -209,6 +227,17 @@ function Columns(props) {
           <th scope="col">Location</th>
           <th scope="col">Occasion</th>
           <th scope="col">Resolution</th>
+          <th scope="col">Type</th>
+          <th scope="col">Date</th>
+          <th scope="col"></th>
+          <th scope="col"></th>
+        </tr>
+      )
+    case 'Video':
+      return (
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Description</th>
           <th scope="col">Type</th>
           <th scope="col">Date</th>
           <th scope="col"></th>
