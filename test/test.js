@@ -144,4 +144,40 @@ describe('Parser', () => {
       assert.deepEqual(parsedStringHash, {})
     })
   })
+
+  describe('parseWtvString', () => {
+    it('should return wtv hash', () => {
+      const wtvArray = [
+        "超級勁歌推介[粵]_Jade_2018_02_12_09_43_00.wtv",
+        "BBC News_BBC TWO_2010_06_30_01_23_00.wtv",
+        "Law and Order-SVU_Five_2008_08_12_23_36_55.wtv",
+        "Law and Order-SVU_Five_2008_23_12_23_36_55.wtv"
+      ]
+
+      const expectationArray = [
+        ['超級勁歌推介[粵]', 'Jade', (new Date('2018-02-12')).getTime(), '09:43:00', 'wtv'],
+        ['BBC News', 'BBC TWO', (new Date('2010-06-30')).getTime(), '01:23:00', 'wtv'],
+        ['Law and Order-SVU', 'Five', (new Date('2008-08-12')).getTime(), '23:36:55', 'wtv'],
+        ['Law and Order-SVU', 'Five', '', '23:36:55', 'wtv']
+      ]
+
+      wtvArray.forEach((wtvString, index) => {
+        const parsedStringHash = parser.parseWtvString(wtvString)
+        const testArray = expectationArray[index]
+
+        assert.equal(parsedStringHash.name, testArray[0])
+        assert.equal(parsedStringHash.channel, testArray[1])
+        if(parsedStringHash.created_at !== undefined) {
+          assert.equal(parsedStringHash.created_at.getTime(), testArray[2])
+        }
+        assert.equal(parsedStringHash.duration, testArray[3])
+        assert.equal(parsedStringHash.fileType, testArray[4])
+      })
+    })
+
+    it('should return empty hash if inappropriate string', () => {
+      var parsedStringHash = parser.parseWtvString('sfsafkndsafa.wtv')
+      assert.deepEqual(parsedStringHash, {})
+    })
+  })
 })
