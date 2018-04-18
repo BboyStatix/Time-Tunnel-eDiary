@@ -77,6 +77,7 @@ class DiaryContainer extends Component {
               <td className="text-truncate">{expandedEntry.name}</td>
               <td className="text-truncate">{expandedEntry.description}</td>
               <td>{expandedEntry.eventType}</td>
+              <td><button className="btn btn-outline-primary" onClick={props.popupHandler.bind(this, expandedEntry.name, '', expandedEntry.description, 'Diary')}>View</button></td>
             </tr>
           )
         }
@@ -104,9 +105,10 @@ class DiaryContainer extends Component {
                       <th scope="col">Name</th>
                       <th scope="col">Description</th>
                       <th scope="col">Event</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
-                  <ExpandedEntries entries={this.state.expandedEntries} />
+                  <ExpandedEntries entries={this.state.expandedEntries} popupHandler={this.props.popupHandler}/>
                 </table>
               </div>
             </div>
