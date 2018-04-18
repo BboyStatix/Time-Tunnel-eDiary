@@ -72,8 +72,8 @@ class VideoContainer extends Component {
         {
           props.entries.map((expandedEntry, index) =>
             <tr key={'expanded' + index}>
-              <td className="text-truncate">{expandedEntry.name}</td>
-              <td className="text-truncate">{expandedEntry.description}</td>
+              <td className="text-truncate" title={expandedEntry.name}>{expandedEntry.name}</td>
+              <td className="text-truncate" title={expandedEntry.description}>{expandedEntry.description}</td>
             </tr>
           )
         }
