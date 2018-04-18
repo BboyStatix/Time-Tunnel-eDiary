@@ -195,21 +195,31 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
         else {
           const description = metadata.format.tags['WM/SubTitleDescription']
-          const video = new Video({
-            userID: userID,
-            filename: filename,
-            name: name,
-            description: description,
-            fileType: extension
-          })
-          video.save((err) => {
-            if(err) {
-              return callback(err)
-            }
-            else {
-              callback()
-            }
-          })
+          const wtvParser = new Parser
+          const wtvHash = wtvParser.parseWtvString(file.originalname)
+
+          if (Object.keys(wtvHash).length !== 0){
+            video = new Video(Object.assign({userID: userID, filename: filename, description: description}, wtvHash))
+            video.save((err) => {
+              if(err){
+                return callback(err)
+              }
+              else{
+                callback()
+              }
+            })
+          }
+          else {
+            video = new Video({ userID: userID, filename: filename, name: name, fileType: extension, description: description })
+            video.save((err) => {
+              if(err){
+                return callback(err)
+              }
+              else{
+                callback()
+              }
+            })
+          }
         }
       })
     }
@@ -505,7 +515,8 @@ app.post('/video/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Video.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, description: true, filename: true, _id: false}, (err, entries) => {
+  Video.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}},
+    {name: true, description: true, channel: true, duration: true, filename: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
