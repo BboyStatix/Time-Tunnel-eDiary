@@ -10,6 +10,8 @@ import PhotoModal from './PhotoModal'
 import DiaryModal from './DiaryModal'
 
 import './css/AudioPlayer.css'
+import './css/Modal.css'
+import './css/Container.css'
 
 class ParentContainer extends Component {
   constructor(props){

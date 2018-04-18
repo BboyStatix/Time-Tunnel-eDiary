@@ -42,6 +42,7 @@ class VideoContainer extends Component {
             <thead>
               <tr>
                 <th scope="col">Name</th>
+                <th scope="col video-description-header">Description</th>
                 <th scope="col"></th>
               </tr>
             </thead>
@@ -50,6 +51,7 @@ class VideoContainer extends Component {
                 this.state.entries.map((entry,idx) =>
                   <tr key={idx}>
                     <td className="text-truncate">{entry.name}</td>
+                    <td className="video-description text-truncate">{entry.description}</td>
                     <td><button className="btn btn-outline-dark" onClick={this.props.popupHandler.bind(this, entry.name, entry.filename, '', 'Video')}>Watch</button></td>
                   </tr>
                 )
