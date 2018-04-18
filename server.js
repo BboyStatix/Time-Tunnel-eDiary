@@ -194,8 +194,22 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
           callback(err)
         }
         else {
-          console.log(metadata)
-          callback()
+          const description = metadata.format.tags['WM/SubTitleDescription']
+          const video = new Video({
+            userID: userID,
+            filename: filename,
+            name: name,
+            description: description,
+            fileType: extension
+          })
+          video.save((err) => {
+            if(err) {
+              return callback(err)
+            }
+            else {
+              callback()
+            }
+          })
         }
       })
     }
