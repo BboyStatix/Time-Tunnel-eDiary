@@ -163,6 +163,8 @@ function RowData(props) {
             </span>
           </td>
           <td className="text-truncate" title={entry.description}>{entry.description}</td>
+          <td>{entry.channel}</td>
+          <td>{entry.duration}</td>
           <td>{entry.fileType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
           <td><button className="btn btn-outline-primary" onClick={() => props.downloadFile(entry.name, entry.filename)}>Download</button></td>
@@ -238,6 +240,8 @@ function Columns(props) {
         <tr>
           <th scope="col">Name</th>
           <th scope="col">Description</th>
+          <th scope="col">Channel</th>
+          <th scope="col">Duration</th>
           <th scope="col">Type</th>
           <th scope="col">Date</th>
           <th scope="col"></th>
