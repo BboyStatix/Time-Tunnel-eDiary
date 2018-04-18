@@ -9,14 +9,16 @@ module.exports = class Parser {
   }
 
   parseAudioString(string) {
-    const parsedAudioHash = getParsedAudioHash(string)
-    return parsedAudioHash
+    return getParsedAudioHash(string)
 
   }
 
   parsePhotoString(string) {
-    const parsedPhotoHash = getParsedPhotoHash(string)
-    return parsedPhotoHash
+    return getParsedPhotoHash(string)
+  }
+
+  parseWtvString(string) {
+    return getParsedWtvHash(string)
   }
 }
 
@@ -80,6 +82,26 @@ function getParsedPhotoHash(string) {
   }
 
   return photoHash
+}
+
+function getParsedWtvHash(string) {
+  const wtvHash = {}
+
+  const wtvArray = string.split('_')
+  if(wtvArray.length === 8) {
+    wtvHash.name = wtvArray[0]
+    wtvHash.channel = wtvArray[1]
+
+    const date = wtvArray[2] + '-' + wtvArray[3] + '-' + wtvArray[4]
+    const dateObject = new Date(date)
+    if (dateObject.isValid()){
+      wtvHash.created_at = dateObject
+    }
+    wtvHash.duration = wtvArray[5] + ':' + wtvArray[6] + ':' + wtvArray[7].split('.')[0]
+    wtvHash.fileType = 'wtv'
+  }
+
+  return wtvHash
 }
 
 Date.prototype.isValid = function () {

@@ -74,6 +74,8 @@ class VideoContainer extends Component {
             <tr key={'expanded' + index}>
               <td className="text-truncate" title={expandedEntry.name}>{expandedEntry.name}</td>
               <td className="text-truncate" title={expandedEntry.description}>{expandedEntry.description}</td>
+              <td className="text-truncate">{expandedEntry.channel}</td>
+              <td className="text-truncate">{expandedEntry.duration}</td>
             </tr>
           )
         }
@@ -100,6 +102,8 @@ class VideoContainer extends Component {
                     <tr>
                       <th scope="col">Name</th>
                       <th scope="col">Description</th>
+                      <th scope="col">Channel</th>
+                      <th scope="col">Duration</th>
                     </tr>
                   </thead>
                   <ExpandedEntries entries={this.state.expandedEntries} />
@@ -120,7 +124,9 @@ class VideoContainer extends Component {
               <thead>
                 <tr>
                   <th scope="col">Name</th>
-                  <th scope="col video-description-header">Description</th>
+                  <th className="video-description-header" scope="col">Description</th>
+                  <th scope="col">Channel</th>
+                  <th scope="col">Duration</th>
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -130,6 +136,8 @@ class VideoContainer extends Component {
                     <tr key={idx}>
                       <td className="text-truncate">{entry.name}</td>
                       <td className="video-description text-truncate">{entry.description}</td>
+                      <td className="text-truncate">{entry.channel}</td>
+                      <td className="text-truncate">{entry.duration}</td>
                       <td><button className="btn btn-outline-dark" onClick={this.props.popupHandler.bind(this, entry.name, entry.filename, '', 'Video')}>Watch</button></td>
                     </tr>
                   )
