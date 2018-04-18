@@ -39,7 +39,7 @@
     table-layout: auto;
   }
 
-  .diary-description-header {
+  .video-description-header, .diary-description-header {
     display:none;
     width:0;
     height:0;
@@ -47,7 +47,7 @@
     visibility: collapse;
   }
 
-  .diary-description {
+  .video-description, .diary-description {
     display:none;
     width:0;
     height:0;

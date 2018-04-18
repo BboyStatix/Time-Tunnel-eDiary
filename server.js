@@ -6,6 +6,8 @@ const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const mm = require('musicmetadata')
 const async = require('async')
+const ffmpeg = require('fluent-ffmpeg')
+
 const app = express()
 
 const multer = require('multer')
@@ -186,13 +188,38 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
-    else if(file.originalname.match(/\.(wtv|flv|mp4|webm)$/)){
+    else if(file.originalname.match(/\.(wtv)$/)){
+      ffmpeg.ffprobe(filePath,(err, metadata) => {
+        if(err) {
+          callback(err)
+        }
+        else {
+          const description = metadata.format.tags['WM/SubTitleDescription']
+          const video = new Video({
+            userID: userID,
+            filename: filename,
+            name: name,
+            description: description,
+            fileType: extension
+          })
+          video.save((err) => {
+            if(err) {
+              return callback(err)
+            }
+            else {
+              callback()
+            }
+          })
+        }
+      })
+    }
+    else if(file.originalname.match(/\.(flv|mp4|webm)$/)){
       const video = new Video({userID: userID, filename: filename, name: name, fileType: extension})
-      video.save(function (err) {
-        if(err){
+      video.save((err) => {
+        if(err) {
           return callback(err)
         }
-        else{
+        else {
           callback()
         }
       })
@@ -478,7 +505,7 @@ app.post('/video/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Video.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, filename: true, _id: false}, (err, entries) => {
+  Video.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, description: true, filename: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
