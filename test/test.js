@@ -189,14 +189,16 @@ describe('Parser', () => {
         "(Spiderman 2)_{2010-12-12}<Toby Maguire>(Peter goes up against the green goblin)[].mp4",
         "(Spiderman 3)_{2012-13-12}<Toby Maguire>(Spiderman gets a new suit)[Peter Parker,Nick,Ben].mp4",
         "(Police Story)_{1993-11-12}<Jackie Chan>(Jackie Chan as a policeman)[Jackie Chan,Police Story].mp4",
-        "(Tomb Raider)_{2018-03-01}<Alicia Vikander>(Based on the game)[Alicia Vikander,Tomb Raider].webm"
+        "(Tomb Raider)_{2018-03-01}<Alicia Vikander>(Based on the game)[Alicia Vikander,Tomb Raider].webm",
+        "(Tomb Raider)_{}<Alicia Vikander>(Based on the game)[Alicia Vikander,Tomb Raider].webm"
       ]
 
       const expectationArray = [
         ['Spiderman 2', 'Toby Maguire', (new Date('2010-12-12')).getTime(), 'Peter goes up against the green goblin', [], 'mp4'],
         ['Spiderman 3', 'Toby Maguire', '', 'Spiderman gets a new suit', ['Peter Parker', 'Nick', 'Ben'], 'mp4'],
         ['Police Story', 'Jackie Chan', (new Date('1993-11-12')).getTime(), 'Jackie Chan as a policeman', ['Jackie Chan', 'Police Story'], 'mp4'],
-        ['Tomb Raider', 'Alicia Vikander', (new Date('2018-03-01')).getTime(), 'Based on the game', ['Alicia Vikander', 'Tomb Raider'], 'webm']
+        ['Tomb Raider', 'Alicia Vikander', (new Date('2018-03-01')).getTime(), 'Based on the game', ['Alicia Vikander', 'Tomb Raider'], 'webm'],
+        ['Tomb Raider', 'Alicia Vikander', '', 'Based on the game', ['Alicia Vikander', 'Tomb Raider'], 'webm']
       ]
 
       videoArray.forEach((videoString, index) => {
