@@ -93,6 +93,7 @@ class AudioContainer extends Component {
               <td>{expandedEntry.ukChartDate}</td>
               <td>{expandedEntry.ukPeakNumOfWeeks}</td>
               <td>{expandedEntry.ukPeakPosition}</td>
+              <td><button className="btn btn-outline-danger" onClick={props.popupHandler.bind(this, expandedEntry.name, expandedEntry.filename, '', 'Audio')}>Play</button></td>
             </tr>
           )
         }
@@ -120,16 +121,17 @@ class AudioContainer extends Component {
                       <th scope="col">Song</th>
                       <th scope="col">Artist</th>
                       <th scope="col">Album</th>
-                      <th scope="col">Information</th>
+                      <th scope="col">Info</th>
                       <th scope="col">US chart date</th>
                       <th scope="col">US Peak Position</th>
                       <th scope="col">US no. of weeks</th>
                       <th scope="col">UK chart date</th>
                       <th scope="col">UK Peak Position</th>
                       <th scope="col">UK no. of weeks</th>
+                      <th scope="col"></th>
                     </tr>
                   </thead>
-                  <ExpandedEntries entries={this.state.expandedEntries} />
+                  <ExpandedEntries entries={this.state.expandedEntries} popupHandler={this.props.popupHandler}/>
                 </table>
               </div>
             </div>
@@ -149,7 +151,7 @@ class AudioContainer extends Component {
                   <th scope="col">Song</th>
                   <th scope="col">Artist</th>
                   <th scope="col">Album</th>
-                  <th scope="col">Information</th>
+                  <th scope="col">Info</th>
                   <th scope="col"></th>
                 </tr>
               </thead>

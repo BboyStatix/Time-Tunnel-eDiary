@@ -59,8 +59,7 @@ class VideoContainer extends Component {
     var expandedEntries = this.state.entries.filter((entry) => {
       const name = entry.name.toLowerCase()
       const description = entry.description.toLowerCase()
-      const actor = entry.actor.toLowerCase()
-      return name.indexOf(query) !== -1 || description.indexOf(query) !== -1 || actor.indexOf(query)
+      return name.indexOf(query) !== -1 || description.indexOf(query) !== -1
     })
     this.setState({
       expandedEntries: expandedEntries

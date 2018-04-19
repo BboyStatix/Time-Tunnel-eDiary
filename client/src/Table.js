@@ -211,7 +211,7 @@ function Columns(props) {
           <th scope="col">Song</th>
           <th scope="col">Artist</th>
           <th scope="col">Album</th>
-          <th scope="col">Information</th>
+          <th scope="col">Info</th>
           <th scope="col">US chart date</th>
           <th scope="col">US Peak Position</th>
           <th scope="col">US no. of weeks</th>
