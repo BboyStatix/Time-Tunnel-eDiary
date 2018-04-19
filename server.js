@@ -224,7 +224,16 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
       })
     }
     else if(file.originalname.match(/\.(flv|mp4|webm)$/)){
-      const video = new Video({userID: userID, filename: filename, name: name, fileType: extension})
+      const videoParser = new Parser
+      const videoHash = videoParser.parseVideoString(file.originalname)
+
+      if(Object.keys(videoHash).length !== 0) {
+        video = new Video(Object.assign({userID: userID, filename: filename}, videoHash))
+      }
+      else {
+        video = new Video({userID: userID, filename: filename, name: name, fileType: extension})
+      }
+
       video.save((err) => {
         if(err) {
           return callback(err)
@@ -516,7 +525,7 @@ app.post('/video/entries', (req, res) => {
   nextDay.setDate(nextDay.getDate() + 1)
 
   Video.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}},
-    {name: true, description: true, channel: true, duration: true, filename: true, _id: false}, (err, entries) => {
+    {name: true, actor: true, description: true, channel: true, duration: true, filename: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,

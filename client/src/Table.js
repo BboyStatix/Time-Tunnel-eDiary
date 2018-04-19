@@ -30,7 +30,8 @@ class Table extends Component {
           return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || artist.indexOf(query) !== -1 || album.indexOf(query) !== -1 || information.indexOf(query) !== -1
         case 'Video':
           var description = entry.description === undefined ? '' : entry.description.toLowerCase()
-          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || description.indexOf(query) !== -1
+          var actor = entry.actor === undefined ? '' : entry.actor.toLowerCase()
+          return name.indexOf(query) !== -1 || date.indexOf(query) !== -1 || description.indexOf(query) !== -1 || actor.indexOf(query) !== -1
         default:
           return name.indexOf(query) !== -1 || date.indexOf(query) !== -1
       }
@@ -162,6 +163,7 @@ function RowData(props) {
               {entry.name}
             </span>
           </td>
+          <td>{entry.actor}</td>
           <td className="text-truncate" title={entry.description}>{entry.description}</td>
           <td>{entry.channel}</td>
           <td>{entry.duration}</td>
@@ -209,7 +211,7 @@ function Columns(props) {
           <th scope="col">Song</th>
           <th scope="col">Artist</th>
           <th scope="col">Album</th>
-          <th scope="col">Information</th>
+          <th scope="col">Info</th>
           <th scope="col">US chart date</th>
           <th scope="col">US Peak Position</th>
           <th scope="col">US no. of weeks</th>
@@ -239,6 +241,7 @@ function Columns(props) {
       return (
         <tr>
           <th scope="col">Name</th>
+          <th scope="col">Actor</th>
           <th scope="col">Description</th>
           <th scope="col">Channel</th>
           <th scope="col">Duration</th>

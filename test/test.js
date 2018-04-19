@@ -110,13 +110,15 @@ describe('Parser', () => {
       const photoArray = [
         "(test)_{1998-12-12}<>()[].jpg",
         "(Hiking image)_{1998-13-12}<Lantau Island>(Hiking)[Jack,Nick,Ben].png",
-        "(Picture with jackie)_{1993-11-12}<Hong Kong>(On set with Jackie)[Jackie Chan,Actor].jpg"
+        "(Picture with jackie)_{1993-11-12}<Hong Kong>(On set with Jackie)[Jackie Chan,Actor].jpg",
+        "(Picture with jackie)_{}<Hong Kong>(On set with Jackie)[Jackie Chan,Actor].jpg"
       ]
 
       const expectationArray = [
         ['test', (new Date('1998-12-12')).getTime(), '', '', [''], 'jpg'],
         ['Hiking image', '', 'Lantau Island', 'Hiking', ['Jack', 'Nick', 'Ben'], 'png'],
-        ['Picture with jackie', (new Date('1993-11-12')).getTime(), 'Hong Kong', 'On set with Jackie', ['Jackie Chan', 'Actor'], 'jpg']
+        ['Picture with jackie', (new Date('1993-11-12')).getTime(), 'Hong Kong', 'On set with Jackie', ['Jackie Chan', 'Actor'], 'jpg'],
+        ['Picture with jackie', '', 'Hong Kong', 'On set with Jackie', ['Jackie Chan', 'Actor'], 'jpg']
       ]
 
       photoArray.forEach((photoString, index) => {
@@ -177,6 +179,48 @@ describe('Parser', () => {
 
     it('should return empty hash if inappropriate string', () => {
       var parsedStringHash = parser.parseWtvString('sfsafkndsafa.wtv')
+      assert.deepEqual(parsedStringHash, {})
+    })
+  })
+
+  describe('parseVideoString', () => {
+    it('should return video hash', () => {
+      const videoArray = [
+        "(Spiderman 2)_{2010-12-12}<Toby Maguire>(Peter goes up against the green goblin)[].mp4",
+        "(Spiderman 3)_{2012-13-12}<Toby Maguire>(Spiderman gets a new suit)[Peter Parker,Nick,Ben].mp4",
+        "(Police Story)_{1993-11-12}<Jackie Chan>(Jackie Chan as a policeman)[Jackie Chan,Police Story].mp4",
+        "(Tomb Raider)_{2018-03-01}<Alicia Vikander>(Based on the game)[Alicia Vikander,Tomb Raider].webm",
+        "(Tomb Raider)_{}<Alicia Vikander>(Based on the game)[Alicia Vikander,Tomb Raider].webm"
+      ]
+
+      const expectationArray = [
+        ['Spiderman 2', 'Toby Maguire', (new Date('2010-12-12')).getTime(), 'Peter goes up against the green goblin', [], 'mp4'],
+        ['Spiderman 3', 'Toby Maguire', '', 'Spiderman gets a new suit', ['Peter Parker', 'Nick', 'Ben'], 'mp4'],
+        ['Police Story', 'Jackie Chan', (new Date('1993-11-12')).getTime(), 'Jackie Chan as a policeman', ['Jackie Chan', 'Police Story'], 'mp4'],
+        ['Tomb Raider', 'Alicia Vikander', (new Date('2018-03-01')).getTime(), 'Based on the game', ['Alicia Vikander', 'Tomb Raider'], 'webm'],
+        ['Tomb Raider', 'Alicia Vikander', '', 'Based on the game', ['Alicia Vikander', 'Tomb Raider'], 'webm']
+      ]
+
+      videoArray.forEach((videoString, index) => {
+        const parsedStringHash = parser.parseVideoString(videoString)
+        const testArray = expectationArray[index]
+
+        assert.equal(parsedStringHash.name, testArray[0])
+        assert.equal(parsedStringHash.actor, testArray[1])
+        if(parsedStringHash.created_at !== undefined) {
+          assert.equal(parsedStringHash.created_at.getTime(), testArray[2])
+        }
+        var tagsArray = testArray[4]
+        for(var i = 0; i<tagsArray.length; i++) {
+            assert.equal(parsedStringHash.tags[i], tagsArray[i])
+        }
+        assert.equal(parsedStringHash.description, testArray[3])
+        assert.equal(parsedStringHash.fileType, testArray[5])
+      })
+    })
+
+    it('should return empty hash if inappropriate string', () => {
+      var parsedStringHash = parser.parseVideoString('sfsafkndsafa.wtv')
       assert.deepEqual(parsedStringHash, {})
     })
   })
