@@ -15,6 +15,10 @@ class VideoModal extends Component {
               </button>
             </div>
             <div className="modal-body">
+              <div className="modal-description">
+                {this.props.modalBody}
+              </div>
+              <br />
               <Player>
                 <source src={"/video/view?jwt=" + localStorage.jwt + "&filename=" + this.props.filename} />
               </Player>

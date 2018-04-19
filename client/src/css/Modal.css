@@ -21,6 +21,10 @@
   text-align: left;
 }
 
+.modal-description {
+  text-align: left;
+}
+
 .modal-dialog {
    max-width: 90%;
 }

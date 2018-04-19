@@ -43,7 +43,7 @@ class ParentContainer extends Component {
         this.setState({modalVisible: true, modalType: 'Photo', name: name, filename: filename})
         break
       case 'Video':
-        this.setState({modalVisible: true, modalType: 'Video', name: name, filename: filename})
+        this.setState({modalVisible: true, modalType: 'Video', name: name, filename: filename, modalBody: description})
         break
       default:
         this.setState({modalVisible: false, modalType: '', name: name, filename: filename})
@@ -129,7 +129,7 @@ function Modal(props) {
     case 'Video':
       return (
         <div onClick={props.closeModal}>
-          <VideoModal modalTitle={props.name} filename={props.filename}/>
+          <VideoModal modalTitle={props.name} filename={props.filename} modalBody={props.modalBody}/>
         </div>
       )
     default:

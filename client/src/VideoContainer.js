@@ -136,7 +136,7 @@ class VideoContainer extends Component {
                     <tr key={idx}>
                       <td className="text-truncate">{entry.name}</td>
                       <td className="video-description text-truncate">{entry.description}</td>
-                      <td><button className="btn btn-outline-dark" onClick={this.props.popupHandler.bind(this, entry.name, entry.filename, '', 'Video')}>Watch</button></td>
+                      <td><button className="btn btn-outline-dark" onClick={this.props.popupHandler.bind(this, entry.name, entry.filename, entry.description, 'Video')}>Watch</button></td>
                     </tr>
                   )
                 }
