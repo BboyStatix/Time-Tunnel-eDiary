@@ -525,7 +525,7 @@ app.post('/video/entries', (req, res) => {
   nextDay.setDate(nextDay.getDate() + 1)
 
   Video.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}},
-    {name: true, description: true, channel: true, duration: true, filename: true, _id: false}, (err, entries) => {
+    {name: true, actor: true, description: true, channel: true, duration: true, filename: true, _id: false}, (err, entries) => {
     if(err) {
       res.json({
         status: 500,

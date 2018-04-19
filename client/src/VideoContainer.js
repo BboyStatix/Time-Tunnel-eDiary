@@ -59,7 +59,8 @@ class VideoContainer extends Component {
     var expandedEntries = this.state.entries.filter((entry) => {
       const name = entry.name.toLowerCase()
       const description = entry.description.toLowerCase()
-      return name.indexOf(query) !== -1 || description.indexOf(query) !== -1
+      const actor = entry.actor.toLowerCase()
+      return name.indexOf(query) !== -1 || description.indexOf(query) !== -1 || actor.indexOf(query)
     })
     this.setState({
       expandedEntries: expandedEntries
@@ -73,6 +74,7 @@ class VideoContainer extends Component {
           props.entries.map((expandedEntry, index) =>
             <tr key={'expanded' + index}>
               <td className="text-truncate" title={expandedEntry.name}>{expandedEntry.name}</td>
+              <td className="text-truncate">{expandedEntry.actor}</td>
               <td className="text-truncate" title={expandedEntry.description}>{expandedEntry.description}</td>
               <td className="text-truncate">{expandedEntry.channel}</td>
               <td className="text-truncate">{expandedEntry.duration}</td>
@@ -101,6 +103,7 @@ class VideoContainer extends Component {
                   <thead>
                     <tr>
                       <th scope="col">Name</th>
+                      <th scope="col">Actor</th>
                       <th scope="col">Description</th>
                       <th scope="col">Channel</th>
                       <th scope="col">Duration</th>
@@ -125,8 +128,8 @@ class VideoContainer extends Component {
                 <tr>
                   <th scope="col">Name</th>
                   <th className="video-description-header" scope="col">Description</th>
-                  <th scope="col">Channel</th>
-                  <th scope="col">Duration</th>
+                  {/* <th scope="col">Channel</th> */}
+                  {/* <th scope="col">Duration</th> */}
                   <th scope="col"></th>
                 </tr>
               </thead>
@@ -136,8 +139,8 @@ class VideoContainer extends Component {
                     <tr key={idx}>
                       <td className="text-truncate">{entry.name}</td>
                       <td className="video-description text-truncate">{entry.description}</td>
-                      <td className="text-truncate">{entry.channel}</td>
-                      <td className="text-truncate">{entry.duration}</td>
+                      {/* <td className="text-truncate">{entry.channel}</td> */}
+                      {/* <td className="text-truncate">{entry.duration}</td> */}
                       <td><button className="btn btn-outline-dark" onClick={this.props.popupHandler.bind(this, entry.name, entry.filename, '', 'Video')}>Watch</button></td>
                     </tr>
                   )
