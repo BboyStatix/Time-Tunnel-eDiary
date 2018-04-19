@@ -20,6 +20,10 @@ module.exports = class Parser {
   parseWtvString(string) {
     return getParsedWtvHash(string)
   }
+
+  parseVideoString(string) {
+    return getParsedVideoHash(string)
+  }
 }
 
 function getParsedAudioHash(string){
@@ -102,6 +106,33 @@ function getParsedWtvHash(string) {
   }
 
   return wtvHash
+}
+
+function getParsedVideoHash(string) {
+  const videoHash = {}
+
+  if(string.search(/^\(.+\)_{([0-9]{4}(-[0-9][0-9]){2}){0,1}}<.*>\(.*\)\[.*]/g) !== -1) {
+    videoHash.name = string.substring(1, string.indexOf(')_'))
+
+    const date = string.substring(string.indexOf('{')+1, string.indexOf('}'))
+    if(date.length !== 0) {
+      const dateObject = new Date(date)
+      if (dateObject.isValid()){
+        videoHash.created_at = dateObject
+      }
+    }
+
+    videoHash.actor = string.substring(string.indexOf('<')+1, string.indexOf('>'))
+    videoHash.description = string.substring(string.indexOf('>(')+2, string.indexOf(')['))
+
+    splitStringArray = string.split('.')
+    const tagString = splitStringArray[0]
+    const tagArray = tagString.substring(string.indexOf(')[')+2,string.indexOf('].')).split(',')
+    videoHash.tags = tagArray
+    videoHash.fileType = splitStringArray[1]
+  }
+
+  return videoHash
 }
 
 Date.prototype.isValid = function () {
