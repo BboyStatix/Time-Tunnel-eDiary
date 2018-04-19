@@ -229,19 +229,26 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
 
       if(Object.keys(videoHash).length !== 0) {
         video = new Video(Object.assign({userID: userID, filename: filename}, videoHash))
+        video.save((err) => {
+          if(err) {
+            return callback(err)
+          }
+          else {
+            callback('reload')
+          }
+        })
       }
       else {
         video = new Video({userID: userID, filename: filename, name: name, fileType: extension})
+        video.save((err) => {
+          if(err) {
+            return callback(err)
+          }
+          else {
+            callback()
+          }
+        })
       }
-
-      video.save((err) => {
-        if(err) {
-          return callback(err)
-        }
-        else {
-          callback()
-        }
-      })
     }
     else if(file.originalname.match(/\.(jpg|jpeg|png|gif|bmp)$/)){
       const dimensions = sizeOf(filePath)

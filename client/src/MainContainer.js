@@ -14,6 +14,7 @@ class MainContainer extends Component {
   constructor(props){
     super(props)
     this.formatDates = this.formatDates.bind(this)
+    this.fetchDates = this.fetchDates.bind(this)
     this.changeDateFormat = this.changeDateFormat.bind(this)
     this.setDateFromDropDown = this.setDateFromDropDown.bind(this)
     this.loadJquery = this.loadJquery.bind(this)
@@ -21,11 +22,16 @@ class MainContainer extends Component {
     this.state = {
       dates: [],
       selectedDate: this.changeDateFormat(new Date()),
-      uploading: false
+      uploading: false,
+      key: 0
     }
   }
 
   componentWillMount() {
+    this.fetchDates()
+  }
+
+  fetchDates() {
     fetch('/entries/dates', {
       method: 'POST',
       headers: {
@@ -37,8 +43,9 @@ class MainContainer extends Component {
     }).then((res) => {
     return res.json()
     }).then((json) => {
+      const key = this.state.key
       const formattedDates = this.formatDates(json.dates)
-      this.setState({dates: formattedDates})
+      this.setState({dates: formattedDates, key: key+1})
       this.loadJquery()
     })
   }
@@ -272,7 +279,7 @@ class MainContainer extends Component {
           alert(json.error)
         }
         if(json.reload === true){
-          window.location.reload()
+          this.fetchDates()
         }
       })
     }
@@ -313,34 +320,29 @@ class MainContainer extends Component {
             <button id="logoutButton" className="btn btn-outline-danger" onClick={this.logout}>Log out</button>
           </form>
         </nav>
-        {
-          (this.state.dates.length !== 0) ?
-          <section className="cd-horizontal-timeline">
-          	<div className="timeline">
-          		<div className="events-wrapper">
-          			<div className="events">
-          				<ol>
-                    {
-                      this.state.dates.map((date,idx) =>
-                        <li key={idx}>
-                          <a id={date} onClick={() => this.setState({selectedDate: date})} data-date={date} className={(date === this.state.selectedDate) ? "selected" : null}>{date}</a>
-                        </li>
-                      )
-                    }
-          				</ol>
-          				<span className="filling-line" aria-hidden="true"></span>
-          			</div>
-          		</div>
+        <section key={this.state.key} className="cd-horizontal-timeline">
+        	<div className="timeline">
+        		<div className="events-wrapper">
+        			<div className="events">
+        				<ol>
+                  {
+                    this.state.dates.map((date,idx) =>
+                      <li key={idx}>
+                        <a id={date} onClick={() => this.setState({selectedDate: date})} data-date={date} className={(date === this.state.selectedDate) ? "selected" : null}>{date}</a>
+                      </li>
+                    )
+                  }
+        				</ol>
+        				<span className="filling-line" aria-hidden="true"></span>
+        			</div>
+        		</div>
 
-          		<ul className="cd-timeline-navigation">
-          			<li><a href="#0" className="prev inactive">Prev</a></li>
-          			<li><a href="#0" className="next">Next</a></li>
-          		</ul>
-          	</div>
-          </section>
-          :
-          null
-        }
+        		<ul className="cd-timeline-navigation">
+        			<li><a href="#0" className="prev inactive">Prev</a></li>
+        			<li><a href="#0" className="next">Next</a></li>
+        		</ul>
+        	</div>
+        </section>
         <div className="container-fluid">
           <div className="row">
             <div className="col">
