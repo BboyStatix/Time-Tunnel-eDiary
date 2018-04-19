@@ -11,7 +11,7 @@ class Header extends Component {
         <Link to='/'>
           <img src={logo} className="App-logo" alt="logo" />
         </Link>
-        <h4>Time Tunnel Website</h4>
+        <h4>Time Tunnel</h4>
       </div>
     )
   }
