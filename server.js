@@ -329,7 +329,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         res.json({success: true, reload: true})
       }
       else {
-        res.json({success: false, error: 'Some files could not be uploaded due to non-unique filenames'})
+        res.json({success: false, error: 'Some non-unique files could not be uploaded'})
       }
     }
     else{
@@ -409,6 +409,18 @@ app.get('/audio/view', (req,res) => {
   })
 })
 
+app.post('/pdf/view', (req,res) => {
+  const filePath = path.join(__dirname, '/uploads/' + req.body.filename)
+  jwt.verify(req.body.jwt, 'secret', (err, decoded) => {
+    if (err){
+      throw err
+    }
+    else{
+      res.sendFile(filePath)
+    }
+  })
+})
+
 app.get('/video/view', (req,res) => {
   const filePath = path.join(__dirname, '/uploads/' + req.query.filename)
   jwt.verify(req.query.jwt, 'secret', (err, decoded) => {
@@ -453,7 +465,7 @@ app.post('/diary/entries', (req, res) => {
   const nextDay = new Date(Date.UTC(dateParts[2], dateParts[1] - 1, dateParts[0]))
   nextDay.setDate(nextDay.getDate() + 1)
 
-  Diary.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, eventType: true, description: true}, (err, entries) => {
+  Diary.find({userID: userID, created_at: { $gte: dateObject, $lt: nextDay}}, {name: true, eventType: true, description: true, fileType: true, filename: true }, (err, entries) => {
     if(err) {
       res.json({
         status: 500,
