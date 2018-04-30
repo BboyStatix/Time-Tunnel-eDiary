@@ -6,6 +6,7 @@ class Table extends Component {
     this.filterEntries = this.filterEntries.bind(this)
     this.downloadFile = this.downloadFile.bind(this)
     this.deleteFile = this.deleteFile.bind(this)
+    this.openPDF = this.openPDF.bind(this)
     this.state = { entries: [] }
   }
 
@@ -71,6 +72,26 @@ class Table extends Component {
     })
   }
 
+  openPDF(filename) {
+    const tempWindow = window.open()
+    fetch('/pdf/view', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        jwt: localStorage.jwt,
+        filename: filename
+      })
+    }).then((res) => {
+      return res.blob()
+    })
+    .then((file) => {
+      var fileURL = URL.createObjectURL(file);
+      tempWindow.location.replace(fileURL);
+    })
+  }
+
   render() {
     const entries = this.filterEntries(this.state.entries)
 
@@ -83,7 +104,7 @@ class Table extends Component {
           <tbody>
             {
               entries.map((entry, idx) =>
-                <RowData key={idx} type={this.props.type} entry={entry} idx={idx} downloadFile={this.downloadFile} deleteFile={this.deleteFile} popupHandler={this.props.popupHandler}/>
+                <RowData key={idx} type={this.props.type} entry={entry} idx={idx} openPDF={this.openPDF} downloadFile={this.downloadFile} deleteFile={this.deleteFile} popupHandler={this.props.popupHandler}/>
               )
             }
           </tbody>
@@ -103,9 +124,16 @@ function RowData(props) {
       return (
         <tr key={idx}>
           <td className="text-truncate link" title={entry.name}>
-            <span className="link" onClick={props.popupHandler.bind(this, entry.name, '', entry.description, type)}>
-              {entry.name}
-            </span>
+            {
+              entry.fileType === 'pdf' ?
+              <span className="link" onClick={() => props.openPDF(entry.filename)}>
+                {entry.name}
+              </span>
+              :
+              <span className="link" onClick={props.popupHandler.bind(this, entry.name, '', entry.description, type)}>
+                {entry.name}
+              </span>
+            }
           </td>
           <td className="text-truncate" title={entry.description}>{entry.description}</td>
           <td>{entry.eventType}</td>
@@ -177,9 +205,16 @@ function RowData(props) {
       return (
         <tr key={idx}>
           <td className="text-truncate" title={entry.name}>
-            <span className="link" onClick={props.popupHandler.bind(this, entry.name, entry.filename, entry.description, entry.type)}>
-              {entry.name}
-            </span>
+            {
+              entry.fileType === 'pdf' ?
+              <span className="link" onClick={() => props.openPDF(entry.filename)}>
+                {entry.name}
+              </span>
+              :
+              <span className="link" onClick={props.popupHandler.bind(this, entry.name, entry.filename, entry.description, entry.type)}>
+                {entry.name}
+              </span>
+            }
           </td>
           <td>{entry.fileType}</td>
           <td>{entry.created_at.slice(0,10)}</td>
