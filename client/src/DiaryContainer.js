@@ -10,6 +10,7 @@ class DiaryContainer extends Component {
     this.closeContainerModal = this.closeContainerModal.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.handleSearch = this.handleSearch.bind(this)
+    this.openPDF = this.openPDF.bind(this)
     this.state = {
       entries: [],
       expandedEntries: [],
@@ -64,6 +65,26 @@ class DiaryContainer extends Component {
     })
     this.setState({
       expandedEntries: expandedEntries
+    })
+  }
+
+  openPDF(filename) {
+    const tempWindow = window.open()
+    fetch('/pdf/view', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        jwt: localStorage.jwt,
+        filename: filename
+      })
+    }).then((res) => {
+      return res.blob()
+    })
+    .then((file) => {
+      var fileURL = URL.createObjectURL(file);
+      tempWindow.location.replace(fileURL);
     })
   }
 
@@ -138,7 +159,14 @@ class DiaryContainer extends Component {
                       <td className="text-truncate">{entry.name}</td>
                       <td className="diary-description text-truncate">{entry.description}</td>
                       <td>{entry.eventType}</td>
-                      <td><button className="btn btn-outline-primary" onClick={this.props.popupHandler.bind(this, entry.name, '', entry.description, 'Diary')}>View</button></td>
+                      {
+                        entry.fileType === 'pdf' ?
+                        <td>
+                          <button className="btn btn-outline-primary" onClick={() => this.openPDF(entry.filename)}>View</button>
+                        </td>
+                        :
+                        <td><button className="btn btn-outline-primary" onClick={this.props.popupHandler.bind(this, entry.name, '', entry.description, 'Diary')}>View</button></td>
+                      }
                     </tr>
                   )
                 }
