@@ -329,7 +329,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         res.json({success: true, reload: true})
       }
       else {
-        res.json({success: false, error: 'Some files could not be uploaded due to non-unique filenames'})
+        res.json({success: false, error: 'Some non-unique files could not be uploaded'})
       }
     }
     else{
