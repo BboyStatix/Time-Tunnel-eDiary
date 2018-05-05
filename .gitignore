@@ -3,5 +3,10 @@
 # dependencies
 /node_modules
 
+# files
+/uploads
+
 # misc
 .DS_Store
+
+/data/db
