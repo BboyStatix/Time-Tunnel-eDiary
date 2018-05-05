@@ -12,9 +12,9 @@ class DiaryModal extends Component {
                 <span id="cross" aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div className="modal-body diary-body">
+            <pre className="modal-body diary-body">
               <p>{this.props.modalBody}</p>
-            </div>
+            </pre>
             <div className="modal-footer">
               <button id="closeButton" type="button" className="btn btn-secondary">Close</button>
             </div>
