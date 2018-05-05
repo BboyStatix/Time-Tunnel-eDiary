@@ -205,7 +205,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
                 return callback(err)
               }
               else{
-                callback()
+                callback('reload')
               }
             })
           }
