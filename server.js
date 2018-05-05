@@ -152,7 +152,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
-    else if(file.originalname.match(/\.(doc|docx)$/)){
+    else if(file.originalname.match(/\.(doc|docx|rtf)$/)){
       textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
         const myParser = new Parser
         const dataArray = myParser.parseDocString(text)
