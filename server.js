@@ -152,6 +152,19 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
         }
       })
     }
+    else if(file.originalname.match(/\.(rtf|odt)$/)){
+      textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
+        const diary = new Diary({userID: userID, filename: filename, name: name, fileType: extension, description: text})
+        diary.save((err) => {
+          if(err){
+            return callback(err)
+          }
+          else{
+            callback()
+          }
+        })
+      })
+    }
     else if(file.originalname.match(/\.(doc|docx)$/)){
       textract.fromFileWithPath(filePath, {preserveLineBreaks: true}, (err, text) => {
         const myParser = new Parser
@@ -205,7 +218,7 @@ app.post('/upload/file', upload.array('files'), (req, res) => {
                 return callback(err)
               }
               else{
-                callback()
+                callback('reload')
               }
             })
           }
