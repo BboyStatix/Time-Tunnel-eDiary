@@ -37,7 +37,7 @@ const Entry = require('./models/entry')
 app.use(express.static(path.join(__dirname, 'client/build')))
 
 //connect to database
-mongoose.connect(process.env.MONGODB_URI)
+mongoose.connect(process.env.MONGODB_URI || 'localhost/test')
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', function() {
@@ -594,5 +594,5 @@ app.post('/entries/dates', (req, res) => {
 })
 
 app.listen(process.env.PORT || 3001, () => {
-  console.log('App listening on port' + process.env.PORT)
+  console.log('App listening on port ' + (process.env.PORT || 3001))
 })
