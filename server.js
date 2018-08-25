@@ -38,7 +38,7 @@ const Entry = require('./models/entry')
 //app.use(express.static(path.join(__dirname, 'client/build')))
 
 //connect to database
-mongoose.connect('localhost/heroku_mlb1nl3m')
+mongoose.connect(process.env.MONGODB_URI)
 const db = mongoose.connection
 db.on('error', console.error.bind(console, 'connection error:'))
 db.once('open', function() {
