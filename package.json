@@ -4,8 +4,8 @@
   "description": "Express server",
   "main": "server.js",
   "scripts": {
-    "start": "npm run server",
-    "heroku-postbuild": "cd client && npm install && npm run build",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd client && npm install",
     "server": "node server.js",
     "client": "node start-client.js",
     "test": "mocha"
