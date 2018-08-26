@@ -21,12 +21,13 @@ class EntryContainer extends Component {
   }
 
   componentDidMount() {
-    const queryString = require('query-string')
-    const parsed = queryString.parse(this.props.location.search)
-    if(parsed.type !== undefined){
-      this.setState({type: parsed.type})
+    var type = 'All'
+    const query = this.props.location.search.split('?type=')
+    if(query.length === 2) {
+      var type = query[1]
+      this.setState({type: type})
     }
-    this.fetchEntries(parsed.type)
+    this.fetchEntries(type)
   }
 
   fetchEntries(type) {
