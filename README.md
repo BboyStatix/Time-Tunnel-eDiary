@@ -23,11 +23,8 @@ See deployment for notes on how to deploy the project on a live system.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+* [NodeJS](https://nodejs.org/en/)
+* [MongoDB](https://www.mongodb.com/download-center/enterprise)
 
 ### Installing
 
