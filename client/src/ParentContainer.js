@@ -37,16 +37,16 @@ class ParentContainer extends Component {
         this.setState({audioPlayerVisible: true, modalType: 'Audio', songName: name, songFileName: filename})
         break
       case 'Diary':
-        this.setState({modalVisible: true, modalType: 'Diary', name: name, filename: filename, modalBody: description})
+        this.setState({modalVisible: true, modalType: 'Diary', name, filename, modalBody: description})
         break
       case 'Photo':
-        this.setState({modalVisible: true, modalType: 'Photo', name: name, filename: filename})
+        this.setState({modalVisible: true, modalType: 'Photo', name, filename})
         break
       case 'Video':
-        this.setState({modalVisible: true, modalType: 'Video', name: name, filename: filename, modalBody: description})
+        this.setState({modalVisible: true, modalType: 'Video', name, filename, modalBody: description})
         break
       default:
-        this.setState({modalVisible: false, modalType: '', name: name, filename: filename})
+        this.setState({modalVisible: false, modalType: '', name, filename})
         break
     }
   }
