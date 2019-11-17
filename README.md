@@ -49,8 +49,9 @@ Add additional notes about how to deploy this on a live system
 * [ReactJS](https://reactjs.org/) - The frontend library used
 * [NodeJS](https://nodejs.org/en/) - Server
 * [ExpressJS](https://expressjs.com/) - Lightweight NodeJS framework for easy creation of basic RESTful API endpoints
+* [MongoDB](https://www.mongodb.com/) - No-SQL database
 * [Mongoose](https://mongoosejs.com/) - ODM for MongoDB
 
 ## Acknowledgments
 
-Special thanks to [CodyHouse](https://codyhouse.co/) for the [horizontal timeline](https://codyhouse.co/gem/horizontal-timeline) that I used in this project.  
+Special thanks to [CodyHouse](https://codyhouse.co/) for the [horizontal timeline](https://codyhouse.co/gem/horizontal-timeline)  
