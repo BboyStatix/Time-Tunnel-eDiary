@@ -46,12 +46,11 @@ Add additional notes about how to deploy this on a live system
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [ReactJS](https://reactjs.org/) - The frontend library used
+* [NodeJS](https://nodejs.org/en/) - Server
+* [ExpressJS](https://expressjs.com/) - Lightweight NodeJS framework for easy creation of basic RESTful API endpoints
+* [Mongoose](https://mongoosejs.com/) - ODM for MongoDB
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+Special thanks to [CodyHouse](https://codyhouse.co/) for the [horizontal timeline](https://codyhouse.co/gem/horizontal-timeline) that I used in this project.  
