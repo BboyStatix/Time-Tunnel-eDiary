@@ -1,4 +1,6 @@
-# Time Tunnel
+# Time Tunnel eDiary
+![Main page layout](images/main.png)
+
 An e-diary web-application that provides a simple but intuitive UI to review your memories. 
 
 Features include:
@@ -55,3 +57,9 @@ Add additional notes about how to deploy this on a live system
 ## Acknowledgments
 
 Special thanks to [CodyHouse](https://codyhouse.co/) for the [horizontal timeline](https://codyhouse.co/gem/horizontal-timeline)  
+
+
+## Additional Screenshots
+![Audio view](images/audio-view.png)
+![File search view](images/file-search.png)
+![Responsive layout](images/responsive.png)
