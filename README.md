@@ -11,11 +11,7 @@ Features include:
 * Text/pdf viewer
 * Table sorting, searching, and filtering
 * Responsive mobile view
-* Support for legacy filetypes along with metadata extraction e.g. wtv 
-
-[Screenshots](https://angel.co/projects/770883-time-tunnel-website)
-
-[Hosted application](http://time-tunnel.herokuapp.com/)    
+* Support for legacy filetypes along with metadata extraction e.g. wtv
 
 ## Getting Started
 
